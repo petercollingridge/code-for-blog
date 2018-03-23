@@ -1,0 +1,46 @@
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   viewBox="0 0 300 200">
+
+   <style>
+      .axis {
+        stroke: #333;
+        stroke-width: 2;
+      }
+      .gridline {
+        stroke: #ddd;
+        stroke-width: 1;
+      }
+      .label {
+        text-anchor: middle;
+        font-size: 14px;
+        fill: #444
+      }
+     .bar {
+        fill: #a9a9a9;
+        opacity: 0.6;
+      }
+    </style>
+
+  <line class="axis" x1="10" y1="181" x2="290" y2="181"/>
+  <line class="gridline" x1="10" y1="130.5" x2="290" y2="130.5"/>
+  <line class="gridline" x1="10" y1="80.5" x2="290" y2="80.5"/>
+  <line class="gridline" x1="10" y1="30.5" x2="290" y2="30.5"/>
+
+  <rect class="bar" x="20" y="60" width="80" height="120"
+    onmouseover="this.setAttribute('opacity', 1);this.setAttribute('x', 18)"
+    onmouseout="this.setAttribute('width', 80);this.setAttribute('x', 20)"
+  />
+  <rect class="bar" x="110" y="10" width="80" height="170"
+    onmouseover="getElementById('rat-label').setAttribute('y', 178);"
+    onmouseout="getElementById('rat-label').setAttribute('y', 197);"
+  />
+  <rect class="bar" x="200" y="160" width="80" height="20"/>
+
+  <text class="label" x="60" y="197">Cats</text>
+  <text class="label" id="rat-label" x="150" y="197">Rats</text>
+  <text class="label" x="240" y="197">Bats</text>
+
+</svg>
