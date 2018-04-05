@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 30 20"
+     onload="makeDraggable(evt)">
+    
+    <style>
+      .static {
+        fill: #888;
+        cursor: not-allowed;
+      }
+      .draggable {
+        fill: #007bff;
+        cursor: move;
+      }
+      .draggable:hover {
+        stroke-weight: 1px;
+        stroke: white;
+      }
+    </style>
+    
+    <script type="text/javascript"><![CDATA[
+      function makeDraggable(evt) {
+        var svg = evt.target;
+        svg.addEventListener('mousedown', startDrag, false);
+        svg.addEventListener('mousemove', drag, false);
+        svg.addEventListener('mouseup', endDrag, false);
+
+        var selectedElement, offset, transform;
+
+        function getMousePosition(evt) {
+          var CTM = svg.getScreenCTM();
+          return {
+            x: (evt.clientX - CTM.e) / CTM.a,
+            y: (evt.clientY - CTM.f) / CTM.d
+          };
+        }
+
+        function startDrag(evt) {
+          if (evt.target.classList.contains('draggable')) {
+            selectedElement = evt.target;
+            offset = getMousePosition(evt);
+
+            // Make sure the first transform on the element is a translate transform
+            var transforms = selectedElement.transform.baseVal;
+            console.log(transforms);
+
+            if (transforms.length === 0 || transforms.getItem(0).type !== SVGTransform.SVG_TRANSFORM_TRANSLATE) {
+              // Create an transform that translates by (0, 0)
+              var translate = svg.createSVGTransform();
+              translate.setTranslate(0, 0);
+              selectedElement.transform.baseVal.insertItemBefore(translate, 0);
+              console.log(selectedElement.transform.baseVal)
+            }
+
+            // Get initial translation
+            transform = transforms.getItem(0);
+            console.log(transforms);
+            offset.x -= transform.matrix.e;
+            offset.y -= transform.matrix.f;
+          }
+        }
+
+        function drag(evt) {
+          if (selectedElement) {
+            var coord = getMousePosition(evt);
+            transform.setTranslate(coord.x - offset.x, coord.y - offset.y);
+          }
+        }
+
+        function endDrag(evt) {
+          selectedElement = false;
+        }
+      }
+    ]]> </script>
+    
+    <rect x="0" y="0" width="30" height="20" fill="#eee"/>
+    <rect class="static" x="2" y="3" width="4" height="3"/>
+    <rect class="draggable" x="22" y="4" width="5" height="4"/>
+    <polygon class="draggable" transform="rotate(15, 15, 14)" points="16.9 14.6 17.4 17.2 15 16 12.6 17.2 13.1 14.6 11.2 12.8 13.8 12.4 15 10 16.2 12.4 18.8 12.8"/>
+
+</svg>
