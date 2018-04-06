@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
+
+  <text x="10" y="45">
+    <tspan> Square rotating </tspan>
+    <tspan x="10" dy="18"> about its centre </tspan>
+  </text>
+  
+  <rect x="160" y="20" width="60" height="60" fill="#007bff">
+    <animateTransform attributeName="transform"
+    				  type="rotate"
+    				  from="0 190 50"
+    				  to="360 190 50"
+    				  dur="4s"
+    				  repeatCount="indefinite" />
+  </rect>  
+</svg>
