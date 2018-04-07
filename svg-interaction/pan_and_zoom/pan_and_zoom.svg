@@ -1,69 +1,66 @@
-<svg xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 500 300" onload="init(evt)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 150" onload="init(evt)">
   <style>
-  		.territory:hover{
-			fill:           #22aa44;
-		}
-  		.compass{
-  			fill:			#fff;
-  			stroke:			#000;
-  			stroke-width:	1.5;
-  		}
-   		.button{
-		    fill:           	#225EA8;
-			stroke:   			#0C2C84;
-			stroke-miterlimit:	6;
-			stroke-linecap:		round;
-		}
-		.button:hover{
-			stroke-width:   	2;
-		}
-		.plus-minus{
-			fill:	#fff;
-			pointer-events: none;
-		}
+  	.territory:hover {
+		fill: #22aa44;
+	}
+  	.compass {
+        fill: #fff;
+        stroke: #000;
+        stroke-width: 1;
+    }
+    .button {
+        fill: #225EA8;
+        stroke: #0C2C84;
+        stroke-width: 0.5;
+        stroke-miterlimit:6;
+        stroke-linecap: round;
+    }
+    .button:hover {
+        stroke-width: 1;
+    }
+    .plus-minus {
+        fill: #fff;
+    }
   </style>
   
-  <script type="text/ecmascript">
-    <![CDATA[
-		var transMatrix = [2,0,0,2,0,0];
+  <script type="text/ecmascript"><![CDATA[
+		var transformMatrix = [1, 0, 0, 1, 0, 0];
+        var matrixGroup, centerX, centerY;
         
-        function init(evt)
-        {
-            if ( window.svgDocument == null )
-            {
+        function init(evt) {
+            if ( window.svgDocument == null ) {
                 svgDoc = evt.target.ownerDocument;
-
+                matrixGroup = svgDoc.getElementById("matrix-group");
             }
-            mapMatrix = svgDoc.getElementById("map-matrix");
-            width  = evt.target.getAttributeNS(null, "width");
-            height = evt.target.getAttributeNS(null, "height");
+            var viewbox = evt.target.getAttributeNS(null, "viewBox").split(" ");
+            var width = parseFloat(viewbox[2]);
+            var height = parseFloat(viewbox[3]);
+            centerX = width / 2;
+            centerY = height / 2;
+        }
+
+        function pan(dx, dy) {     	
+            transformMatrix[4] += dx;
+            transformMatrix[5] += dy;
+                        
+            var newMatrix = "matrix(" +  transformMatrix.join(' ') + ")";
+            matrixGroup.setAttributeNS(null, "transform", newMatrix);
         }
         
-        function pan(dx, dy)
-        {
-        	
-			transMatrix[4] += dx;
-			transMatrix[5] += dy;
-            
-			newMatrix = "matrix(" +  transMatrix.join(' ') + ")";
-			mapMatrix.setAttributeNS(null, "transform", newMatrix);
+        function zoom(scale) {
+            for (var i = 0; i < transformMatrix.length; i++) {
+                transformMatrix[i] *= scale;
+            }
+
+            transformMatrix[4] += (1 - scale) * centerX;
+            transformMatrix[5] += (1 - scale) * centerY;
+                            
+            var newMatrix = "matrix(" +  transformMatrix.join(' ') + ")";
+            matrixGroup.setAttributeNS(null, "transform", newMatrix);
         }
-        
-		function zoom(scale)
-		{
-			for (var i=0; i<transMatrix.length; i++)
-			{
-				transMatrix[i] *= scale;
-			}
-			transMatrix[4] += (1-scale)*width/2;
-			transMatrix[5] += (1-scale)*height/2;
-		        
-			newMatrix = "matrix(" +  transMatrix.join(' ') + ")";
-			mapMatrix.setAttributeNS(null, "transform", newMatrix);
-        }
-    ]]>
-  </script>
-  <g id="map-matrix" transform="matrix(2 0 0 2 0 0)">        
+    ]]></script>
+
+  <g id="matrix-group" transform="matrix(1 0 0 1 0 0)">        
     <path
         id="WA"
         class="territory"
@@ -122,17 +119,17 @@
     </g>
   </g>
   
-  <circle cx="50" cy="50" r="42" fill="white" opacity="0.75"/>
-  <path class="button" onclick="pan( 0, 50)" d="M50 10 l12   20 a40, 70 0 0,0 -24,  0z" />
-  <path class="button" onclick="pan( 50, 0)" d="M10 50 l20  -12 a70, 40 0 0,0   0, 24z" />
-  <path class="button" onclick="pan( 0,-50)" d="M50 90 l12  -20 a40, 70 0 0,1 -24,  0z" />
-  <path class="button" onclick="pan(-50, 0)" d="M90 50 l-20 -12 a70, 40 0 0,1   0, 24z" />
+  <circle cx="25" cy="25" r="21" fill="white" opacity="0.75"/>
+  <path class="button" onclick="pan(0, 25)" d="M25 5 l6 10 a20 35 0 0 0 -12 0z" />
+  <path class="button" onclick="pan(25, 0)" d="M5 25 l10 -6 a35 20 0 0 0 0 12z" />
+  <path class="button" onclick="pan(0,-25)" d="M25 45 l6 -10 a20, 35 0 0,1 -12,0z" />
+  <path class="button" onclick="pan(-25, 0)" d="M45 25 l-10 -6 a35 20 0 0 1 0 12z" />
   
-  <circle class="compass" cx="50" cy="50" r="20"/>
-  <circle class="button"  cx="50" cy="41" r="8" onclick="zoom(0.8)"/>
-  <circle class="button"  cx="50" cy="59" r="8" onclick="zoom(1.25)"/>
+  <circle class="compass" cx="25" cy="25" r="10"/>
+  <circle class="button"  cx="25" cy="20.5" r="4" onclick="zoom(0.8)"/>
+  <circle class="button"  cx="25" cy="29.5" r="4" onclick="zoom(1.25)"/>
 
-  <rect class="plus-minus" x="46" y="39.5" width="8" height="3"/>
-  <rect class="plus-minus" x="46" y="57.5" width="8" height="3"/>
-  <rect class="plus-minus" x="48.5" y="55" width="3" height="8"/>
+  <rect class="plus-minus" x="23" y="20" width="4" height="1"/>
+  <rect class="plus-minus" x="23" y="29" width="4" height="1"/>
+  <rect class="plus-minus" x="24.5" y="27.5" width="1" height="4"/>
   </svg>
