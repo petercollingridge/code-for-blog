@@ -13,6 +13,39 @@ var Sugarscape = (function() {
     var agent_size = 3;
     var initial_agents = 200;
 
+    function sliderHandler(evt)  {
+        my_world.regenerate_amount = parseInt(evt.target.value);
+    }
+
+    function displayWorld() {
+        // Display Grid
+        for (var x=0; x < my_world.width; x++) {
+            for (var y=0; y < my_world.height; y++) {
+                colour = 255 - my_world.sectors[x][y].sugar * 63;
+                context.fillStyle = "rgb(" +colour+ ", 255, " +colour+ ")";
+                context.fillRect(2 + x * grid_size, 2 + y * grid_size, grid_size, grid_size);
+            };
+        };
+        
+        // Display Agents
+        context.fillStyle = "#f12";
+        for (var n = 0; n < my_world.agents.length; n++) {
+            context.beginPath();
+            x = 3 + my_world.agents[n].x*grid_size + agent_size;
+            y = 3 + my_world.agents[n].y*grid_size + agent_size;
+            context.arc(x, y, agent_size, 0, Math.PI*2, true); 
+            context.closePath();
+            context.fill();
+        };
+    }
+
+    function loop() {
+        my_world.update();
+        displayWorld();
+        // document.getElementById( 'dead-agent-counter' ).innerHTML = my_world.deadAgents.length
+        my_world.deadAgents = [];
+    }
+
     // Add play/pause button
   
     return {
@@ -31,39 +64,9 @@ var Sugarscape = (function() {
                 
                 context.strokeStyle = "#000";
                 context.lineWidth = "2";
-                context.strokeRect(1, 1, grid_width*grid_size+2, grid_height*grid_size+2)
+                context.strokeRect(1, 1, grid_width * grid_size + 2, grid_height * grid_size + 2)
                 setInterval( loop, 1000 / FPS );
             };
-        },
-        loop: function() {
-            my_world.update();
-            displayWorld();
-            // document.getElementById( 'dead-agent-counter' ).innerHTML = my_world.deadAgents.length
-            my_world.deadAgents = [];
-        },
-        displayWorld: function () {
-            // Display Grid
-            for (var x=0; x < my_world.width; x++) {
-                for (var y=0; y < my_world.height; y++) {
-                    colour = 255 - my_world.sectors[x][y].sugar * 63;
-                    context.fillStyle = "rgb(" +colour+ ", 255, " +colour+ ")";
-                    context.fillRect(2 + x * grid_size, 2 + y * grid_size, grid_size, grid_size);
-                };
-            };
-            
-            // Display Agents
-            context.fillStyle = "#f12";
-            for (var n = 0; n < my_world.agents.length; n++) {
-                context.beginPath();
-                x = 3 + my_world.agents[n].x*grid_size + agent_size;
-                y = 3 + my_world.agents[n].y*grid_size + agent_size;
-                context.arc(x, y, agent_size, 0, Math.PI*2, true); 
-                context.closePath();
-                context.fill();
-            };
-        },
-        sliderHandler: function(evt) {
-            my_world.regenerate_amount = parseInt(evt.target.value);
         }
     };
 })();
