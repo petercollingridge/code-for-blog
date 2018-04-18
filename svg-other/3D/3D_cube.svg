@@ -1,0 +1,146 @@
+<svg viewBox="0 0 280 280" xmlns='http://www.w3.org/2000/svg' onload='init(evt)' >  
+  <style> 
+    .edge{
+        fill: white;
+        stroke: black;
+        stroke-width: 1;
+    }
+    .button{
+        fill: #2060dd;
+        stroke: #2580ff;
+        stroke-width: 1;
+    }
+    .button:hover{
+        stroke-width: 3;
+    }
+  </style> 
+ 
+  <script type='text/javascript'> 
+    <![CDATA[
+
+    edges = [[0,1],[2,3],[0,2],[1,3],[4,5],[6,7],[4,6],[5,7],[0,4],[1,5],[2,6],[3,7]]
+    x_coords = [50,190,50,190,50,190,50,190];
+    y_coords = [50,50,190,190,50,50,190,190];
+    z_coords = [50,50,50,50,190,190,190,190];
+    
+    centre_x = 120;
+    centre_y = 120;
+    centre_z = 120;
+    
+    function init(evt)
+    {
+        if ( window.svgDocument == null )
+        {
+            svgDocument = evt.target.ownerDocument;
+        }
+        drawBox();
+    }
+    
+    function drawBox()
+    {
+        for(var i=0; i<edges.length; i++)
+        {
+            edge = svgDocument.getElementById('edge-'+i);
+            edge.setAttributeNS(null, 'x1', x_coords[edges[i][0]]);
+            edge.setAttributeNS(null, 'x2', x_coords[edges[i][1]]);
+            edge.setAttributeNS(null, 'y1', y_coords[edges[i][0]]);
+            edge.setAttributeNS(null, 'y2', y_coords[edges[i][1]]);
+        }
+    }
+    
+    function rotateAboutX(radians)
+    {
+        for(var i=0; i<x_coords.length; i++)
+        {
+            y = y_coords[i] - centre_y;
+            z = z_coords[i] - centre_z;
+            d = Math.sqrt(y*y + z*z);
+            theta  = Math.atan2(y, z) + radians;
+            y_coords[i] = centre_y + d * Math.sin(theta);
+            z_coords[i] = centre_z + d * Math.cos(theta);
+        }
+        drawBox();
+    }
+    
+    function rotateAboutY(radians)
+    {
+        for(var i=0; i<x_coords.length; i++)
+        {
+            x = x_coords[i] - centre_x;
+            z = z_coords[i] - centre_z;
+            d = Math.sqrt(x*x + z*z);
+            theta  = Math.atan2(x, z) + radians;
+            x_coords[i] = centre_x + d * Math.sin(theta);
+            z_coords[i] = centre_z + d * Math.cos(theta);
+        }
+        drawBox();
+    }
+    
+    function beginRotateX(radians)
+    {
+        rotateAboutX(radians);
+        rotateX_timeout = setInterval("rotateAboutX(" + radians + ")", 20);
+    }
+    
+    function endRotateX()
+	{
+        if (typeof(rotateX_timeout) != "undefined")
+        {
+            clearTimeout(rotateX_timeout);
+        }
+	}
+    
+    function beginRotateY(radians)
+    {
+        rotateAboutY(radians);
+        rotateY_timeout = setInterval("rotateAboutY(" + radians + ")", 20);
+    }
+    
+    function endRotateY()
+	{
+        if (typeof(rotateY_timeout) != "undefined")
+        {
+            clearTimeout(rotateY_timeout);
+        }
+	}
+    
+    ]]>
+  </script> 
+ 
+    <line id='edge-0' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    <line id='edge-1' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    <line id='edge-2' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    <line id='edge-3' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    <line id='edge-4' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    <line id='edge-5' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    <line id='edge-6' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    <line id='edge-7' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    <line id='edge-8' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    <line id='edge-9' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    <line id='edge-10' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    <line id='edge-11' class='edge' x1='100' y1='100' x2='100' y2='100'/>
+    
+    <path class="button"
+          d="m50.5 250.5 15 -15 0 8 45 0 0 14 -45 0 0 8 z"
+          onmousedown='beginRotateY(0.08)'
+          onmouseout='endRotateY()'
+          onmouseup='endRotateY()'/>
+          
+    <path class="button"
+          d="m190.5 250.5 -15 -15 0 8 -45 0 0 14 45 0 0 8 z"
+          onmousedown='beginRotateY(-0.08)'
+          onmouseout='endRotateY()'
+          onmouseup='endRotateY()'/>
+          
+    <path class="button"
+          d="m255.5 50.5 15 15 -8 0 0 45 -14 0 0 -45 -8 0 z"
+          onmousedown='beginRotateX(0.08)'
+          onmouseout='endRotateX()'
+          onmouseup='endRotateX()'/>
+          
+    <path class="button"
+          d="m255.5 190.5 15 -15 -8 0 0 -45 -14 0 0 45 -8 0 z"
+          onmousedown='beginRotateX(-0.08)'
+          onmouseout='endRotateX()'
+          onmouseup='endRotateX()'/>
+</svg>
