@@ -33,10 +33,12 @@
 .matrix-heading {
     margin-top: 5px;
     vertical-align: top;
+    text-align: center;
 }
 
 .dimensions {
     font-size: 0.9rem;
+    text-align: center;
 }
 
 .dimension {
