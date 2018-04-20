@@ -40,9 +40,6 @@
     path:hover {
         opacity: 0.5;
     }
-    .label {
-   	    font-size: 0.9rem;
-	}
  </style>
  
 <script type="text/javascript"><![CDATA[
@@ -58,8 +55,8 @@
         country.setAttributeNS(null, 'fill', colour);
     }
   
-    function displayName(country_name) {
-        svgDocument.getElementById('country-name').firstChild.data = country_name;
+    function displayName(name) {
+        svgDocument.getElementById('country-name').firstChild.data = name;
     }
 ]]></script> 
 
