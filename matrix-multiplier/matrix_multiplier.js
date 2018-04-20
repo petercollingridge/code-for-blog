@@ -70,22 +70,6 @@ MatrixVariable.prototype.multiply = function(that) {
     return new MatrixVariable(coefficient, name);
 }
 
-var updateColumnWidth = function(element) {
-    var text_value = element.text() || 0;
-
-    var html_text = $('<span id="find-width" class="matrix-item">' + text_value + '</span>');
-    $(document.body).append(html_text);
-    var elementWidth = html_text.width() + 10;
-    html_text.remove();
-    
-    var column = element.parent();
-    var currentWidth = column.width();
-    
-    if (elementWidth > currentWidth) {
-        column.css({ width: elementWidth });
-    }
-}
-
 function Matrix(position, matrixType, values) {
     this.position = position;
     this.type = matrixType;
@@ -104,34 +88,23 @@ Matrix.prototype.display = function() {
     }
     
     var element = $('#matrix-' + this.position);
-    var values = $('#matrix-' + this.position + '>.matrix-columns')
+    var matrix = element.find('.matrix-columns');
     var name = 'matrix-value-' + this.position + '-';
     
     // Clear current values
-    values.empty();
+    matrix.empty();
 
     for (var i = 0; i < this.values[0].length; i++) {
-        var column = $('<div class="matrix-column"></div>');
-        var width = 12;
-        values.append(column);
+        // Create columns
+        var column = $('<span class="matrix-column"></span>');
+        matrix.append(column);
         
+        // Create items
         for (var j = 0; j < this.values.length; j++) {
             var item = this.createMatrixItem(this.values[j][i].display);
             item.attr('id', name + j + '-' + i).appendTo(column);
-
-            var itemWidth = item.width() + 10;
-            if (itemWidth > width) {
-                width = itemWidth;
-            }
-        }
-
-        if (this.position < 2) {
-            column.css("width", width);
         }
     }
-    
-    var column_height = column.height();
-    element.css({height: column_height + 3});
 };
 
 Matrix.prototype.setValues = function(values) {
@@ -238,8 +211,6 @@ var handleMatrixInput = function(evt) {
     var pos = $(this).attr('id').split('-');
 
     matrices[pos[2]].values[pos[3]][pos[4]] = value;
-
-    updateColumnWidth($(this))
     multiplyMatrices();
 };
 
@@ -271,9 +242,6 @@ var createInputHandlers = function(inputBox, parseResult) {
     
     // What to do when result is entered
     inputBox.on('parseResult', parseResult);
-    
-    // Recalculate width when new value is entered - should recalculate matrix too
-    inputBox.on('input', function(evt) { updateColumnWidth($(this)) });
     
     // Calculate new matrix when input complete
     inputBox.blur(function(evt) { $(this).trigger('parseResult'); });
@@ -318,6 +286,6 @@ var matrices = [new Matrix(0, 'input', [[1]]),
 var resultMatrix = new Matrix(2, 'output', [[1]]);
 
 $(document).ready(function() {
-    createExampleButtons();
-    $('#example-matrix-1').click();
+   createExampleButtons();
+   $('#example-matrix-1').click();
 });

@@ -1,13 +1,3 @@
-.dimensions {
-    font-family: MuseoSans500, sans-serif;
-    font-size: 12px;
-}
-
-.dimension {
-    text-align: center;
-    font-size: inherit;
-}
-
 .example-matrices {
     padding-left: 5px;
 }
@@ -30,12 +20,13 @@
     background: #aaa;
 }
 
-.matrix-wrapper {
+.all-matrices {
     margin: 16px 20px 24px 20px;
 }
 
 .matrix-block {
     margin-left: 20px;
+    min-width: 100px;
     display: inline-block;
 }
 
@@ -43,52 +34,70 @@
     font-family: MuseoSans500, sans-serif;
     font-size: 14px;
     margin-top: 5px;
+    vertical-align: top;
+}
+
+.dimensions {
+    font-family: MuseoSans500, sans-serif;
+}
+
+.dimension-bracket {
+    font-size: 1.2rem;
+}
+
+.dimension {
+    text-align: center;
+    width: 20px;
+}
+
+.matrix-wrapper {
+    margin-top: 10px;
 }
 
 .matrix {
-    margin-top: 10px;
     display: inline-block;
+    padding: 2px 3px 0 3px;
+    position: relative
 }
 
 .matrix-bracket {
     width: 5px;
     height: 100%;
-    display: inline-block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
     border-top: solid 1px #111;
     border-bottom: solid 1px #111;
 }
 
 .bracket-open {
+    left: 0;
     border-left: solid 1px #111;
 }
 
 .bracket-close {
     border-right: solid 1px #111;
-    position: relative;
-    left: -12px;
+    right: 0;
 }
 
-.matrix-columns {
+.matrix-columns, .matrix-column {
     display: inline-block;
-    position: relative;
-    left: -6px;
-    top: -8px;
-}
-
-.matrix-column {
-    display: inline-block;
-    margin: 0 1px;
+    margin: 0;
 }
 
 .matrix-item  {
     text-align: center;
     box-sizing: border-box;
     padding: 2px 6px;
-    margin: 2px 0;
+    margin: 2px 1px;
     display: block;
     font-family: serif;
+}
+
+.input-matrix .matrix-item {
     background: #dbdbdb;
     outline: none;
+    cursor: pointer;
 }
 
 .matrix-item:focus {
