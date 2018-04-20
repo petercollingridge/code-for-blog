@@ -1,0 +1,106 @@
+.dimensions {
+    font-family: MuseoSans500, sans-serif;
+    font-size: 12px;
+}
+
+.dimension {
+    text-align: center;
+    font-size: inherit;
+}
+
+.example-matrices {
+    padding-left: 5px;
+}
+
+.example-matrix {
+    background: #dbdbdb;
+    padding: 1px 5px 1px 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.example-matrix:hover{
+    background: #aaa;
+    cursor: pointer;
+}
+
+.selected {
+    background: #aaa;
+}
+
+.matrix-wrapper {
+    margin: 16px 20px 24px 20px;
+}
+
+.matrix-block {
+    margin-left: 20px;
+    display: inline-block;
+}
+
+.matrix-heading {
+    font-family: MuseoSans500, sans-serif;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.matrix {
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.matrix-bracket {
+    width: 5px;
+    height: 100%;
+    display: inline-block;
+    border-top: solid 1px #111;
+    border-bottom: solid 1px #111;
+}
+
+.bracket-open {
+    border-left: solid 1px #111;
+}
+
+.bracket-close {
+    border-right: solid 1px #111;
+    position: relative;
+    left: -12px;
+}
+
+.matrix-columns {
+    display: inline-block;
+    position: relative;
+    left: -6px;
+    top: -8px;
+}
+
+.matrix-column {
+    display: inline-block;
+    margin: 0 1px;
+}
+
+.matrix-item  {
+    text-align: center;
+    box-sizing: border-box;
+    padding: 2px 6px;
+    margin: 2px 0;
+    display: block;
+    font-family: serif;
+    background: #dbdbdb;
+    outline: none;
+}
+
+.matrix-item:focus {
+    background: #a8a8a8;
+}
+
+.matrix-operator {
+    display: inline-block;
+    position: relative;
+    top: -20px;
+}
+
+#find-width {
+    display: inline;
+}

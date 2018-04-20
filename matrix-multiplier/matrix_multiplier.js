@@ -1,5 +1,8 @@
+// Matrix variables consist of a coefficient and a name, e.g. 3a
+// If the name is undefined, then we have a simple number.
+// If the coefficient is undefined, then assume it is 1.
 function MatrixVariable(coefficient, name) {
-    this.coefficient = typeof coefficient !== 'undefined' ? parseFloat(coefficient) : 1;
+    this.coefficient = coefficient;
     
     if (this.coefficient === 0 || typeof name === 'undefined') {
         this.name = "";
@@ -12,6 +15,7 @@ function MatrixVariable(coefficient, name) {
         this.neg_display = -this.coefficient;
     } else if (this.coefficient === 1) {
         this.display = this.name;
+        this.neg_display = "-" + this.name;
     } else if (this.coefficient === -1) {
         this.display = "-" + this.name;
         this.neg_display = this.name;
@@ -21,217 +25,243 @@ function MatrixVariable(coefficient, name) {
     }
 };
 
-var parseVariable = function(input_string) {
-    var re_variable = /([-+]?\d*\.?\/?\d+)?([a-zA-Z\(\)]*)?/g;
+MatrixVariable.parseVariable = function(input_string) {
+    var re_variable = /([-+])?(\d*\.?\/?\d+)?\s*([a-zA-Z\(\)]*)?/g;
     var variable_terms = re_variable.exec(input_string);
-    return new MatrixVariable(variable_terms[1], variable_terms[2]);
+    var sign = variable_terms[1] === '-' ? -1 : 1;
+    var coefficient = typeof variable_terms[2] !== 'undefined' ? parseFloat(variable_terms[2]) : 1;
+    return new MatrixVariable(sign * coefficient, variable_terms[3]);
 }
 
-var fixWidth = function(element) {
-        var text_value = element.val();
-        if (text_value == '') text_value = 0;
+MatrixVariable.prototype.add = function(that) {
+    var name, coefficient;
 
-        var html_text = $('<span id="find-width" class="matrix-item">' + text_value + '</span>');
-        $(document.body).append(html_text);
-        var width = $('#find-width').width() + 2;
+    if (this.name === that.name) {
+        name = this.name;
+        coefficient = this.coefficient + that.coefficient;
+    } else if (this.coefficient === 0) {
+        name = that.name;
+        coefficient = that.coefficient;
+    } else if (that.coefficient === 0) {
+        name = this.name;
+        coefficient = this.coefficient;
+    } else {
+        coefficient = 1;
+        if (that.coefficient > 0) {
+            name = this.display + " + " + that.display;
+        } else {
+            name = this.display + " - " + that.neg_display;
+        }
+    }
+    return new MatrixVariable(coefficient, name);
+};
 
-        element.css({width: width});
-        html_text.remove();
+MatrixVariable.prototype.multiply = function(that) {
+    var name;
+    var coefficient = this.coefficient * that.coefficient;
+    
+    if (this.name === "") {
+        name = that.name;
+    } else if (that.name === "") {
+        name = this.name;
+    } else {
+        name = this.name + " * " + that.name;   
+    }
+    return new MatrixVariable(coefficient, name);
+}
+
+var updateColumnWidth = function(element) {
+    var text_value = element.text() || 0;
+
+    var html_text = $('<span id="find-width" class="matrix-item">' + text_value + '</span>');
+    $(document.body).append(html_text);
+    var elementWidth = html_text.width() + 10;
+    html_text.remove();
+    
+    var column = element.parent();
+    var currentWidth = column.width();
+    
+    if (elementWidth > currentWidth) {
+        column.css({ width: elementWidth });
+    }
 }
 
 function Matrix(position, matrixType, values) {
     this.position = position;
-    var createInputElement;
+    this.type = matrixType;
     this.values = [];
-    
-    this.addValues = function(values) {
-        this.values = [];
-        
-        for (var i=0; i < values.length; i++) {
-            var row = [];
-            for (var j=0; j < values[0].length; j++) {
-                row.push(parseVariable(values[i][j]));
-            }
-            this.values.push(row);
-        }
-    };
-    
-    this.addValues(values);
-    
-    if (matrixType === 'input' ) {
-        createInputElement = function(value) {
-            return '<input class="matrix-item" value="' + value + '"/>';
-        };
+    this.setValues(values);
+};
+
+Matrix.prototype.display = function() {
+    // Write dimensions
+    if (this.position != 2) {
+        $('#matrix-' + this.position + '-dim-0').val(this.values.length);
+        $('#matrix-' + this.position + '-dim-1').val(this.values[0].length);
     } else {
-        createInputElement = function(value) {
-            return '<div class="matrix-item">' + value + '</div>';
-        };
+        $('#matrix-' + this.position + '-dim-0').html(this.values.length);
+        $('#matrix-' + this.position + '-dim-1').html(this.values[0].length);
     }
     
-    this.display = function() {
-        // Write dimensions
-        if (this.position != 2) {
-            $('#matrix-' + this.position + '-dim-0').val(this.values.length);
-            $('#matrix-' + this.position + '-dim-1').val(this.values[0].length);
-        } else {
-            $('#matrix-' + this.position + '-dim-0').html(this.values.length);
-            $('#matrix-' + this.position + '-dim-1').html(this.values[0].length);
-        }
-        
-        var element = $('#matrix-' + this.position);
-        var values = $('#matrix-' + this.position + '>.matrix-columns')
-        var name = 'matrix-value-' + this.position + '-';
-        
-        values.empty();
-        for (var i=0; i < this.values[0].length; i++) {
-            var column = $('<div class="matrix-column"></div>');
-            values.append(column);
-            
-            for (var j=0; j < this.values.length; j++) {
-                var item = $(createInputElement(this.values[j][i].display));
-                item.attr('id', name + j + '-' + i);
-                column.append(item);
+    var element = $('#matrix-' + this.position);
+    var values = $('#matrix-' + this.position + '>.matrix-columns')
+    var name = 'matrix-value-' + this.position + '-';
+    
+    // Clear current values
+    values.empty();
 
-                // Fix the width when first setting up input matrices
-                if (position < 2) { fixWidth(item); }
-            }
-        }
+    for (var i = 0; i < this.values[0].length; i++) {
+        var column = $('<div class="matrix-column"></div>');
+        var width = 12;
+        values.append(column);
         
-        var column_height = column.height();
-        element.css({height: column_height + 3});
-    };
+        for (var j = 0; j < this.values.length; j++) {
+            var item = this.createMatrixItem(this.values[j][i].display);
+            item.attr('id', name + j + '-' + i).appendTo(column);
 
-    this.resizeMatrix = function(dimension, size){        
-        // Change dimension to new size
-        
-        var n = this.values.length;
-        var m = this.values[0].length;
-        
-        if (dimension === '0' ) {
-            // Change number of rows
-            if (size < n) {
-                // Remove rows
-                this.values = this.values.slice(0, size);
-            } else {
-                // Add rows of zeros
-                for (var j=0; j < size - n; j++) {
-                    var new_row = [];
-                    for (var i=0; i < m; i++) { new_row.push(new MatrixVariable(0)) };
-                    this.values.push(new_row);
-                }
-            }
-        } else {
-            // Change number of columns
-            if (size < m) {
-                // Remove columns
-                for (var i=0; i < n; i++) {
-                    this.values[i] = this.values[i].slice(0, size);
-                }
-            } else {
-                // Add columns
-                for (var i=0; i < n; i++) {
-                    for (var j=0; j < size - m; j++) {
-                        this.values[i].push(new MatrixVariable(0));
-                    }
-                }
+            var itemWidth = item.width() + 10;
+            if (itemWidth > width) {
+                width = itemWidth;
             }
         }
-        this.display();
+
+        if (this.position < 2) {
+            column.css("width", width);
+        }
+    }
+    
+    var column_height = column.height();
+    element.css({height: column_height + 3});
+};
+
+Matrix.prototype.setValues = function(values) {
+    this.values = [];
+    
+    for (var i = 0; i < values.length; i++) {
+        var row = [];
+        for (var j = 0; j < values[0].length; j++) {
+            row.push(MatrixVariable.parseVariable(values[i][j]));
+        }
+        this.values.push(row);
     }
 };
 
-var multiplyVariables = function(v1, v2) {
-    var coefficient = v1.coefficient * v2.coefficient;
+Matrix.prototype.createMatrixItem = function(value) {
+    var item = $('<span class="matrix-item">' + value + '</span>');
+    if (this.type === 'input') {
+        item.attr('contenteditable', true);
+    }
+
+    return item
+};
+
+Matrix.prototype.resize = function(dimension, size) {        
+    // Change dimension to new size
     
-    if (v1.name === "") {
-        var name = v2.name;
-    } else if (v2.name === "") {
-        var name = v1.name;
+    var n = this.values.length;
+    var m = this.values[0].length;
+    
+    if (dimension === '0' ) {
+        // Change number of rows
+        if (size < n) {
+            // Remove rows
+            this.values = this.values.slice(0, size);
+        } else {
+            // Add rows of zeros
+            for (var j = 0; j < size - n; j++) {
+                var newRow = [];
+                for (var i = 0; i < m; i++) {
+                    newRow.push(new MatrixVariable(0))
+                };
+                this.values.push(newRow);
+            }
+        }
     } else {
-        var name = v1.name + "." + v2.name;   
+        // Change number of columns
+        if (size < m) {
+            // Remove columns
+            for (var i = 0; i < n; i++) {
+                this.values[i] = this.values[i].slice(0, size);
+            }
+        } else {
+            // Add columns
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < size - m; j++) {
+                    this.values[i].push(new MatrixVariable(0));
+                }
+            }
+        }
     }
-    return new MatrixVariable(coefficient, name);
+    this.display();
 }
 
-var addVariables = function(v1, v2) {
-    if (v1.name === v2.name) {
-        var name = v1.name;
-        var coefficient = v1.coefficient + v2.coefficient;
-    } else if (v1.coefficient === 0) {
-        var name = v2.name;
-        var coefficient = v2.coefficient;
-    } else if (v2.coefficient === 0) {
-        var name = v1.name;
-        var coefficient = v1.coefficient;
-    } else {
-        if (v2.coefficient > 0) { var name = v1.display + " + " + v2.display; }
-        else { var name = v1.display + " - " + v2.neg_display; }
-        
-        var coefficient = 1;
-    }
-    return new MatrixVariable(coefficient, name);
-}
-
-var multiplyMatrices = function() {   
+var multiplyMatrices = function() {
     var values1 = matrices[0].values;
     var values2 = matrices[1].values;
     var result = []
 
-    for (var i=0; i < values1.length; i++) {
+    for (var i = 0; i < values1.length; i++) {
         row = [];
-        for (var j=0; j < values2[0].length; j++) {
+        for (var j = 0; j < values2[0].length; j++) {
             var value = new MatrixVariable(0);
-            for (var k=0; k < values1[0].length; k++){
-                value = addVariables(value, multiplyVariables(values1[i][k], values2[k][j]));
+            for (var k = 0; k < values1[0].length; k++){
+                value = value.add(values1[i][k].multiply(values2[k][j]));
             }
             row.push(value);
         }
         result.push(row);
     }
+
     resultMatrix.values = result;
     resultMatrix.display(); 
 };
 
 var initialiseMatrices = function (m1, m2) {
-    matrices[0].addValues(m1);
-    matrices[1].addValues(m2);
+    matrices[0].setValues(m1);
+    matrices[1].setValues(m2);
     
     matrices[0].display();
     matrices[1].display();
     multiplyMatrices();
-    createInputHandlers($('input.matrix-item'), handleMatrixInput);
-    createInputHandlers($('input.dimension'), handleDimensionInput);
+    createInputHandlers($('.matrix-item'), handleMatrixInput);
+    createInputHandlers($('.dimension'), handleDimensionInput);
 };
 
-// When a value is entered into a matrix undate the matrix and multiply
+// When a value is entered into a matrix update the matrix and multiply
 var handleMatrixInput = function(evt) {
-    var value = parseVariable($(this).val());
-    $(this).val(value.display);
+    var value = MatrixVariable.parseVariable($(this).text());
+    
+    // Set text to parsed value in case they are different
+    $(this).text(value.display);
 
-    // update the relevant value of the matrix object
+    // Update the relevant value of the matrix object
     var pos = $(this).attr('id').split('-');
+
     matrices[pos[2]].values[pos[3]][pos[4]] = value;
 
-    $(this).trigger('keyup');   // Fix width
+    updateColumnWidth($(this))
     multiplyMatrices();
 };
 
 var handleDimensionInput = function(evt) {
     var value = parseFloat($(this).val());
-    if (isNaN(value)) value = 0;
+
+    if (isNaN(value)) { value = 0; }
+    else if (value < 1) { value = 1; }
+    else if (value > 6) { value = 6; }
+
     $(this).val(value)
-    if (value < 1) value = 1;
-    if (value > 6) value = 6;
 
     // update the relevant value of the matrix object
     var pos = $(this).attr('id').split('-');
-    matrices[pos[1]].resizeMatrix(pos[3], value);
+    matrices[pos[1]].resize(pos[3], value);
 
     // Resize other matrix so multiplication still works
-    if (pos[1] != pos[3]) {
-        matrices[pos[3]].resizeMatrix(pos[1], value);
+    if (pos[1] !== pos[3]) {
+        matrices[pos[3]].resize(pos[1], value);
     }
-    createInputHandlers($('input.matrix-item'), handleMatrixInput);
+
+    createInputHandlers($('.matrix-item'), handleMatrixInput);
     multiplyMatrices();
 };
 
@@ -240,17 +270,17 @@ var createInputHandlers = function(inputBox, parseResult) {
     inputBox.click(function(evt) { $(this).select(); });
     
     // What to do when result is entered
-    inputBox.on('parseResult', parseResult );
+    inputBox.on('parseResult', parseResult);
     
     // Recalculate width when new value is entered - should recalculate matrix too
-    inputBox.keyup(function(evt) { fixWidth($(this)) });
+    inputBox.on('input', function(evt) { updateColumnWidth($(this)) });
     
     // Calculate new matrix when input complete
     inputBox.blur(function(evt) { $(this).trigger('parseResult'); });
     
     // Pressing enter removes focus from box
     inputBox.keypress(function(evt) {
-        if(evt.which == 13) {
+        if (evt.which === 13) {
             $(this).blur();
         }
     });
@@ -272,7 +302,7 @@ var createExampleButtons = function() {
     $('#example-matrix-3').click(function(){
         $('.example-matrix').removeClass("selected");
         $(this).addClass("selected");
-        initialiseMatrices([['a', 'b'], [3, 'c']],
+        initialiseMatrices([['-a', 'b'], [3, 'c']],
                            [['a', 2], ['b', 'c']]);
     });
     $('#example-matrix-4').click(function(){

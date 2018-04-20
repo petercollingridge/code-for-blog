@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Matrix multiplier</title>
+	<link rel="stylesheet" href="matrix_multiplier.css">
+</head>
+
+<body>
+	<div class="example-matrices">Or try an example matrix:
+        <span id='example-matrix-1' class="example-matrix">Integers</span>
+        <span id='example-matrix-2' class="example-matrix">Decimals</span>
+        <span id='example-matrix-3' class="example-matrix">Simple variables</span>
+        <span id='example-matrix-4' class="example-matrix">Complex variables</span>
+	</div>
+
+	<div class="matrix-wrapper">
+        <div class="matrix-block">
+            <div class="matrix-heading">Matrix 1</div>
+            <div class="dimensions">
+                (<input class="dimension" id="matrix-0-dim-0" value="2" maxlength="1" /> &#215
+                <input class="dimension" id="matrix-0-dim-1" value="2" maxlength="1" />)
+            </div>
+            <div id="matrix-0" class="matrix">
+                <div class="matrix-bracket bracket-open"></div>
+                <div class="matrix-columns">
+                    <div class="matrix-column"></div>
+                    <div class="matrix-column"></div>
+                </div>
+                <div class="matrix-bracket bracket-close"></div>
+            </div>
+        </div>
+        
+        <div class="matrix-operator">&#215</div>
+
+        <div class="matrix-block">
+            <div class="matrix-heading">Matrix 2</div>
+            <div class="dimensions">
+                (<input class="dimension" id="matrix-1-dim-0" value="2" maxlength="1" /> &#215
+                <input class="dimension" id="matrix-1-dim-1" value="2" maxlength="1" />)
+            </div>
+            <div id="matrix-1" class="matrix">
+                <div class="matrix-bracket bracket-open"></div>
+                <div class="matrix-columns">
+                    <div class="matrix-column">
+                        <span id="matrix-value-1-0-0" class="matrix-item" value="1"/>
+                        <span id="matrix-value-1-1-0" class="matrix-item" value="0"/>
+                    </div>
+                    <div class="matrix-column">
+                        <span id="matrix-value-1-0-1" class="matrix-item" value="0"/>
+                        <span id="matrix-value-1-1-1" class="matrix-item" value="1"/>
+                    </div>
+                </div>
+                <div class="matrix-bracket bracket-close"></div>
+            </div>
+        </div>
+
+        <div class="matrix-operator">=</div>
+
+        <div class="matrix-block">
+            <div class="matrix-heading">Result</div>
+            <div class="dimensions">
+                (<span class="dimension" id="matrix-2-dim-1">2</span> &#215
+                 <span class="dimension" id="matrix-2-dim-2">2</span>)
+            </div>
+            <div id="matrix-2" class="matrix">
+                <div class="matrix-bracket bracket-open"></div>
+                <div class="matrix-columns">
+                    <div class="matrix-column">
+                        <span id="matrix-value-2-0-0" class="matrix-item">0</span>
+                        <span id="matrix-value-2-1-0" class="matrix-item">0</span>
+                    </div>
+                    <div class="matrix-column">
+                        <span id="matrix-value-2-0-1" class="matrix-item">0</span>
+                        <span id="matrix-value-1-1-1" class="matrix-item">0</span>
+                    </div>
+                </div>
+                <div class="matrix-bracket bracket-close"></div>
+            </div>
+        </div>
+    </div>
+
+	<div class="matrix-wrapper">
+        <div class="matrix-block">
+            <div class="matrix-heading">Matrix test</div>
+            <div id="matrix" class="matrix">
+                <div class="matrix-bracket bracket-open"></div>
+                <div class="matrix-columns">
+                    <div class="matrix-column">
+						<span class="matrix-item" contenteditable="true">1</span>
+						<span class="matrix-item" contenteditable="true">100</span>
+						<span class="matrix-item" contenteditable="true">10</span>
+					</div>
+                    <div class="matrix-column">
+						<span class="matrix-item" contenteditable="true">2000</span>
+						<span class="matrix-item" contenteditable="true">100</span>
+						<span class="matrix-item" contenteditable="true">10</span>
+					</div>
+                </div>
+                <div class="matrix-bracket bracket-close"></div>
+            </div>
+        </div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="matrix_multiplier.js"></script>
+</body>
+</html>
