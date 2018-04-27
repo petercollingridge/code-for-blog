@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60">
+  <rect width="80" height="60" fill="#eee"/>
+  <text font-size="7px" x="2" y="8">External SVG Object</text>
+  <script type="text/javascript"><![CDATA[
+    var svg = document.getElementsByTagName('svg')[0];
+    var element = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    element.setAttributeNS(null, 'x', 10);
+    element.setAttributeNS(null, 'y', 15);
+    element.setAttributeNS(null, 'width', 25);
+    element.setAttributeNS(null, 'height', 30);
+    element.setAttributeNS(null, 'fill', '#007bff');
+    svg.appendChild(element);
+    console.log(1 < 2);
+  ]]></script>
+</svg>

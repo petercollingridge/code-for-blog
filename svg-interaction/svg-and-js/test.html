@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SVG test</title>
+</head>
+
+<body>
+	<div style="width:200px;height:160px;border:1px solid black">
+		<svg xmlns="http://www.w3.org/2000/svg"viewBox="0 0 80 60" id="inline-svg">
+			<rect width="80" height="60" fill="#eee"/>
+			<text font-size="7px" x="2" y="8">Inline SVG</text>
+			<script type="text/javascript">
+				var svg = document.getElementsByTagName('svg')[0];
+				var element = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+				element.setAttributeNS(null, 'x', 10);
+				element.setAttributeNS(null, 'y', 15);
+				element.setAttributeNS(null, 'width', 25);
+				element.setAttributeNS(null, 'height', 30);
+				element.setAttributeNS(null, 'fill', '#007bff');
+				svg.appendChild(element);
+				console.log(1 < 2);
+			</script>
+		</svg>
+	</div>
+
+	<object width="200" height="160" id="svg-object" style="border:1px solid black" data="svg-and-js.svg" type="image/svg+xml">
+	</object>
+
+	<img width="200" height="160" id="svg-img" style="border:1px solid black" src="svg-and-js.svg">
+	</img>
+
+
+	<script type="text/javascript">
+		window.addEventListener("load", updateSVGs);
+
+		function addRect(svg) {
+			var element = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+			element.setAttributeNS(null, 'x', 45);
+			element.setAttributeNS(null, 'y', 15);
+			element.setAttributeNS(null, 'width', 25);
+			element.setAttributeNS(null, 'height', 30);
+			element.setAttributeNS(null, 'fill', '#ec008c');
+			svg.appendChild(element);
+		}
+
+		// console.log(document.getElementsByTagName('svg').length);
+		function updateSVGs() {
+			var svg = document.getElementById('inline-svg');
+			addRect(svg);
+
+			var svgObject = document.getElementById('svg-object').contentDocument;
+			var svg = svgObject.getElementsByTagName('svg')[0];
+			addRect(svg);
+		}
+	</script>
+</body>
+</html>

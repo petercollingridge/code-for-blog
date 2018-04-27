@@ -11,4 +11,8 @@
     }
   </style>
   <circle id="target" cx="100" cy="100" r="30" />
+
+  <script type="text/javascript"><![CDATA[
+    console.log(document.getElementById('target'));
+  ]]></script>
 </svg>
