@@ -1,8 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20" id="inline-2">
   <rect width="60" height="20" fill="#eee"/>
-  <text font-size="5px" x="2" y="8">Inline SVG</text>
+  <text id="item" font-size="5px" x="2" y="8">Inline SVG</text>
   <script type="text/javascript">
 		var svg = document.getElementById('inline-2');
-    console.log(svg);
+    var el = document.getElementById('item');
+    var y = parseFloat(el.getAttributeNS(null, 'y'));
+    el.setAttributeNS(null, 'y', y + 10);
   </script>
 </svg>
