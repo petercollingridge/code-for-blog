@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60" id="inline-1">
+  <rect width="80" height="60" fill="#eee"/>
+  <text font-size="7px" x="2" y="8">Inline SVG</text>
+  <script type="text/javascript">
+		var svg = document.getElementById('inline-1');
+    console.log(svg);
+  </script>
+</svg>
