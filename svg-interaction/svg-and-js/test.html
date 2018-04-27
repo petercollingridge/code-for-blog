@@ -7,7 +7,7 @@
 <body>
 	<div style="width:200px;height:160px;border:1px solid black">
 		<svg xmlns="http://www.w3.org/2000/svg"viewBox="0 0 80 60" id="inline-svg">
-			<rect width="80" height="60" fill="#eee"/>
+			<rect id="background" width="80" height="60" fill="#eee"/>
 			<text font-size="7px" x="2" y="8">Inline SVG</text>
 			<script type="text/javascript">
 				var svg = document.getElementsByTagName('svg')[0];
@@ -47,9 +47,12 @@
 		function updateSVGs() {
 			var svg = document.getElementById('inline-svg');
 			addRect(svg);
+			svg.removeChild(document.getElementById('background'));
 
 			var svgObject = document.getElementById('svg-object').contentDocument;
 			var svg = svgObject.getElementsByTagName('svg')[0];
+			var el = svgObject.getElementById("target");
+			console.log(el);
 			addRect(svg);
 		}
 	</script>

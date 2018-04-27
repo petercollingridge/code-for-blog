@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 20" id="inline-3">
+  <rect width="60" height="20" fill="#eee"/>
+  <text id="item" font-size="5px" x="2" y="8">Inline SVG</text>
+  <script type="text/javascript">
+    var svg = document.getElementById('inline-3');
+    var element = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    element.setAttributeNS(null, 'cx', 5);
+    element.setAttributeNS(null, 'cy', 10);
+    element.setAttributeNS(null, 'r', 2);
+    svg.appendChild(element);
+  </script>
+</svg>

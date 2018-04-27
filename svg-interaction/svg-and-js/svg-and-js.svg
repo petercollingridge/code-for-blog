@@ -11,8 +11,12 @@
     }
   </style>
   <circle id="target" cx="100" cy="100" r="30" />
+  <circle cx="200" cy="100" r="30" />
 
   <script type="text/javascript"><![CDATA[
-    console.log(document.getElementById('target'));
+    var element = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    console.log(element);
+    document.appendChild()
+
   ]]></script>
 </svg>
