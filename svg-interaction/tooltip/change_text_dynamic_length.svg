@@ -10,7 +10,7 @@
     <g id="tooltip" visibility="hidden" >
 		<rect x="2" y="2" width="80" height="24" fill="black" opacity="0.4" rx="2" ry="2"/>
 		<rect width="80" height="24" fill="white" rx="2" ry="2"/>
-		<text x="3" y="5">Tooltip</text>
+		<text x="4" y="6">Tooltip</text>
 	</g>
 
 
@@ -37,7 +37,7 @@
 				tooltipText.firstChild.data = evt.target.getAttributeNS(null, "data-tooltip-text");
 				var length = tooltipText.getComputedTextLength();
 				for (var i = 0; i < tooltipRects.length; i++) {
-					tooltipRects[i].setAttributeNS(null, "width", length + 6);
+					tooltipRects[i].setAttributeNS(null, "width", length + 8);
 				}
 			}
 
