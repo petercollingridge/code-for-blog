@@ -1,12 +1,12 @@
 import random
 import pygame
-import PyParticles3
+import PyParticles
 
 (width, height) = (400, 400)
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Star formation')
 
-universe = PyParticles3.Environment((width, height))
+universe = PyParticles.Environment((width, height))
 universe.colour = (0,0,0)
 universe.addFunctions(['move', 'attract', 'combine'])
 
