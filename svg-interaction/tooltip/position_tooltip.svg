@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" id="tooltip-svg-2">
+	<style>
+		#tooltip {
+			dominant-baseline: hanging; 
+		}
+	</style>
+
+    <rect x="40" y="50" width="80" height="100" fill="#007bbf" class="tooltip-trigger"/>
+    <rect x="180" y="50" width="80" height="100" fill="#ec008c" class="tooltip-trigger"/>
+    <text id="tooltip" x="0" y="0" visibility="hidden" >Tooltip</text>
+
+	<script type="text/ecmascript"><![CDATA[
+		(function() {
+			var svg = document.getElementById('tooltip-svg-2');
+			var tooltip = svg.getElementById('tooltip');
+			var triggers = svg.getElementsByClassName('tooltip-trigger');
+
+			for (var i = 0; i < triggers.length; i++) {
+				triggers[i].addEventListener('mousemove', showTooltip);
+				triggers[i].addEventListener('mouseout', hideTooltip);
+			}
+
+			function showTooltip(evt) {
+				var CTM = svg.getScreenCTM();
+				var mouseX = (evt.clientX - CTM.e) / CTM.a;
+				var mouseY = (evt.clientY - CTM.f) / CTM.d;
+				console.log(CTM.a + " " + CTM.d)
+				tooltip.setAttributeNS(null, "x", mouseX + 6 / CTM.a);
+				tooltip.setAttributeNS(null, "y", mouseY + 20 / CTM.d);
+				tooltip.setAttributeNS(null, "visibility", "visible");
+			}
+
+			function hideTooltip(evt) {
+				tooltip.setAttributeNS(null, "visibility", "hidden");
+			}
+		})()
+    ]]></script>
+</svg>

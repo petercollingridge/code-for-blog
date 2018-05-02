@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+    <rect x="40" y="50" width="80" height="100" fill="#007bbf" class="tooltip-trigger"/>
+    <rect x="180" y="50" width="80" height="100" fill="#ec008c" class="tooltip-trigger"/>
+    <text id="tooltip-1" x="10" y="190" fill="#111" visibility="hidden">Tooltip</text>
+
+    <script type="text/ecmascript"><![CDATA[
+		(function() {
+			var tooltip = document.getElementById('tooltip-1');
+			var triggers = document.getElementsByClassName('tooltip-trigger');
+
+			for (var i = 0; i < triggers.length; i++) {
+				triggers[i].addEventListener('mousemove', showTooltip);
+				triggers[i].addEventListener('mouseout', hideTooltip);
+			}
+
+			function showTooltip(evt) {
+				tooltip.setAttributeNS(null, "visibility", "visible");
+			}
+
+			function hideTooltip(evt) {
+				tooltip.setAttributeNS(null, "visibility", "hidden");
+			}
+		})()
+    ]]></script>
+</svg>

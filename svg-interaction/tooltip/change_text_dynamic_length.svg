@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" id="tooltip-svg-6">
+	<style>
+		#tooltip {
+			dominant-baseline: hanging; 
+		}
+	</style>
+
+    <rect x="40" y="50" width="80" height="100" fill="#007bbf" class="tooltip-trigger" data-tooltip-text="A box"/>
+    <rect x="180" y="50" width="80" height="100" fill="#ec008c" class="tooltip-trigger" data-tooltip-text="The amazing pink box"/>
+    <g id="tooltip" visibility="hidden" >
+		<rect x="2" y="2" width="80" height="24" fill="black" opacity="0.4" rx="2" ry="2"/>
+		<rect width="80" height="24" fill="white" rx="2" ry="2"/>
+		<text x="3" y="5">Tooltip</text>
+	</g>
+
+
+	<script type="text/ecmascript"><![CDATA[
+		(function() {
+			var svg = document.getElementById('tooltip-svg-6');
+			var tooltip = svg.getElementById('tooltip');
+			var tooltipText = tooltip.getElementsByTagName('text')[0];
+			var tooltipRects = tooltip.getElementsByTagName('rect');
+			var triggers = svg.getElementsByClassName('tooltip-trigger');
+
+			for (var i = 0; i < triggers.length; i++) {
+				triggers[i].addEventListener('mousemove', showTooltip);
+				triggers[i].addEventListener('mouseout', hideTooltip);
+			}
+
+			function showTooltip(evt) {
+				var CTM = svg.getScreenCTM();
+				var x = (evt.clientX - CTM.e + 6) / CTM.a;
+				var y = (evt.clientY - CTM.f + 20) / CTM.d;
+				tooltip.setAttributeNS(null, "transform", "translate(" + x + " " + y + ")");
+				tooltip.setAttributeNS(null, "visibility", "visible");
+
+				tooltipText.firstChild.data = evt.target.getAttributeNS(null, "data-tooltip-text");
+				var length = tooltipText.getComputedTextLength();
+				for (var i = 0; i < tooltipRects.length; i++) {
+					tooltipRects[i].setAttributeNS(null, "width", length + 6);
+				}
+			}
+
+			function hideTooltip(evt) {
+				tooltip.setAttributeNS(null, "visibility", "hidden");
+			}
+		})()
+    ]]></script>
+</svg>

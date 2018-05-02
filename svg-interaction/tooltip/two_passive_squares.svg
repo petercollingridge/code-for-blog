@@ -1,7 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
     <rect x="40" y="50" width="80" height="100" fill="#007bbf" />
     <rect x="180" y="50" width="80" height="100" fill="#ec008c" />
-    <text class="tooltip" id="tooltip" x="0" y="0" visibility="hidden">
-        Tooltip
-    </text>
+    <text id="tooltip" x="0" y="0" visibility="hidden">Tooltip</text>
 </svg>
