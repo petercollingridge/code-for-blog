@@ -1,6 +1,6 @@
 import random
 import pygame
-import PyParticles3
+import PyParticles
 
 class UniverseScreen:
     def __init__ (self, width, height):
@@ -31,7 +31,7 @@ def calculateRadius(mass):
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Star formation')
 
-universe = PyParticles3.Environment((width, height))
+universe = PyParticles.Environment((width, height))
 universe.colour = (0,0,0)
 universe.addFunctions(['move', 'attract', 'combine'])
 universe_screen = UniverseScreen(width, height)
