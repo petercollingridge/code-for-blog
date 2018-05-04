@@ -61,7 +61,7 @@ while running:
             if event.key in key_to_function:
                 key_to_function[event.key](universe_screen)
             elif event.key == pygame.K_SPACE:
-                paused = (True, False)[paused]
+                paused = not paused
 
     if not paused:
         universe.update()

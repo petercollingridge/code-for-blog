@@ -1,13 +1,13 @@
 from math import pi
 import random
 import pygame
-import PyParticles4
+import PyParticles
 
 (width, height) = (400, 400)
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Springs')
 
-universe = PyParticles4.Environment((width, height))
+universe = PyParticles.Environment((width, height))
 universe.colour = (255,255,255)
 universe.addFunctions(['move', 'bounce', 'collide', 'drag', 'accelerate'])
 universe.acceleration = (pi, 0.01)
