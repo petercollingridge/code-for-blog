@@ -2,58 +2,56 @@
 <svg viewBox="0 0 360 340" xmlns="http://www.w3.org/2000/svg">
     <style>text { font-size: 0.8rem; } </style>
     <text x="5" y="20" class="multiline" data-width="280">Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her	sister was reading, but it had no pictures or conversations in it, "and what is the use of a book," thought Alice "without pictures or conversation?"</text>
-	<text x="160" y="160" class="multiline" data-width="200">So she was considering in her own mind (as well as she could, for the hot day made her feel very sleepy and stupid), whether the pleasure of making a daisy- chain would be worth the trouble of getting up and picking the daisies, when suddenly a White Rabbit with pink eyes ran close by her.</text>
+    <text x="160" y="160" class="multiline" data-width="200">So she was considering in her own mind (as well as she could, for the hot day made her feel very sleepy and stupid), whether the pleasure of making a daisy- chain would be worth the trouble of getting up and picking the daisies, when suddenly a White Rabbit with pink eyes ran close by her.</text>
     <rect x="290" y="2" width="68" height="130" fill="#eee"/>
     <rect x="5" y="145" width="150" height="180" fill="#eee"/>
 
-    <script type="text/ecmascript"><![CDATA[
-     	var svgNS = "http://www.w3.org/2000/svg";
+    <script type="text/javascript"><![CDATA[
         var textBoxes = document.getElementsByClassName('multiline');
-
         for (var i = 0; i < textBoxes.length; i++) {
-            create_multiline(textBoxes[i])
+            createMultiline(textBoxes[i])
         }
 
-	    function create_multiline(textElement) {
-	        var words = textElement.firstChild.data.split(' ');
-	        var startX = textElement.getAttributeNS(null, 'x');
+        function createMultiline(textElement) {
+            var words = textElement.firstChild.data.split(' ');
+            var startX = textElement.getAttributeNS(null, 'x');
             var width = parseFloat(textElement.getAttributeNS(null, 'data-width'));
 
             // Clear original text
             textElement.firstChild.data = "";
 
-	        // Create first tspan element
-    	    var tspanElement = document.createElementNS(svgNS, "tspan");
-            
+            // Create first tspan element
+            var tspanElement = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+
             // Create text in tspan element
-      	    var textNode = document.createTextNode(words[0]);
-    	    
+            var textNode = document.createTextNode(words[0]);
+
             // Add tspan element to DOM
-    	    tspanElement.appendChild(textNode);
-			
+            tspanElement.appendChild(textNode);
+
             // Add text to tspan element
-			textElement.appendChild(tspanElement);
-			    	    
-    	    for (var i = 1; i < words.length; i++) {
+            textElement.appendChild(tspanElement);
+
+            for (var i = 1; i < words.length; i++) {
                 var len = textNode.data.length;
 
                 // Add next word
-    	    	tspanElement.firstChild.data += " " + words[i];
+                tspanElement.firstChild.data += " " + words[i];
 
-    	    	if (tspanElement.getComputedTextLength() > width) {
+                if (tspanElement.getComputedTextLength() > width) {
                     // Remove added word
-	    	    	tspanElement.firstChild.data = tspanElement.firstChild.data.slice(0, len);
+                    tspanElement.firstChild.data = tspanElement.firstChild.data.slice(0, len);
 
                     // Create new tspan element
-    	    	    tspanElement = document.createElementNS(svgNS, "tspan");
-    	    	    tspanElement.setAttributeNS(null, "x", startX);
-    	    	    tspanElement.setAttributeNS(null, "dy", 20);
+                    tspanElement = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+                    tspanElement.setAttributeNS(null, "x", startX);
+                    tspanElement.setAttributeNS(null, "dy", 20);
 
-		  	    	textNode = document.createTextNode(words[i]);
-    	    		tspanElement.appendChild(textNode);
-					textElement.appendChild(tspanElement);
-    	    	}
-    	    }
-	    }
+                    textNode = document.createTextNode(words[i]);
+                    tspanElement.appendChild(textNode);
+                    textElement.appendChild(tspanElement);
+                }
+            }
+        }
     ]]></script>
 </svg>
