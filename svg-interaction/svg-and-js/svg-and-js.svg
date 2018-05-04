@@ -16,7 +16,6 @@
   <script type="text/javascript"><![CDATA[
     var element = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     console.log(element);
-    document.appendChild()
 
   ]]></script>
 </svg>

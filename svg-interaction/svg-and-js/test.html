@@ -48,6 +48,12 @@
 			var svg = document.getElementById('inline-svg');
 			addRect(svg);
 			svg.removeChild(document.getElementById('background'));
+			var element = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+			element.setAttributeNS(null, 'x', 5);
+			element.setAttributeNS(null, 'y', 15);
+			var txt = document.createTextNode("Hello World");
+			element.appendChild(txt);
+			svg.appendChild(element);
 
 			var svgObject = document.getElementById('svg-object').contentDocument;
 			var svg = svgObject.getElementsByTagName('svg')[0];
