@@ -1,0 +1,28 @@
+<svg viewBox="-48 -36 80 76" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .button {
+            fill: #007bbf;
+            cursor: pointer;
+        }
+        .button:hover {
+            fill: #0069d9;
+        }
+        .button-text {
+            font-size: 0.8rem;
+            fill: white;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+    </style>
+
+    <script type="text/javascript"><![CDATA[
+        function buttonClick(evt) {
+            alert('Click');
+        }
+    ]]></script> 
+
+    <g onmouseup="buttonClick(evt)">
+        <path class="button" d="M-8 -34.4L-17.4 -7.2 -46.2 -6.6 -23.2 10.8 -31.6 38.4 -8 22 15.8 38.4 7.4 10.8 30.4 -6.6 1.6 -7.2z"/>
+        <text class="button-text" x="-7.2" y="6">Button</text>
+    </g>
+</svg>

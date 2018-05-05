@@ -1,0 +1,23 @@
+<svg viewBox="0 0 90 25" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .button {
+            fill: #007bbf;
+        }
+        .button-text {
+            font-size: 0.8rem;
+            fill: white;
+            text-anchor: middle;
+        }
+    </style>
+
+    <script type="text/javascript"><![CDATA[
+        function buttonClick(evt) {
+            alert('Click');
+        }
+    ]]></script> 
+
+    <g onmouseup="buttonClick(evt)">
+        <rect class="button" x="20" y="1" rx="5" ry="5" width="50" height="22"/>
+        <text class="button-text" x="45" y="16">Button</text>
+    </g>
+</svg>
