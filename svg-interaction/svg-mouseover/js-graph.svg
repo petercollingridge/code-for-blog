@@ -39,19 +39,17 @@
   <script><![CDATA[
     var bars = document.getElementsByClassName('bar');
 
-    var mouseOverEffect = function() {
-      this.classList.add("bar-highlight");
-      //this.setAttribute('fill', '#ec008c');
-      //this.setAttribute('opacity', 1);
-    }
-
-    var mouseOutEffect = function() {
-      this.classList.remove("bar-highlight");
-    }
-
     for (var i = 0; i < bars.length; i++) {
       bars[i].addEventListener('mouseover', mouseOverEffect);
       bars[i].addEventListener('mouseout', mouseOutEffect);
+    }
+
+    function mouseOverEffect() {
+      this.classList.add("bar-highlight");
+    }
+
+    function mouseOutEffect() {
+      this.classList.remove("bar-highlight");
     }
   ]]></script>
 </svg>
