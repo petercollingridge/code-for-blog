@@ -1,43 +1,10 @@
-<svg xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 225 225" onload="init(evt)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 225 225" id="cog-svg">
    <style>
    	 .gear{
    	 	stroke: #784f33;
    	 	fill:	#b59154;
    	 }
    </style>
-
-  <script type="text/ecmascript"><![CDATA[
-        var svg;
-
-	function init(evt) {
-          if (window.svgDocument == null) {
-            svg = evt.target.ownerDocument;
-          }
-		addRotateTransform('gear-1', 12, 1);
-		addRotateTransform('gear-2', 16, -1);
-		addRotateTransform('gear-3', 16, -1);
-		addRotateTransform('gear-4', 4, 1);
-	}
-
-	function addRotateTransform(target_id, speed, direction) {
-		var element_to_rotate = svg.getElementById(target_id);
-		var my_transform = svg.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
-
-		var bb = element_to_rotate.getBBox();
-		var cx = bb.x + bb.width/2;
-		var cy = bb.y + bb.height/2;
-
-		my_transform.setAttributeNS(null, "attributeName", "transform");
-		my_transform.setAttributeNS(null, "type", "rotate");
-		my_transform.setAttributeNS(null, "dur", speed + "s");
-		my_transform.setAttributeNS(null, "repeatCount", "indefinite");
-		my_transform.setAttributeNS(null, "from", "0 "+cx+" "+cy);
-		my_transform.setAttributeNS(null, "to", 360*direction+" "+cx+" "+cy);
-
-		element_to_rotate.appendChild(my_transform);
-		my_transform.beginElement();
-	}
-  ]]></script>
 
   <g transform="translate(132, 84)">  
     <path
@@ -72,4 +39,30 @@
     />
     <circle cx="0" cy="0" r="5" fill="white" stroke="#784f33"/>
   </g>
+
+  <script type="text/javascript"><![CDATA[
+    addRotateTransform('gear-1', 12, 1);
+    addRotateTransform('gear-2', 16, -1);
+    addRotateTransform('gear-3', 16, -1);
+    addRotateTransform('gear-4', 4, 1);
+
+    function addRotateTransform(target_id, speed, direction) {
+      var element_to_rotate = document.getElementById(target_id);
+      var my_transform = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
+
+      var bb = element_to_rotate.getBBox();
+      var cx = bb.x + bb.width/2;
+      var cy = bb.y + bb.height/2;
+
+      my_transform.setAttributeNS(null, "attributeName", "transform");
+      my_transform.setAttributeNS(null, "type", "rotate");
+      my_transform.setAttributeNS(null, "dur", speed + "s");
+      my_transform.setAttributeNS(null, "repeatCount", "indefinite");
+      my_transform.setAttributeNS(null, "from", "0 "+cx+" "+cy);
+      my_transform.setAttributeNS(null, "to", 360*direction+" "+cx+" "+cy);
+
+      element_to_rotate.appendChild(my_transform);
+      my_transform.beginElement();
+    }
+  ]]></script>
 </svg>
