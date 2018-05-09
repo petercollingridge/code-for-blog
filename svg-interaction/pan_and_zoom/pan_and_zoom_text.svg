@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 150" id="map-svg">
+
     <style>
         .territory {
             fill: #a9a9a9;
@@ -25,6 +26,11 @@
             fill: #fff;
             pointer-events: none;
         }
+        text {
+            text-anchor: middle;
+            font-size: 10px;
+            pointer-events: none;
+        }
     </style>
 
     <g id="matrix-group" transform="matrix(1 0 0 1 0 0)">        
@@ -45,34 +51,65 @@
         </g>
     </g>
 
-    <circle cx="25" cy="25" r="21" fill="white" opacity="0.75"/>
-    <path class="button" onclick="pan(0, 25)" d="M25 5 l6 10 a20 35 0 0 0 -12 0z" />
-    <path class="button" onclick="pan(25, 0)" d="M5 25 l10 -6 a35 20 0 0 0 0 12z" />
-    <path class="button" onclick="pan(0,-25)" d="M25 45 l6 -10 a20, 35 0 0,1 -12,0z" />
-    <path class="button" onclick="pan(-25, 0)" d="M45 25 l-10 -6 a35 20 0 0 1 0 12z" />
-    
-    <circle class="compass" cx="25" cy="25" r="10"/>
-    <circle class="button"  cx="25" cy="20.5" r="4" onclick="zoom(0.8)"/>
-    <circle class="button"  cx="25" cy="29.5" r="4" onclick="zoom(1.25)"/>
+    <g id="names">
+        <text x="60" y="90">Western</text>
+        <text x="60" y="102">Australia</text>
+        <text x="200" y="88">Queensland</text>
+        <text x="200" y="185">Victoria</text>
+        <text x="230" y="144">New South Wales</text>
+        <text x="243" y="172">ACT</text>
+        <text x="132" y="60">Northern</text>
+        <text x="132" y="72">Territories</text>
+        <text x="140" y="118">South</text>
+        <text x="140" d=y="130">Australia</text>
+    </g>
+  
+    <circle cx="50" cy="50" r="42" fill="white" opacity="0.75"/>
+    <path class="button" onclick="pan( 0, 50)" d="M50 10 l12   20 a40, 70 0 0,0 -24,  0z" />
+    <path class="button" onclick="pan( 50, 0)" d="M10 50 l20  -12 a70, 40 0 0,0   0, 24z" />
+    <path class="button" onclick="pan( 0,-50)" d="M50 90 l12  -20 a40, 70 0 0,1 -24,  0z" />
+    <path class="button" onclick="pan(-50, 0)" d="M90 50 l-20 -12 a70, 40 0 0,1   0, 24z" />
 
-    <rect class="plus-minus" x="23" y="20" width="4" height="1"/>
-    <rect class="plus-minus" x="23" y="29" width="4" height="1"/>
-    <rect class="plus-minus" x="24.5" y="27.5" width="1" height="4"/>
+    <circle class="compass" cx="50" cy="50" r="20"/>
+    <circle class="button" cx="50" cy="41" r="8" onclick="zoom(0.8)"/>
+    <circle class="button" cx="50" cy="59" r="8" onclick="zoom(1.25)"/>
+
+    <rect class="plus-minus" x="46" y="39.5" width="8" height="3"/>
+    <rect class="plus-minus" x="46" y="57.5" width="8" height="3"/>
+    <rect class="plus-minus" x="48.5" y="55" width="3" height="8"/>
 
     <script type="text/javascript"><![CDATA[
-        var transformMatrix = [1, 0, 0, 1, 0, 0];
+        var svgNS = "http://www.w3.org/2000/svg";
         var svg = document.getElementById('map-svg');
         var viewbox = svg.getAttributeNS(null, "viewBox").split(" ");
         var centerX = parseFloat(viewbox[2]) / 2;
         var centerY = parseFloat(viewbox[3]) / 2;
-        var matrixGroup = svg.getElementById("matrix-group");
+
+        var mapTransform = svg.getElementById("matrix-group");
+        var transformMatrix = [1, 0, 0, 1, 0, 0];
+
+        // Get name nodes
+        var nameGroup = svg.getElementById("names");
+        var nameElements = [];
+        for (var i = 0; i < nameGroup.childNodes.length; i++) {
+            if (nameGroup.childNodes[i].nodeName === "text") {
+                nameElements.push(nameGroup.childNodes[i]);
+            }
+        }
+
+        pan(50, 25);
 
         function pan(dx, dy) {
             transformMatrix[4] += dx;
             transformMatrix[5] += dy;
-            setMatrix();
-        }
 
+            var translateNames = function(x, y) {
+                return [x + dx, y + dy];
+            };
+
+            setMatrix(translateNames);
+        }
+            
         function zoom(scale) {
             for (var i = 0; i < 6; i++) {
                 transformMatrix[i] *= scale;
@@ -80,12 +117,30 @@
 
             transformMatrix[4] += (1 - scale) * centerX;
             transformMatrix[5] += (1 - scale) * centerY;
-            setMatrix();
+
+            var scaleNames = function(x, y) {
+                return [
+                    centerX - (centerX - x) * scale,
+                    centerY - (centerY - y) * scale
+                ];
+            };
+
+            setMatrix(scaleNames);
         }
 
-        function setMatrix() {
-            var newMatrix = "matrix(" +  transformMatrix.join(' ') + ")";
-            matrixGroup.setAttributeNS(null, "transform", newMatrix);
+        function setMatrix(transformNames) {
+            var newTransform = "matrix(" +  transformMatrix.join(' ') + ")";
+            mapTransform.setAttributeNS(null, "transform", newTransform);
+
+            for (var i = 0; i < nameElements.length; i++) {
+                var x = parseFloat(nameElements[i].getAttributeNS(null, "x"));
+    			var y = parseFloat(nameElements[i].getAttributeNS(null, "y"));
+		    	var newCoords = transformNames(x, y);
+    			nameElements[i].setAttributeNS(null, "x", newCoords[0]);
+    			nameElements[i].setAttributeNS(null, "y", newCoords[1]);
+            }
         }
+
     ]]></script>
-  </svg>
+
+</svg>
