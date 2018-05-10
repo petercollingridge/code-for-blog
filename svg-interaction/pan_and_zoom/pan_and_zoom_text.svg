@@ -134,10 +134,10 @@
 
             for (var i = 0; i < nameElements.length; i++) {
                 var x = parseFloat(nameElements[i].getAttributeNS(null, "x"));
-    			var y = parseFloat(nameElements[i].getAttributeNS(null, "y"));
-		    	var newCoords = transformNames(x, y);
-    			nameElements[i].setAttributeNS(null, "x", newCoords[0]);
-    			nameElements[i].setAttributeNS(null, "y", newCoords[1]);
+                var y = parseFloat(nameElements[i].getAttributeNS(null, "y"));
+                var newCoords = transformNames(x, y);
+                nameElements[i].setAttributeNS(null, "x", newCoords[0]);
+                nameElements[i].setAttributeNS(null, "y", newCoords[1]);
             }
         }
 
