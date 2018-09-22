@@ -1,0 +1,152 @@
+.dobble-card {
+    fill: #ddd;
+}
+
+.dobble-symbol {
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-family: serif;
+    cursor: default;
+}
+
+.pink { fill: rgb(255, 0, 175); }
+.blue { fill: rgb(64, 95, 237); }
+.green { fill: rgb(28, 173, 123); }
+
+.dobble-table {
+    stroke: #aaa;
+    stroke-width: 0.5;
+}
+
+.dobble-table-block {
+    fill: #aaa;
+}
+
+.symbol-set {
+    pointer-events: none;
+}
+
+.symbol-set.highlight {
+    fill: rgb(255, 0, 175);
+    cursor: pointer;
+}
+
+.interactive-card:hover {
+  fill: #ccc;
+}
+
+.dividing-lines {
+    stroke-width: 0.5;
+    stroke: #444;
+}
+
+.card-line {
+    fill: none;
+    stroke: rgb(64, 95, 237);
+    stroke-width: 1.5;
+    pointer-events: none;
+}
+  
+.background-line {
+    fill: none;
+    stroke-width: 6;
+    pointer-events: stroke;
+}
+
+.symbol-point {
+    fill: rgb(64, 95, 237);
+}
+
+.symbol-point text {
+    font-size: 0.8em;
+}
+
+.symbol-point:hover {
+    fill: rgb(255, 0, 175);
+}
+
+.symbol-point:hover .card-line {
+    stroke: rgb(255, 0, 175);
+}
+
+line.highlight {
+    stroke: rgb(255, 0, 175);
+}
+
+circle.highlight {
+    stroke: rgb(255, 0, 175);
+}
+
+.highlight * {
+    fill: rgb(255, 0, 175);
+}
+
+.dobble-controls {
+    width: 400px;
+    position: relative;
+    background-color: #eee;
+    padding: 10px;
+    /*border: 1px solid black;*/
+}
+
+.dobble-controls input {
+    position: absolute;
+    right: 10px;
+}
+
+.slider-wrapper {
+    height: 28px;
+}
+
+.slider-wrapper label {
+    line-height: 28px;
+}
+
+.slider-wrapper input {
+    margin-top: 6px;
+}
+
+.dobble-builder {
+    margin: 20px;
+}
+
+.dobble-header {
+    font-weight: bold;
+}
+
+.card-count {
+    alignment-baseline: middle;
+}
+
+.matching .dobble-card {
+    fill: rgb(28, 173, 123);
+}
+
+.matching .dobble-symbol {
+    fill: white;
+}
+
+.new-card .dobble-card {
+    fill: none;
+    stroke-width: 2;
+    stroke: #ddd;
+}
+
+.new-card .dobble-symbol {
+    fill: #ddd;
+    cursor: pointer;
+}
+
+.new-card .dobble-symbol:hover {
+    fill: rgb(255, 0, 175);
+}
+
+.dobble-symbol.selected {
+    fill: black;
+}
+
+.remove-card-btn {
+    font-weight: bold;
+    fill: red;
+    cursor: pointer;
+}

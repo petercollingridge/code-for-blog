@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 312 360">
+<style>
+.dobble-card {
+      fill: #eee;
+    }
+    .domino-symbol {
+      text-anchor: middle;
+      dominant-baseline: central;
+      font-family: serif;
+    }
+    .symbol-set {
+        pointer-events: none;
+    }
+    .symbol-set.highlight {
+        fill: rgb(255, 0, 175);
+        cursor: pointer;
+    }
+    .interactive-card:hover {
+      fill: #ccc;
+    }
+    .dividing-lines {
+        stroke-width: 0.5;
+        stroke: #444;
+    }
+  </style>
+
+<g class="dobble-card">
+  <rect id="card13-1" class="interactive-card" x="0" y="0" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-2" class="interactive-card" x="0" y="28" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-3" class="interactive-card" x="0" y="56" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-4" class="interactive-card" x="0" y="84" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-5" class="interactive-card" x="0" y="112" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-6" class="interactive-card" x="0" y="140" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-7" class="interactive-card" x="0" y="168" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-8" class="interactive-card" x="0" y="196" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-9" class="interactive-card" x="0" y="224" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-10" class="interactive-card" x="0" y="252" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-11" class="interactive-card" x="0" y="280" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-12" class="interactive-card" x="0" y="308" width="312" height="24" rx="8" ry="8"/>
+  <rect id="card13-13" class="interactive-card" x="0" y="336" width="312" height="24" rx="8" ry="8"/>
+</g>
+
+<g class="symbol-set set1 set2 set3 set4">
+  <text class="domino-symbol" x="12" y="12">A</text>
+  <text class="domino-symbol" x="12" y="40">A</text>
+  <text class="domino-symbol" x="12" y="68">A</text>
+  <text class="domino-symbol" x="12" y="96">A</text>
+</g>
+<g class="symbol-set set1 set5 set6 set7">
+  <text class="domino-symbol" x="36" y="12">B</text>
+  <text class="domino-symbol" x="36" y="124">B</text>
+  <text class="domino-symbol" x="36" y="152">B</text>
+  <text class="domino-symbol" x="36" y="180">B</text>
+</g>
+<g class="symbol-set set1 set8 set9 set10">
+  <text class="domino-symbol" x="60" y="12">C</text>
+  <text class="domino-symbol" x="60" y="208">C</text>
+  <text class="domino-symbol" x="60" y="236">C</text>
+  <text class="domino-symbol" x="60" y="264">C</text>
+</g>
+<g class="symbol-set set1 set11 set12 set13">
+  <text class="domino-symbol" x="84" y="12">D</text>
+  <text class="domino-symbol" x="84" y="292">D</text>
+  <text class="domino-symbol" x="84" y="320">D</text>
+  <text class="domino-symbol" x="84" y="348">D</text>
+</g>
+<g class="symbol-set set2 set5 set8 set11">
+  <text class="domino-symbol" x="108" y="40">E</text>
+  <text class="domino-symbol" x="108" y="124">E</text>
+  <text class="domino-symbol" x="108" y="208">E</text>
+  <text class="domino-symbol" x="108" y="292">E</text>
+</g>
+<g class="symbol-set set2 set6 set9 set12">
+  <text class="domino-symbol" x="132" y="40">F</text>
+  <text class="domino-symbol" x="132" y="152">F</text>
+  <text class="domino-symbol" x="132" y="236">F</text>
+  <text class="domino-symbol" x="132" y="320">F</text>
+</g>
+<g class="symbol-set set2 set7 set10 set13">
+  <text class="domino-symbol" x="156" y="40">G</text>
+  <text class="domino-symbol" x="156" y="180">G</text>
+  <text class="domino-symbol" x="156" y="264">G</text>
+  <text class="domino-symbol" x="156" y="348">G</text>
+</g>
+<g class="symbol-set set3 set5 set10 set12">
+  <text class="domino-symbol" x="180" y="68">H</text>
+  <text class="domino-symbol" x="180" y="124">H</text>
+  <text class="domino-symbol" x="180" y="264">H</text>
+  <text class="domino-symbol" x="180" y="320">H</text>
+</g>
+<g class="symbol-set set3 set6 set8 set13">
+  <text class="domino-symbol" x="204" y="68">I</text>
+  <text class="domino-symbol" x="204" y="152">I</text>
+  <text class="domino-symbol" x="204" y="208">I</text>
+  <text class="domino-symbol" x="204" y="348">I</text>
+</g>
+<g class="symbol-set set3 set7 set9 set11">
+  <text class="domino-symbol" x="228" y="68">J</text>
+  <text class="domino-symbol" x="228" y="180">J</text>
+  <text class="domino-symbol" x="228" y="236">J</text>
+  <text class="domino-symbol" x="228" y="292">J</text>
+</g>
+<g class="symbol-set set4 set5 set9 set13">
+  <text class="domino-symbol" x="252" y="96">K</text>
+  <text class="domino-symbol" x="252" y="124">K</text>
+  <text class="domino-symbol" x="252" y="236">K</text>
+  <text class="domino-symbol" x="252" y="348">K</text>
+</g>
+<g class="symbol-set set4 set6 set10 set11">
+  <text class="domino-symbol" x="276" y="96">L</text>
+  <text class="domino-symbol" x="276" y="152">L</text>
+  <text class="domino-symbol" x="276" y="264">L</text>
+  <text class="domino-symbol" x="276" y="292">L</text>
+</g>
+<g class="symbol-set set4 set7 set8 set12">
+  <text class="domino-symbol" x="300" y="96">M</text>
+  <text class="domino-symbol" x="300" y="180">M</text>
+  <text class="domino-symbol" x="300" y="208">M</text>
+  <text class="domino-symbol" x="300" y="320">M</text>
+</g>
+
+<g class="dividing-lines">
+  <line x1="0" x2="312" y1="26" y2="26" />
+  <line x1="0" x2="312" y1="110" y2="110" />
+  <line x1="0" x2="312" y1="194" y2="194" />
+  <line x1="0" x2="312" y1="278" y2="278" />
+  <line x1="96" x2="96" y1="0" y2="360" />
+  <line x1="168" x2="168" y1="0" y2="360" />
+  <line x1="240" x2="240" y1="0" y2="360" />
+</g>
+
+  <script><![CDATA[
+    function applyToSet(groups, callback) {
+        return function() {
+            for (var i = 0; i < groups.length; i++) {
+                callback(groups[i]);
+            }
+        }
+    }
+
+    function highlight(element) {
+        element.classList.add("highlight");
+    }
+
+    function unhighlight(element) {
+        element.classList.remove("highlight");
+    }
+
+    for (var i = 1; i <= 13; i++) {
+        var element = document.getElementById('card13-' + i);
+        var groups = document.getElementsByClassName('set' + i);
+        element.addEventListener('mouseover', applyToSet(groups, highlight));
+        element.addEventListener('mouseout', applyToSet(groups, unhighlight));
+    }
+    ]]></script>
+</svg>

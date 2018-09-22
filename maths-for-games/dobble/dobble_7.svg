@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 192">
+<style>
+.dobble-card {
+      fill: #eee;
+    }
+    .domino-symbol {
+      text-anchor: middle;
+      dominant-baseline: central;
+      font-family: serif;
+    }
+    .symbol-set {
+        font-size: 0.6em;
+        pointer-events: none;
+    }
+    .symbol-set.highlight {
+        fill: rgb(255, 0, 175);
+        cursor: pointer;
+    }
+    .interactive-card:hover {
+      fill: #ccc;
+    }
+    .dividing-lines {
+        stroke-width: 0.5;
+        stroke: #444;
+    }
+  </style>
+
+<g class="dobble-card">
+  <rect id="card1" class="interactive-card" x="0" y="0" width="168" height="24" rx="8" ry="8"/>
+  <rect id="card2" class="interactive-card" x="0" y="28" width="168" height="24" rx="8" ry="8"/>
+  <rect id="card3" class="interactive-card" x="0" y="56" width="168" height="24" rx="8" ry="8"/>
+  <rect id="card4" class="interactive-card" x="0" y="84" width="168" height="24" rx="8" ry="8"/>
+  <rect id="card5" class="interactive-card" x="0" y="112" width="168" height="24" rx="8" ry="8"/>
+  <rect id="card6" class="interactive-card" x="0" y="140" width="168" height="24" rx="8" ry="8"/>
+  <rect id="card7" class="interactive-card" x="0" y="168" width="168" height="24" rx="8" ry="8"/>
+</g>
+
+  <g class="dobble-symbol symbol-set set1 set2 set3">
+    <text x="12" y="12">A</text>
+    <text x="12" y="40">A</text>
+    <text x="12" y="68">A</text>
+  </g>
+  <g class="dobble-symbol symbol-set set1 set4 set5">
+    <text x="36" y="12">B</text>
+    <text x="36" y="96">B</text>
+    <text x="36" y="124">B</text>
+  </g>
+  <g class="dobble-symbol symbol-set set1 set6 set7">
+    <text x="60" y="12">C</text>
+    <text x="60" y="152">C</text>
+    <text x="60" y="180">C</text>
+  </g>
+  <g class="dobble-symbol symbol-set set2 set4 set6">
+    <text x="84" y="40">D</text>
+    <text x="84" y="96">D</text>
+    <text x="84" y="152">D</text>
+  </g>
+  <g class="dobble-symbol symbol-set set2 set5 set7">
+    <text x="108" y="40">E</text>
+    <text x="108" y="124">E</text>
+    <text x="108" y="180">E</text>
+  </g>
+  <g class="dobble-symbol symbol-set set3 set4 set7">
+    <text x="132" y="68">F</text>
+    <text x="132" y="96">F</text>
+    <text x="132" y="180">F</text>
+  </g>
+  <g class="dobble-symbol symbol-set set3 set5 set6">
+    <text x="156" y="68">G</text>
+    <text x="156" y="124">G</text>
+    <text x="156" y="152">G</text>
+  </g>
+
+<g class="dividing-lines">
+  <line x1="0" x2="168" y1="26" y2="26" />
+  <line x1="0" x2="168" y1="82" y2="82" />
+  <line x1="0" x2="168" y1="138" y2="138" />
+  <line x1="72" x2="72" y1="0" y2="192" />
+  <line x1="120" x2="120" y1="0" y2="192" />
+</g>
+
+  <script><![CDATA[
+    function applyToSet(groups, callback) {
+        return function() {
+            for (var i = 0; i < groups.length; i++) {
+                callback(groups[i]);
+            }
+        }
+    }
+
+    function highlight(element) {
+        element.classList.add("highlight");
+    }
+
+    function unhighlight(element) {
+        element.classList.remove("highlight");
+    }
+
+    for (var i = 1; i <= 7; i++) {
+        var element = document.getElementById('card' + i);
+        var groups = document.getElementsByClassName('set' + i);
+        element.addEventListener('mouseover', applyToSet(groups, highlight));
+        element.addEventListener('mouseout', applyToSet(groups, unhighlight));
+    }
+    ]]></script>
+</svg>

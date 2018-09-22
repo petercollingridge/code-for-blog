@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120">
+  <style>
+    .table {
+      stroke: #aaa;
+      stroke-width: 0.5;
+    }
+    .block {
+      fill: #aaa;
+    }
+    .domino {
+      fill: #eee;
+    }
+    .domino-symbol {
+      text-anchor: middle;
+      dominant-baseline: central;
+      font-family: serif;
+    }
+
+    .pink { rgb(255, 0, 175); }
+    .blue { fill: rgb(64, 95, 237); }
+    .green { fill: rgb(28, 173, 123); }
+
+  </style>
+
+  <g class="block">
+    <rect x="40" y="40" width="20" height="20"/>
+    <rect x="60" y="60" width="20" height="20"/>
+    <rect x="80" y="80" width="20" height="20"/>
+    <rect x="100" y="100" width="20" height="20"/>
+  </g>
+
+  <g class="table">
+    <line x1="0" y1="40" x2="120" y2="40"/>
+    <line x1="0" y1="60" x2="120" y2="60"/>
+    <line x1="0" y1="80" x2="120" y2="80"/>
+    <line x1="0" y1="100" x2="120" y2="100"/>
+    <line x1="40" y1="0" x2="40" y2="120"/>
+    <line x1="60" y1="0" x2="60" y2="120"/>
+    <line x1="80" y1="0" x2="80" y2="120"/>
+    <line x1="100" y1="0" x2="100" y2="120"/>
+  </g>
+
+  <g class="domino-symbol">
+    <text x="20" y="50">ABC</text>
+    <text x="20" y="70">ADE</text>
+    <text x="20" y="90">BDF</text>
+    <text x="20" y="110">CEF</text>
+    <text transform="translate(50 20) rotate(-90)" x="0" y="0">ABC</text>
+    <text transform="translate(70 20) rotate(-90)" x="0" y="0">ADE</text>
+    <text transform="translate(90 20) rotate(-90)" x="0" y="0">BDF</text>
+    <text transform="translate(110 20) rotate(-90)" x="0" y="0">CEF</text>
+
+    <text x="70" y="50">A</text>
+    <text x="90" y="50">B</text>
+    <text x="110" y="50">C</text>
+    <text x="90" y="70">D</text>
+    <text x="110" y="70">E</text>
+    <text x="110" y="90">F</text>
+    <text x="50" y="70">A</text>
+    <text x="50" y="90">B</text>
+    <text x="50" y="110">C</text>
+    <text x="70" y="90">D</text>
+    <text x="70" y="110">E</text>
+    <text x="90" y="110">F</text>
+  </g>
+
+</svg>

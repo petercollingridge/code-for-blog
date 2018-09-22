@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-75 -42 150 92">
+  <g transform="translate(5)">
+    <rect class="dobble-card" x="0" y="-12" width="72" height="24" rx="8" ry="8"/>
+    <text class="dobble-symbol pink" x="18" y="0">A</text>
+    <text class="dobble-symbol" x="54" y="0">B</text>
+  </g>
+  <g transform="rotate(120) translate(5)">
+    <rect class="dobble-card" x="0" y="-12" width="72" height="24" rx="8" ry="8"/>
+    <text class="dobble-symbol pink" x="18" y="0">A</text>
+    <text class="dobble-symbol" x="54" y="0">C</text>
+  </g>
+  <g transform="rotate(240) translate(5)">
+    <rect class="dobble-card" x="0" y="-12" width="72" height="24" rx="8" ry="8"/>
+    <text class="dobble-symbol pink" x="18" y="0">A</text>
+    <text class="dobble-symbol" x="54" y="0">D</text>
+  </g>
+</svg>

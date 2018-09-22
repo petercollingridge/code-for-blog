@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-75 -42 150 92">
+  <style>
+    .dobble-card {
+      fill: #eee;
+    }
+    .domino-symbol {
+      text-anchor: middle;
+      dominant-baseline: central;
+      font-family: serif;
+    }
+    .pink { fill: rgb(255, 0, 175); }
+    .blue { fill: rgb(64, 95, 237); }
+    .green { fill: rgb(28, 173, 123); }
+  </style>
+<g transform="translate(0 -30)">
+  <rect class="dobble-card" x="-36" y="-12" width="72" height="24" rx="8" ry="8"/>
+  <text class="domino-symbol pink" x="-18" y="0">A</text>
+  <text class="domino-symbol blue" x="18" y="0">B</text>
+</g>
+<g transform="rotate(120) translate(0 -30)">
+  <rect class="dobble-card" x="-36" y="-12" width="72" height="24" rx="8" ry="8"/>
+  <text class="domino-symbol blue" x="-18" y="0">B</text>
+  <text class="domino-symbol green" x="18" y="0">C</text>
+</g>
+<g transform="rotate(240) translate(0 -30)">
+  <rect class="dobble-card" x="-36" y="-12" width="72" height="24" rx="8" ry="8"/>
+  <text class="domino-symbol green" x="-18" y="0">C</text>
+  <text class="domino-symbol pink" x="18" y="0">A</text>
+</g>
+</svg>

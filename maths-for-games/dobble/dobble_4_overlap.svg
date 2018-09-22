@@ -1,0 +1,10 @@
+<svg viewBox="-32 0 160 52">
+  <rect class="dobble-card" x="0" y="0" width="72" height="24" rx="8" ry="8"/>
+  <text class="dobble-symbol" x="12" y="12">A</text>
+  <text class="dobble-symbol" fill="red" x="36" y="12">B</text>
+  <text class="dobble-symbol" fill="red" x="60" y="12">C</text>
+  <rect class="dobble-card" x="24" y="28" width="72" height="24" rx="8" ry="8"/>
+  <text class="dobble-symbol" fill="red" x="36" y="40">B</text>
+  <text class="dobble-symbol" fill="red" x="60" y="40">C</text>
+  <text class="dobble-symbol" x="84" y="40">D</text>
+</svg>

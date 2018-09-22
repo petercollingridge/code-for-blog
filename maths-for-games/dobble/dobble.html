@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Dobble page</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="dobble.css">
+    </head>
+
+<body>
+    <!-- 3 symbols 3 cards -->
+    <div style="width:210px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-75 -42 150 92">
+            <g transform="translate(0 -30)">
+                <rect class="dobble-card" x="-36" y="-12" width="72" height="24" rx="8" ry="8"/>
+                <text class="dobble-symbol pink" x="-18" y="0">A</text>
+                <text class="dobble-symbol blue" x="18" y="0">B</text>
+            </g>
+            <g transform="rotate(120) translate(0 -30)">
+                <rect class="dobble-card" x="-36" y="-12" width="72" height="24" rx="8" ry="8"/>
+                <text class="dobble-symbol blue" x="-18" y="0">B</text>
+                <text class="dobble-symbol green" x="18" y="0">C</text>
+            </g>
+            <g transform="rotate(240) translate(0 -30)">
+                <rect class="dobble-card" x="-36" y="-12" width="72" height="24" rx="8" ry="8"/>
+                <text class="dobble-symbol green" x="-18" y="0">C</text>
+                <text class="dobble-symbol pink" x="18" y="0">A</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 4 symbols 3 cards -->
+    <div style="width:210px;">
+        <svg viewBox="-70 -70 160 140">
+            <g transform="translate(5)">
+                <rect class="dobble-card" x="0" y="-12" width="72" height="24" rx="8" ry="8"/>
+                <text class="dobble-symbol pink" x="18" y="0">A</text>
+                <text class="dobble-symbol" x="54" y="0">B</text>
+            </g>
+            <g transform="rotate(120) translate(5)">
+                <rect class="dobble-card" x="0" y="-12" width="72" height="24" rx="8" ry="8"/>
+                <text class="dobble-symbol pink" x="18" y="0">A</text>
+                <text class="dobble-symbol" x="54" y="0">C</text>
+            </g>
+            <g transform="rotate(240) translate(5)">
+                <rect class="dobble-card" x="0" y="-12" width="72" height="24" rx="8" ry="8"/>
+                <text class="dobble-symbol pink" x="18" y="0">A</text>
+                <text class="dobble-symbol" x="54" y="0">D</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 4 symbols 2 cards -->
+    <div style="width:210px;">
+        <svg viewBox="-32 0 160 52">
+            <rect class="dobble-card" x="0" y="0" width="72" height="24" rx="8" ry="8"/>
+            <text class="dobble-symbol" x="12" y="12">A</text>
+            <text class="dobble-symbol" fill="red" x="36" y="12">B</text>
+            <text class="dobble-symbol" fill="red" x="60" y="12">C</text>
+            <rect class="dobble-card" x="24" y="28" width="72" height="24" rx="8" ry="8"/>
+            <text class="dobble-symbol" fill="red" x="36" y="40">B</text>
+            <text class="dobble-symbol" fill="red" x="60" y="40">C</text>
+            <text class="dobble-symbol" x="84" y="40">D</text>
+        </svg>
+    </div>
+
+    <!-- 5 symbols 2 cards -->
+    <div style="width:210px;">
+        <svg viewBox="-20 0 160 52">
+            <rect class="dobble-card" x="0" y="0" width="72" height="24" rx="8" ry="8"/>
+            <text class="dobble-symbol" x="12" y="12">A</text>
+            <text class="dobble-symbol" x="36" y="12">B</text>
+            <text class="dobble-symbol green" x="60" y="12">C</text>
+            <rect class="dobble-card" x="48" y="28" width="72" height="24" rx="8" ry="8"/>
+            <text class="dobble-symbol green" x="60" y="40">C</text>
+            <text class="dobble-symbol" x="84" y="40">D</text>
+            <text class="dobble-symbol" x="108" y="40">E</text>
+        </svg>
+    </div>
+
+    <!-- 6 symbols 4 cards -->
+    <div style="width:210px;">
+        <svg viewBox="0 0 160 120">
+            <g class="dobble-table-block">
+                <rect x="40" y="40" width="20" height="20"/>
+                <rect x="60" y="60" width="20" height="20"/>
+                <rect x="80" y="80" width="20" height="20"/>
+                <rect x="100" y="100" width="20" height="20"/>
+            </g>
+                
+            <g class="dobble-table">
+                <line x1="0" y1="40" x2="120" y2="40"/>
+                <line x1="0" y1="60" x2="120" y2="60"/>
+                <line x1="0" y1="80" x2="120" y2="80"/>
+                <line x1="0" y1="100" x2="120" y2="100"/>
+                <line x1="40" y1="0" x2="40" y2="120"/>
+                <line x1="60" y1="0" x2="60" y2="120"/>
+                <line x1="80" y1="0" x2="80" y2="120"/>
+                <line x1="100" y1="0" x2="100" y2="120"/>
+            </g>
+                
+            <g class="dobble-symbol">
+                <text x="20" y="50">ABC</text>
+                <text x="20" y="70">ADE</text>
+                <text x="20" y="90">BDF</text>
+                <text x="20" y="110">CEF</text>
+                <text transform="translate(50 20) rotate(-90)" x="0" y="0">ABC</text>
+                <text transform="translate(70 20) rotate(-90)" x="0" y="0">ADE</text>
+                <text transform="translate(90 20) rotate(-90)" x="0" y="0">BDF</text>
+                <text transform="translate(110 20) rotate(-90)" x="0" y="0">CEF</text>
+            
+                <text x="70" y="50">A</text>
+                <text x="90" y="50">B</text>
+                <text x="110" y="50">C</text>
+                <text x="90" y="70">D</text>
+                <text x="110" y="70">E</text>
+                <text x="110" y="90">F</text>
+                <text x="50" y="70">A</text>
+                <text x="50" y="90">B</text>
+                <text x="50" y="110">C</text>
+                <text x="70" y="90">D</text>
+                <text x="70" y="110">E</text>
+                <text x="90" y="110">F</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 7 symbols 7 cards -->
+    <div style="width:210px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 192">
+            <g class="dobble-card">
+            <rect id="card1" class="interactive-card" x="0" y="0" width="168" height="24" rx="8" ry="8"/>
+            <rect id="card2" class="interactive-card" x="0" y="28" width="168" height="24" rx="8" ry="8"/>
+            <rect id="card3" class="interactive-card" x="0" y="56" width="168" height="24" rx="8" ry="8"/>
+            <rect id="card4" class="interactive-card" x="0" y="84" width="168" height="24" rx="8" ry="8"/>
+            <rect id="card5" class="interactive-card" x="0" y="112" width="168" height="24" rx="8" ry="8"/>
+            <rect id="card6" class="interactive-card" x="0" y="140" width="168" height="24" rx="8" ry="8"/>
+            <rect id="card7" class="interactive-card" x="0" y="168" width="168" height="24" rx="8" ry="8"/>
+            </g>
+        
+          <g class="dobble-symbol symbol-set set1 set2 set3">
+            <text x="12" y="12">A</text>
+            <text x="12" y="40">A</text>
+            <text x="12" y="68">A</text>
+          </g>
+          <g class="dobble-symbol symbol-set set1 set4 set5">
+            <text x="36" y="12">B</text>
+            <text x="36" y="96">B</text>
+            <text x="36" y="124">B</text>
+          </g>
+          <g class="dobble-symbol symbol-set set1 set6 set7">
+            <text x="60" y="12">C</text>
+            <text x="60" y="152">C</text>
+            <text x="60" y="180">C</text>
+          </g>
+          <g class="dobble-symbol symbol-set set2 set4 set6">
+            <text x="84" y="40">D</text>
+            <text x="84" y="96">D</text>
+            <text x="84" y="152">D</text>
+          </g>
+          <g class="dobble-symbol symbol-set set2 set5 set7">
+            <text x="108" y="40">E</text>
+            <text x="108" y="124">E</text>
+            <text x="108" y="180">E</text>
+          </g>
+          <g class="dobble-symbol symbol-set set3 set4 set7">
+            <text x="132" y="68">F</text>
+            <text x="132" y="96">F</text>
+            <text x="132" y="180">F</text>
+          </g>
+          <g class="dobble-symbol symbol-set set3 set5 set6">
+            <text x="156" y="68">G</text>
+            <text x="156" y="124">G</text>
+            <text x="156" y="152">G</text>
+          </g>
+        
+            <g class="dividing-lines">
+            <line x1="0" x2="168" y1="26" y2="26" />
+            <line x1="0" x2="168" y1="82" y2="82" />
+            <line x1="0" x2="168" y1="138" y2="138" />
+            <line x1="72" x2="72" y1="0" y2="192" />
+            <line x1="120" x2="120" y1="0" y2="192" />
+            </g>
+        </svg>
+    </div>
+
+    <!-- 13 symbols 13 cards -->
+    <div style="width:210px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 312 360">
+            <g class="dobble-card">
+                <rect id="card13-1" class="interactive-card" x="0" y="0" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-2" class="interactive-card" x="0" y="28" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-3" class="interactive-card" x="0" y="56" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-4" class="interactive-card" x="0" y="84" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-5" class="interactive-card" x="0" y="112" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-6" class="interactive-card" x="0" y="140" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-7" class="interactive-card" x="0" y="168" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-8" class="interactive-card" x="0" y="196" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-9" class="interactive-card" x="0" y="224" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-10" class="interactive-card" x="0" y="252" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-11" class="interactive-card" x="0" y="280" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-12" class="interactive-card" x="0" y="308" width="312" height="24" rx="8" ry="8"/>
+                <rect id="card13-13" class="interactive-card" x="0" y="336" width="312" height="24" rx="8" ry="8"/>
+            </g>
+                    
+            <g class="symbol-set set13-1 set13-2 set13-3 set13-4">
+                <text class="dobble-symbol" x="12" y="12">A</text>
+                <text class="dobble-symbol" x="12" y="40">A</text>
+                <text class="dobble-symbol" x="12" y="68">A</text>
+                <text class="dobble-symbol" x="12" y="96">A</text>
+            </g>
+            <g class="symbol-set set13-1 set13-5 set13-6 set13-7">
+                <text class="dobble-symbol" x="36" y="12">B</text>
+                <text class="dobble-symbol" x="36" y="124">B</text>
+                <text class="dobble-symbol" x="36" y="152">B</text>
+                <text class="dobble-symbol" x="36" y="180">B</text>
+            </g>
+            <g class="symbol-set set13-1 set13-8 set13-9 set13-10">
+                <text class="dobble-symbol" x="60" y="12">C</text>
+                <text class="dobble-symbol" x="60" y="208">C</text>
+                <text class="dobble-symbol" x="60" y="236">C</text>
+                <text class="dobble-symbol" x="60" y="264">C</text>
+            </g>
+            <g class="symbol-set set13-1 set13-11 set13-12 set13-13">
+                <text class="dobble-symbol" x="84" y="12">D</text>
+                <text class="dobble-symbol" x="84" y="292">D</text>
+                <text class="dobble-symbol" x="84" y="320">D</text>
+                <text class="dobble-symbol" x="84" y="348">D</text>
+            </g>
+            <g class="symbol-set set13-2 set13-5 set13-8 set13-11">
+                <text class="dobble-symbol" x="108" y="40">E</text>
+                <text class="dobble-symbol" x="108" y="124">E</text>
+                <text class="dobble-symbol" x="108" y="208">E</text>
+                <text class="dobble-symbol" x="108" y="292">E</text>
+            </g>
+            <g class="symbol-set set13-2 set13-6 set13-9 set13-12">
+                <text class="dobble-symbol" x="132" y="40">F</text>
+                <text class="dobble-symbol" x="132" y="152">F</text>
+                <text class="dobble-symbol" x="132" y="236">F</text>
+                <text class="dobble-symbol" x="132" y="320">F</text>
+            </g>
+            <g class="symbol-set set13-2 set13-7 set13-10 set13-13">
+                <text class="dobble-symbol" x="156" y="40">G</text>
+                <text class="dobble-symbol" x="156" y="180">G</text>
+                <text class="dobble-symbol" x="156" y="264">G</text>
+                <text class="dobble-symbol" x="156" y="348">G</text>
+            </g>
+            <g class="symbol-set set13-3 set13-5 set13-10 set13-12">
+                <text class="dobble-symbol" x="180" y="68">H</text>
+                <text class="dobble-symbol" x="180" y="124">H</text>
+                <text class="dobble-symbol" x="180" y="264">H</text>
+                <text class="dobble-symbol" x="180" y="320">H</text>
+            </g>
+            <g class="symbol-set set13-3 set13-6 set13-8 set13-13">
+                <text class="dobble-symbol" x="204" y="68">I</text>
+                <text class="dobble-symbol" x="204" y="152">I</text>
+                <text class="dobble-symbol" x="204" y="208">I</text>
+                <text class="dobble-symbol" x="204" y="348">I</text>
+            </g>
+            <g class="symbol-set set13-3 set13-7 set13-9 set13-11">
+                <text class="dobble-symbol" x="228" y="68">J</text>
+                <text class="dobble-symbol" x="228" y="180">J</text>
+                <text class="dobble-symbol" x="228" y="236">J</text>
+                <text class="dobble-symbol" x="228" y="292">J</text>
+            </g>
+            <g class="symbol-set set13-4 set13-5 set13-9 set13-13">
+                <text class="dobble-symbol" x="252" y="96">K</text>
+                <text class="dobble-symbol" x="252" y="124">K</text>
+                <text class="dobble-symbol" x="252" y="236">K</text>
+                <text class="dobble-symbol" x="252" y="348">K</text>
+            </g>
+            <g class="symbol-set set13-4 set13-6 set13-10 set13-11">
+                <text class="dobble-symbol" x="276" y="96">L</text>
+                <text class="dobble-symbol" x="276" y="152">L</text>
+                <text class="dobble-symbol" x="276" y="264">L</text>
+                <text class="dobble-symbol" x="276" y="292">L</text>
+            </g>
+            <g class="symbol-set set13-4 set13-7 set13-8 set13-12">
+                <text class="dobble-symbol" x="300" y="96">M</text>
+                <text class="dobble-symbol" x="300" y="180">M</text>
+                <text class="dobble-symbol" x="300" y="208">M</text>
+                <text class="dobble-symbol" x="300" y="320">M</text>
+            </g>
+            
+            <g class="dividing-lines">
+                <line x1="0" x2="312" y1="26" y2="26" />
+                <line x1="0" x2="312" y1="110" y2="110" />
+                <line x1="0" x2="312" y1="194" y2="194" />
+                <line x1="0" x2="312" y1="278" y2="278" />
+                <line x1="96" x2="96" y1="0" y2="360" />
+                <line x1="168" x2="168" y1="0" y2="360" />
+                <line x1="240" x2="240" y1="0" y2="360" />
+            </g>
+        </svg>
+    </div>
+
+    <!-- 3 card geometry -->
+    <div style="width:210px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -16 140 120">
+            <line id="card-3-1" class="background-line" x1="0" y1="0" x2="100" y2="0" />
+            <line id="card-3-2" class="background-line" x1="0" y1="0" x2="50" y2="86" />
+            <line id="card-3-3" class="background-line" x1="100" y1="0" x2="50" y2="86" />
+            
+            <line class="card-line set-3-1 line-3A line-3B" x1="0" y1="0" x2="100" y2="0" />
+            <line class="card-line set-3-2 line-3A line-3C" x1="0" y1="0" x2="50" y2="86" />
+            <line class="card-line set-3-3 line-3B line-3C" x1="100" y1="0" x2="50" y2="86" />
+        
+            <g id="symbol-3A" class="symbol-point set-3-1 set-3-2">
+              <circle cx="0" cy="0" r="3" />
+              <text class="dobble-symbol" x="-8" y="-8">A</text>
+            </g>
+        
+            <g id="symbol-3B" class="symbol-point set-3-1 set-3-3">
+              <circle cx="100" cy="0" r="3" />
+              <text class="dobble-symbol" x="108" y="-8">B</text>
+            </g>
+        
+            <g id="symbol-3C" class="symbol-point set-3-2 set-3-3">
+              <circle cx="50" cy="86" r="3" />
+              <text class="dobble-symbol" x="50" y="96">C</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 4 card geometry -->
+    <div style="width:210px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 140 40">
+            <g class="symbol-point">
+                <line class="background-line" x1="0" y1="20" x2="120" y2="20" />
+                <line class="card-line" x1="0" y1="20" x2="120" y2="20" />
+        
+                <circle cx="0" cy="20" r="3" />
+                <circle cx="40" cy="20" r="3" />
+                <circle cx="80" cy="20" r="3" />
+                <circle cx="120" cy="20" r="3" />
+                
+                <text class="dobble-symbol" x="0" y="10">A</text>
+                <text class="dobble-symbol" x="40" y="10">B</text>
+                <text class="dobble-symbol" x="80" y="10">C</text>
+                <text class="dobble-symbol" x="120" y="10">D</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 5 card geometry -->
+    <div style="width:210px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -16 140 120">
+            <line id="card-5-1" class="background-line" x1="50" y1="0" x2="0" y2="86" />
+            <line id="card-5-2" class="background-line" x1="50" y1="0" x2="100" y2="86" />
+            
+            <line class="card-line set-5-1 line-5A line-5B line-5C" x1="50" y1="0" x2="0" y2="86" />
+            <line class="card-line set-5-2 line-5A line-5D line-5E" x1="50" y1="0" x2="100" y2="86" />
+        
+            <g id="symbol-5A" class="symbol-point set-5-1 set-5-2">
+                <circle cx="50" cy="0" r="3" />
+                <text class="dobble-symbol" x="50" y="-10">A</text>
+            </g>
+        
+            <g id="symbol-5B" class="symbol-point set-5-1">
+                <circle cx="25" cy="43" r="3" />
+                <text class="dobble-symbol" x="15" y="43">B</text>
+            </g>
+        
+            <g id="symbol-5C" class="symbol-point set-5-1">
+                <circle cx="0" cy="86" r="3" />
+                <text class="dobble-symbol" x="-10" y="86">C</text>
+            </g>
+            
+            <g id="symbol-5D" class="symbol-point set-5-2">
+                <circle cx="75" cy="43" r="3" />
+                <text class="dobble-symbol" x="85" y="43">D</text>
+            </g>
+        
+            <g id="symbol-5E" class="symbol-point set-5-2">
+                <circle cx="100" cy="86" r="3" />
+                <text class="dobble-symbol" x="110" y="86">E</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 6 card geometry -->
+    <div style="width:210px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -16 140 120">
+            <line id="card-6-1" class="background-line" x1="50" y1="0" x2="0" y2="86" />
+            <line id="card-6-2" class="background-line" x1="50" y1="0" x2="100" y2="86" />
+            <line id="card-6-3" class="background-line" x1="0" y1="86" x2="100" y2="86" />
+            
+            <line class="card-line set-6-1 line-6A line-6B line-6C" x1="50" y1="0" x2="0" y2="86" />
+            <line class="card-line set-6-2 line-6A line-6D line-6E" x1="50" y1="0" x2="100" y2="86" />
+            <line class="card-line set-6-3 line-6C line-6F line-6E" x1="0" y1="86" x2="100" y2="86" />
+            
+            <circle id="card-6-4" class="background-line" cx="50" cy="57.13" r="28.87"/>
+            <circle class="card-line set-6-4 line-6B line-6D line-6F" cx="50" cy="57.13" r="28.87"/>
+        
+            <g id="symbol-6A" class="symbol-point set-6-1 set-6-2">
+                <circle cx="50" cy="0" r="3" />
+                <text class="dobble-symbol" x="50" y="-10">A</text>
+            </g>
+        
+            <g id="symbol-6B" class="symbol-point set-6-1 set-6-4">
+                <circle cx="25" cy="43" r="3" />
+                <text class="dobble-symbol" x="15" y="43">B</text>
+            </g>
+        
+            <g id="symbol-6C" class="symbol-point set-6-1 set-6-3">
+                <circle cx="0" cy="86" r="3" />
+                <text class="dobble-symbol" x="-10" y="86">C</text>
+            </g>
+            
+            <g id="symbol-6D" class="symbol-point set-6-2 set-6-4">
+                <circle cx="75" cy="43" r="3" />
+                <text class="dobble-symbol" x="85" y="43">D</text>
+            </g>
+        
+            <g id="symbol-6E" class="symbol-point set-6-2 set-6-3">
+                <circle cx="100" cy="86" r="3" />
+                <text class="dobble-symbol" x="110" y="86">E</text>
+            </g>
+
+            <g id="symbol-6F" class="symbol-point set-6-3 set-6-4">
+                <circle cx="50" cy="86" r="3" />
+                <text class="dobble-symbol" x="50" y="96">F</text>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 4, 5, 6 card geometry -->
+    <div style="width:280px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -16 290 180">
+            <g class="symbol-point" transform="translate(62.5)">
+                <line class="background-line" x1="0" y1="20" x2="120" y2="20" />
+                <line class="card-line" x1="0" y1="20" x2="120" y2="20" />
+        
+                <circle cx="0" cy="20" r="3" />
+                <circle cx="40" cy="20" r="3" />
+                <circle cx="80" cy="20" r="3" />
+                <circle cx="120" cy="20" r="3" />
+                
+                <text class="dobble-symbol" x="0" y="10">A</text>
+                <text class="dobble-symbol" x="40" y="10">B</text>
+                <text class="dobble-symbol" x="80" y="10">C</text>
+                <text class="dobble-symbol" x="120" y="10">D</text>
+            </g>
+
+            <g transform="translate(0 60)">
+                <line id="card-5-1" class="background-line" x1="50" y1="0" x2="0" y2="86" />
+                <line id="card-5-2" class="background-line" x1="50" y1="0" x2="100" y2="86" />
+                
+                <line class="card-line set-5-1 line-5A line-5B line-5C" x1="50" y1="0" x2="0" y2="86" />
+                <line class="card-line set-5-2 line-5A line-5D line-5E" x1="50" y1="0" x2="100" y2="86" />
+            
+                <g id="symbol-5A" class="symbol-point set-5-1 set-5-2">
+                    <circle cx="50" cy="0" r="3" />
+                    <text class="dobble-symbol" x="50" y="-10">A</text>
+                </g>
+            
+                <g id="symbol-5B" class="symbol-point set-5-1">
+                    <circle cx="25" cy="43" r="3" />
+                    <text class="dobble-symbol" x="15" y="43">B</text>
+                </g>
+            
+                <g id="symbol-5C" class="symbol-point set-5-1">
+                    <circle cx="0" cy="86" r="3" />
+                    <text class="dobble-symbol" x="-10" y="86">C</text>
+                </g>
+                
+                <g id="symbol-5D" class="symbol-point set-5-2">
+                    <circle cx="75" cy="43" r="3" />
+                    <text class="dobble-symbol" x="85" y="43">D</text>
+                </g>
+            
+                <g id="symbol-5E" class="symbol-point set-5-2">
+                    <circle cx="100" cy="86" r="3" />
+                    <text class="dobble-symbol" x="110" y="86">E</text>
+                </g>
+            </g>
+
+            <g transform="translate(150 60)">
+                <line id="card-6-1" class="background-line" x1="50" y1="0" x2="0" y2="86" />
+                <line id="card-6-2" class="background-line" x1="50" y1="0" x2="100" y2="86" />
+                <line id="card-6-3" class="background-line" x1="0" y1="86" x2="100" y2="86" />
+                
+                <line class="card-line set-6-1 line-6A line-6B line-6C" x1="50" y1="0" x2="0" y2="86" />
+                <line class="card-line set-6-2 line-6A line-6D line-6E" x1="50" y1="0" x2="100" y2="86" />
+                <line class="card-line set-6-3 line-6C line-6F line-6E" x1="0" y1="86" x2="100" y2="86" />
+                
+                <circle id="card-6-4" class="background-line" cx="50" cy="57.13" r="28.87"/>
+                <circle class="card-line set-6-4 line-6B line-6D line-6F" cx="50" cy="57.13" r="28.87"/>
+            
+                <g id="symbol-6A" class="symbol-point set-6-1 set-6-2">
+                    <circle cx="50" cy="0" r="3" />
+                    <text class="dobble-symbol" x="50" y="-10">A</text>
+                </g>
+            
+                <g id="symbol-6B" class="symbol-point set-6-1 set-6-4">
+                    <circle cx="25" cy="43" r="3" />
+                    <text class="dobble-symbol" x="15" y="43">B</text>
+                </g>
+            
+                <g id="symbol-6C" class="symbol-point set-6-1 set-6-3">
+                    <circle cx="0" cy="86" r="3" />
+                    <text class="dobble-symbol" x="-10" y="86">C</text>
+                </g>
+                
+                <g id="symbol-6D" class="symbol-point set-6-2 set-6-4">
+                    <circle cx="75" cy="43" r="3" />
+                    <text class="dobble-symbol" x="85" y="43">D</text>
+                </g>
+            
+                <g id="symbol-6E" class="symbol-point set-6-2 set-6-3">
+                    <circle cx="100" cy="86" r="3" />
+                    <text class="dobble-symbol" x="110" y="86">E</text>
+                </g>
+
+                <g id="symbol-6F" class="symbol-point set-6-3 set-6-4">
+                    <circle cx="50" cy="86" r="3" />
+                    <text class="dobble-symbol" x="50" y="96">F</text>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 6 card geometry -->
+    <div style="width:210px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -16 140 120">
+                <circle id="card-7-4" class="background-line" cx="50" cy="57.1" r="28.9"/>
+                <circle class="card-line set-7-4 line-7B line-7D line-7F" cx="50" cy="57.1" r="28.9"/>
+
+                <line id="card-7-1" class="background-line" x1="50" y1="0" x2="0" y2="86" />
+                <line id="card-7-2" class="background-line" x1="50" y1="0" x2="100" y2="86" />
+                <line id="card-7-3" class="background-line" x1="0" y1="86" x2="100" y2="86" />
+                <line id="card-7-5" class="background-line" x1="50" y1="0" x2="50" y2="86" />
+                <line id="card-7-6" class="background-line" x1="25" y1="43" x2="100" y2="86" />
+                <line id="card-7-7" class="background-line" x1="0" y1="86" x2="75" y2="43" />
+
+                <line class="card-line set-7-1 line-7A line-7B line-7C" x1="50" y1="0" x2="0" y2="86" />
+                <line class="card-line set-7-2 line-7A line-7D line-7E" x1="50" y1="0" x2="100" y2="86" />
+                <line class="card-line set-7-3 line-7C line-7F line-7E" x1="0" y1="86" x2="100" y2="86" />
+                <line class="card-line set-7-5 line-7A line-7G line-7F" x1="50" y1="0" x2="50" y2="86" />
+                <line class="card-line set-7-6 line-7B line-7G line-7E" x1="25" y1="43" x2="100" y2="86" />
+                <line class="card-line set-7-7 line-7C line-7G line-7D" x1="0" y1="86" x2="75" y2="43" />
+            
+                <g id="symbol-7A" class="symbol-point set-7-1 set-7-2 set-7-5">
+                    <circle cx="50" cy="0" r="3" />
+                    <text class="dobble-symbol" x="50" y="-10">A</text>
+                </g>
+            
+                <g id="symbol-7B" class="symbol-point set-7-1 set-7-4 set-7-6">
+                    <circle cx="25" cy="43" r="3" />
+                    <text class="dobble-symbol" x="15" y="43">B</text>
+                </g>
+            
+                <g id="symbol-7C" class="symbol-point set-7-1 set-7-3 set-7-7">
+                    <circle cx="0" cy="86" r="3" />
+                    <text class="dobble-symbol" x="-10" y="86">C</text>
+                </g>
+                
+                <g id="symbol-7D" class="symbol-point set-7-2 set-7-4 set-7-7">
+                    <circle cx="75" cy="43" r="3" />
+                    <text class="dobble-symbol" x="85" y="43">D</text>
+                </g>
+            
+                <g id="symbol-7E" class="symbol-point set-7-2 set-7-3 set-7-6">
+                    <circle cx="100" cy="86" r="3" />
+                    <text class="dobble-symbol" x="110" y="86">E</text>
+                </g>
+    
+                <g id="symbol-7F" class="symbol-point set-7-3 set-7-4 set-7-5">
+                    <circle cx="50" cy="86" r="3" />
+                    <text class="dobble-symbol" x="50" y="96">F</text>
+                </g>
+
+                <g id="symbol-7G" class="symbol-point set-7-5 set-7-6 set-7-7">
+                    <circle cx="50" cy="57.1" r="3" />
+                    <text class="dobble-symbol" x="44" y="46">G</text>
+                </g>
+            </svg>
+        </div>
+
+    <!-- Builder App -->
+    <div id="app">
+        <div class="dobble-controls">
+            <div class="slider-wrapper">
+                <label for="num-symbols-slider">Total number of symbols (n = {{ numSymbols }})</label>
+                <input id="num-symbols-slider" type="range" min="3" max="26" v-model="numSymbols">
+            </div>
+            <div class="slider-wrapper">
+                <label for="card-symbols-slider">Symbols per card (s = {{ cardSymbols }})</label>
+                <input id="card-symbols-slider" type="range" min="2" max="6" v-model="cardSymbols">
+            </div>
+        </div>
+
+        <svg class="dobble-builder" xmlns="http://www.w3.org/2000/svg" width="600" height="300">
+            <!-- <text class="dobble-header dobble-symbol" v-for="symbol in allSymbols" y="12" :x="getSymbolX(symbol) + 20">{{ symbol }}</text> -->
+            <g id="new-card" class="new-card" :transform="getTranslation(0)">
+                <rect class="dobble-card" x="0" y="0" :width="cardWidth" height="24" rx="8" ry="8"/>
+                <text
+                    class="dobble-symbol"
+                    :x="getSymbolX(symbol)"
+                    :y="14"
+                    v-bind:class="{ selected: newCard[symbol] }"
+                    v-on:click="toggleSymbol(symbol)"
+                    v-show="!unusableSymbols[symbol]"
+                    v-for="symbol in allSymbols">
+                        {{ symbol }}
+                </text>
+            </g>
+            <g v-for="(card, index) in cards" :transform="getTranslation(index + 1)" v-bind:class="{ matching: matchingCards[card.join('')] }">
+                <rect class="dobble-card" :width="cardWidth" height="24" rx="8" ry="8" />
+                <text class="card-count" x="-16" :y="14">{{ index + 1}}</text>
+                <text
+                    class="dobble-symbol"
+                    :x="getSymbolX(symbol)"
+                    :y="14"
+                    v-bind:class="{ selected: newCard[symbol] }"
+                    v-for="symbol in card">
+                        {{ symbol }}
+                </text>
+                <text class="remove-card-btn" :x="getSymbolX(numSymbols)" :y="16" v-on:click="removeCard(index)">&times;</text>
+            </g>
+        </svg>
+    </div>
+
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="dobble.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -10 150 115">
+  <style>
+    .card-line {
+      stroke: rgb(64, 95, 237);
+      stroke-width: 1;
+      pointer-events: none;
+    }
+    
+    .background-line {
+      stroke-width: 5;
+      pointer-events: stroke;
+    }
+
+    .symbol-point {
+      fill: rgb(64, 95, 237);
+    }
+
+    .symbol-point:hover {
+      fill: rgb(255, 0, 175);
+    }
+
+    .symbol-point text {
+      text-anchor: middle;
+      alignment-baseline: central;
+      cursor: default;
+    }
+
+    .highlight {
+      fill: rgb(255, 0, 175);
+    }
+
+    line.highlight {
+      stroke: rgb(255, 0, 175);
+    }
+  </style>
+
+    <line id="card-3-1" class="background-line" x1="24" y1="8" x2="121" y2="8" />
+    <line id="card-3-2" class="background-line" x1="24" y1="8" x2="75" y2="86" />
+    <line id="card-3-3" class="background-line" x1="121" y1="8" x2="75" y2="86" />
+    
+    <line class="card-line set-3-1 line-3A line-3B" x1="24" y1="8" x2="121" y2="8" />
+    <line class="card-line set-3-2 line-3A line-3C" x1="24" y1="8" x2="75" y2="86" />
+    <line class="card-line set-3-3 line-3B line-3C" x1="121" y1="8" x2="75" y2="86" />
+
+    <g id="symbol-3A" class="symbol-point set-3-1 set-3-2">
+      <circle cx="24" cy="8" r="2.5" />
+      <text x="16" y="0">A</text>
+    </g>
+
+    <g id="symbol-3B" class="symbol-point set-3-1 set-3-3">
+      <circle cx="121" cy="8" r="2.5" />
+      <text x="129" y="0">B</text>
+    </g>
+
+    <g id="symbol-3C" class="symbol-point set-3-2 set-3-3">
+      <circle cx="75" cy="86" r="2.5" />
+      <text x="75" y="96">C</text>
+    </g>
+
+  <script><![CDATA[
+    function applyToSet(groups, callback) {
+        return function() {
+            for (var i = 0; i < groups.length; i++) {
+                callback(groups[i]);
+            }
+        }
+    }
+
+    function highlight(element) {
+        element.classList.add("highlight");
+    }
+
+    function unhighlight(element) {
+        element.classList.remove("highlight");
+    }
+
+    for (var i = 1; i <= 3; i++) {
+        var symbol = String.fromCharCode(i + 64);
+        var element = document.getElementById('card-3-' + i);
+        var groups = document.getElementsByClassName('set-3-' + i);
+        element.addEventListener('mouseover', applyToSet(groups, highlight));
+        element.addEventListener('mouseout', applyToSet(groups, unhighlight));
+
+        element = document.getElementById('symbol-3' + symbol);
+        groups = document.getElementsByClassName('line-3' + symbol);
+        element.addEventListener('mouseover', applyToSet(groups, highlight));
+        element.addEventListener('mouseout', applyToSet(groups, unhighlight));
+    }
+    ]]></script>
+</svg>
