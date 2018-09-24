@@ -2,6 +2,10 @@
     fill: #ddd;
 }
 
+.failed-card {
+    stroke: red;
+}
+
 .dobble-symbol {
     text-anchor: middle;
     dominant-baseline: central;
@@ -9,6 +13,7 @@
     cursor: default;
 }
 
+.red { fill: red; }
 .pink { fill: rgb(255, 0, 175); }
 .blue { fill: rgb(64, 95, 237); }
 .green { fill: rgb(28, 173, 123); }
@@ -20,6 +25,10 @@
 
 .dobble-table-block {
     fill: #aaa;
+}
+
+.table-symbol {
+    font-size: 0.8em;
 }
 
 .symbol-set {
