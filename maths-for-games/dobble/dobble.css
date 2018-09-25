@@ -19,12 +19,12 @@
 .green { fill: rgb(28, 173, 123); }
 
 .dobble-table {
-    stroke: #aaa;
+    stroke: #444;
     stroke-width: 0.5;
 }
 
 .dobble-table-block {
-    fill: #aaa;
+    fill: #444;
 }
 
 .table-symbol {
@@ -90,12 +90,29 @@ circle.highlight {
     fill: rgb(255, 0, 175);
 }
 
+.spiral-symbol {
+    font-size: 0.85em;
+}
+
+.dobble-spiral {
+    stroke: rgb(64, 95, 237);
+    stroke-width: 5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-opacity: 0.75;
+}
+
+.dobble-diagonal {
+    fill: rgb(255, 0, 175);
+    fill-opacity: 0.75;
+}
+
 .dobble-controls {
-    width: 400px;
+    width: 420px;
     position: relative;
     background-color: #eee;
     padding: 10px;
-    /*border: 1px solid black;*/
 }
 
 .dobble-controls input {
@@ -116,7 +133,7 @@ circle.highlight {
 }
 
 .dobble-builder {
-    margin: 20px;
+    margin: 0 20px;
 }
 
 .dobble-header {
@@ -135,18 +152,18 @@ circle.highlight {
     fill: white;
 }
 
-.new-card .dobble-card {
+.dobble-header .dobble-card {
     fill: none;
     stroke-width: 2;
     stroke: #ddd;
 }
 
-.new-card .dobble-symbol {
-    fill: #ddd;
+.dobble-header .dobble-symbol {
     cursor: pointer;
+    font-size: 1.2em;
 }
 
-.new-card .dobble-symbol:hover {
+.dobble-header .dobble-symbol:hover {
     fill: rgb(255, 0, 175);
 }
 
