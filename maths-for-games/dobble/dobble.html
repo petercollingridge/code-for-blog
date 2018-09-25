@@ -117,14 +117,15 @@
     <!-- 6 symbols 4 cards table -->
     <div style="width:210px;">
         <svg viewBox="0 0 160 120">
-            <path class="blue" fill-opacity="0.25" d="M40 40 H120 V120z"/>
-
             <g class="dobble-table-block">
                 <rect x="40" y="40" width="20" height="20"/>
                 <rect x="60" y="60" width="20" height="20"/>
                 <rect x="80" y="80" width="20" height="20"/>
                 <rect x="100" y="100" width="20" height="20"/>
             </g>
+
+            <path class="blue" fill-opacity="0.85" d="M40 40 H120 V120z"/>
+            <path class="pink" fill-opacity="0.85" d="M40 40 V120 H120z"/>
                 
             <g class="dobble-table">
                 <line x1="0" y1="40" x2="120" y2="40"/>
@@ -147,18 +148,20 @@
                 <text transform="translate(90 20) rotate(-90)" x="0" y="0">BDF</text>
                 <text transform="translate(110 20) rotate(-90)" x="0" y="0">CEF</text>
             
-                <text x="70" y="50">A</text>
-                <text x="90" y="50">B</text>
-                <text x="110" y="50">C</text>
-                <text x="90" y="70">D</text>
-                <text x="110" y="70">E</text>
-                <text x="110" y="90">F</text>
-                <text x="50" y="70">A</text>
-                <text x="50" y="90">B</text>
-                <text x="50" y="110">C</text>
-                <text x="70" y="90">D</text>
-                <text x="70" y="110">E</text>
-                <text x="90" y="110">F</text>
+                <g fill="white">
+                    <text x="70" y="50">A</text>
+                    <text x="90" y="50">B</text>
+                    <text x="110" y="50">C</text>
+                    <text x="90" y="70">D</text>
+                    <text x="110" y="70">E</text>
+                    <text x="110" y="90">F</text>
+                    <text x="50" y="70">A</text>
+                    <text x="50" y="90">B</text>
+                    <text x="50" y="110">C</text>
+                    <text x="70" y="90">D</text>
+                    <text x="70" y="110">E</text>
+                    <text x="90" y="110">F</text>
+                </g>
             </g>
         </svg>
     </div>
@@ -639,9 +642,9 @@
     <!-- Spiral -->
     <div style="width:210px;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 -60 160 120">      
-            <rect class="dobble-diagonal" x="-68" y="-9" width="136" height="18" rx="8" ry="8" transform="rotate(45)"/>
             <path class="dobble-spiral" d="M0 0 h20 v20 h-40 v-40 h60 v60 h-80 v-80"/>
-        
+            <path class="dobble-spiral dobble-diagonal" d="M-45 -45 L45 45"/>
+
             <g class="dobble-symbol spiral-symbol">
             <text x="0" y="0">1</text>
             <text x="20" y="0">2</text>
