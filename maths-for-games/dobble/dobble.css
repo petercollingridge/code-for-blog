@@ -4,6 +4,7 @@
 
 .failed-card {
     stroke: red;
+    fill: none;
 }
 
 .dobble-symbol {
@@ -28,7 +29,7 @@
 }
 
 .table-symbol {
-    font-size: 0.8em;
+    font-size: 0.75em;
 }
 
 .symbol-set {
@@ -152,18 +153,23 @@ circle.highlight {
     fill: white;
 }
 
-.dobble-header .dobble-card {
+.symbol-counts {
+    font-size: 0.8em;
+}
+
+.new-card .dobble-card {
     fill: none;
     stroke-width: 2;
     stroke: #ddd;
 }
 
-.dobble-header .dobble-symbol {
+.new-card .dobble-symbol {
     cursor: pointer;
     font-size: 1.2em;
+    fill: #ddd;
 }
 
-.dobble-header .dobble-symbol:hover {
+.new-card .dobble-symbol:hover {
     fill: rgb(255, 0, 175);
 }
 
