@@ -19,6 +19,12 @@
 .blue { fill: rgb(64, 95, 237); }
 .green { fill: rgb(28, 173, 123); }
 
+.dobble-underline {
+    stroke: #222;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
 .dobble-table {
     stroke: #222;
     stroke-width: 0.5;
