@@ -1,0 +1,224 @@
+<svg viewBox="0 0 520 280" height="300" xmlns="http://www.w3.org/2000/svg" onload="init(evt)"> 
+
+//  *** To do ***
+//  Add axis values
+//	Ability to remove series
+//	Show point values on mouseover
+
+<style>
+    .mouseoverText {
+        font-size: 12px;
+        font-family: Verdana, sans-serif;
+    }
+  
+    .tooltip-text {
+        font-size: 12px;
+    }
+
+    .tooltip-rect {
+        fill: white;
+        stroke: black;
+        stroke-width: 1;
+        opacity: 0.85;
+    }
+  
+    .label {
+        font-size: 14px;
+        font-family: Verdana, sans-serif;
+    }
+
+    .unset {
+        opacity: 0.35;
+    }
+
+    text.unset:hover{
+        opacity: 1;
+    }
+
+    .series_line {
+        fill: none;
+        stroke: #2B60DE;
+        stroke-width: 3;
+        opacity: 0.80;
+    }
+    
+</style> 
+ 
+  <script type="text/ecmascript"> 
+    <![CDATA[
+    var svg, svgDocument;
+    var svgNS = "http://www.w3.org/2000/svg";
+    var chart_width = 330;
+    var chart_height = 210;
+    var max_series_value = 0;
+    var max_series_length = 0;
+    var all_series = new Array();
+
+    function init(evt) {
+        if (window.svgDocument == null) {
+            svg = evt.target;
+            svgDocument = svg.ownerDocument;
+        }
+        tooltip = svgDocument.getElementById('tooltip');
+    }
+    
+    function changeLabel(evt) {
+        var label = evt.target;
+        var new_label = prompt("Enter label", evt.target.firstChild.data);
+
+        if (new_label) {
+            label.firstChild.data = new_label;
+            label.setAttributeNS(null, "class", "label");
+            length = label.getComputedTextLength();
+
+            if (label.getAttributeNS(null, 'id') == "x-axis-label") {
+                label.setAttributeNS(null, "x", 30 + (chart_width-length) / 2);
+            } else if (label.getAttributeNS(null, 'id') == "y-axis-label") {
+                y = 115+length/2
+                label.setAttributeNS(null, "y", y);
+                label.setAttributeNS(null, "transform", "rotate(270 20 " + y + ")")
+            }
+        }
+    }
+    
+    function addSeries() {
+        // Convert input into an array of floats
+        data_string = prompt("Add data as comma separated values", "1, 4, 9, 16, 25");
+        data = data_string.split( ',' );
+        data_as_numbers = new Array();
+        new_y_max = false;
+
+        // Remove non-numbers and find maximum value
+        for (var i = 0; i < data.length; i++) {
+            n = parseFloat(data[i]);
+            if (n) {
+                data_as_numbers.push(n);
+                if (n > max_series_value) {
+                    max_series_value = n;
+                    new_y_max = true;
+                }
+            }
+        }
+
+        if (data_as_numbers.length > 1) {
+            new_x_max = false;
+            if (data_as_numbers.length > max_series_length) {
+                max_series_length = data_as_numbers.length;
+                new_x_max = true;
+            }
+
+            // Define dimensions
+            x_scale = (chart_width - 10) / (max_series_length - 1);
+            y_scale = chart_height / (max_series_value * 1.05);
+
+            if (new_y_max || new_x_max) {
+                // Remove and redraw with new scale
+                for (var i = 0; i < all_series.length; i++) {
+                    series = svgDocument.getElementById("series_line"+ i);
+                    series.parentNode.removeChild(series);
+                    drawSeries(all_series[i], i, x_scale, y_scale)
+                }
+            }
+
+            drawSeries(data, all_series.length, x_scale, y_scale)
+
+            all_series.push(data_as_numbers);
+            addSeriesName(all_series.length);
+        }
+    }
+
+    function drawSeries(data, n, x_scale, y_scale) {
+        // Create path element
+        series_line = svgDocument.createElementNS(svgNS,"path");
+        series_line.setAttributeNS(null, "class", "series_line");
+        series_line.setAttributeNS(null, "id", "series_line"+n);
+
+        parent_element = svgDocument.getElementById("series-plots");
+        parent_element.appendChild(series_line);
+
+        x = 35;
+        y = 10 + chart_height - data[0] * y_scale;
+        series_line.setAttributeNS(null, "d", "M" + x + " " + y);
+
+        // Add points to path
+        for (var i = 1; i < data.length; i++) {
+            x = 35 + x_scale * i;
+            y = 10 + chart_height - data[i] * y_scale;
+            d = series_line.getAttributeNS(null, "d");
+            series_line.setAttributeNS(null, "d", d + " L" + x + " " + y);
+        }
+    }
+
+    function addSeriesName(n) {
+        var series_name = svgDocument.createElementNS(svgNS, "text");
+        var textNode = svgDocument.createTextNode("Series " + n);
+
+        series_name.setAttributeNS(null, "x", 360);
+        series_name.setAttributeNS(null, "y", 25 + 25 * n);
+        series_name.setAttributeNS(null, "class", "label");
+        series_name.setAttributeNS(null, "cursor", "pointer");
+        series_name.setAttributeNS(null, "onmousedown", "changeLabel(evt)");
+        series_name.setAttributeNS(null, "onmousemove", "showTooltip(evt, 'Click to edit label')");
+        series_name.setAttributeNS(null, "onmouseout", "hideTooltip(evt)");
+
+        series_name.appendChild(textNode);
+        svgDocument.getElementById("series-labels").appendChild(series_name);
+    }
+
+    function showTooltip(evt, mouseovertext) {
+        var CTM = svg.getScreenCTM();
+        var x = (evt.clientX - CTM.e + 6) / CTM.a;
+        var y = (evt.clientY - CTM.f + 20) / CTM.d;
+        tooltip.setAttributeNS(null, "transform", "translate(" + x + " " + y + ")");
+        tooltip.setAttributeNS(null, "visibility", "visible");
+
+        var tooltipText = tooltip.getElementsByTagName('text')[0];
+        var tooltipBox = tooltip.getElementsByTagName('rect')[0];
+        tooltipText.firstChild.data = mouseovertext;
+        var length = tooltipText.getComputedTextLength();
+        tooltipBox.setAttributeNS(null, "width", length + 8);
+    }
+
+    function hideTooltip(evt) {
+        tooltip.setAttributeNS(null,"visibility", "hidden");
+    }
+    ]]>
+  </script>
+
+    <line class="axis" x1="29.5" y1="10.5" x2="29.5" y2="220.5"/>
+    <line class="axis" x1="29.5" y1="220.5" x2="359.5" y2="220.5"/>
+
+    <text x="158" y="240"
+        class="unset label"
+        id="x-axis-label"
+        cursor="pointer"
+        onmousedown="changeLabel(evt)"
+        onmousemove="showTooltip(evt, 'Click to edit label')"
+        onmouseout="hideTooltip(evt)">X-axis label</text>
+
+    <text x="20" y="150"
+        transform="rotate(270 20 150)"
+        class="unset label"
+        id="y-axis-label"
+        cursor="pointer"
+        onmousedown="changeLabel(evt)"
+        onmousemove="showTooltip(evt, 'Click to edit label')"
+        onmouseout="hideTooltip(evt)">Y-axis label</text>
+
+    <g id="series-labels">
+        <text x="360" y="25"
+            class="unset label"
+            id="add-data-button"
+            cursor="pointer"
+            onmousedown="addSeries()"
+            onmousemove="showTooltip(evt, 'Click to add series')"
+            onmouseout="hideTooltip(evt)">Add Series</text>
+    </g>
+
+   <g id="series-plots"></g>
+
+    <g id="tooltip" visibility="hidden" >
+        <rect class="tooltip-rect" width="80" height="16" rx="2" ry="2"/>
+        <text class="tooltip-text" x="4" y="12">Tooltip</text>
+    </g>
+</svg>

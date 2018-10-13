@@ -1,0 +1,156 @@
+<svg height="250" xmlns="http://www.w3.org/2000/svg" onload="init(evt)" viewBox="0 0 400 250"> 
+<style>
+    .button {
+        font-size: 14px;
+        font-family: Verdana, sans-serif;
+        opacity: 0.5;
+    }
+
+    text.button:hover {
+        opacity: 1;
+    }
+
+    .axis {
+        stroke: black;
+        stroke-width: 1;
+    }
+
+    .bar {
+        fill: #A0A0A0;
+        opacity: 0.5;
+    }
+
+    rect.bar:hover {
+        opacity: 1;
+    }
+</style> 
+ 
+  <script type="text/ecmascript"> 
+    <![CDATA[
+    var svgNS = "http://www.w3.org/2000/svg";
+    var chart_width = 330;
+    var chart_height = 210;
+
+    function init(evt){
+        if (window.svgDocument == null) {
+            svgDocument = evt.target.ownerDocument;
+        }
+    }
+    
+    function changeLabel(label_id) {
+        label = svgDocument.getElementById(label_id);
+        new_label = prompt("Enter label", "Click to add label");
+        label.firstChild.data = new_label;
+        length = label.getComputedTextLength();
+
+        if (label_id == "x-axis-label") {
+            label.setAttributeNS(null, "x", 210 - length / 2);
+        } else if (label_id == "y-axis-label") {
+            y = 115 + length / 2
+            label.setAttributeNS(null, "y", y);
+            label.setAttributeNS(null, "transform", "rotate(270 20 " + y + ")");
+        }
+    }
+    
+    function addData() {
+        // Remove elements from the the bars group
+        parent_element = svgDocument.getElementById("bars");
+
+        while (parent_element.childNodes.length > 0) {
+            parent_element.removeChild(parent_element.firstChild);
+        }
+
+        // Convert input into an array of floats
+        data_string = prompt("Add data as comma separated values", "1, 4, 9");
+        data = data_string.split(',');
+
+        data_as_numbers = new Array();
+        max_value = 0;
+
+        // Skips non-numbers
+        for(var i = 0; i < data.length; i++) {
+            n = parseFloat(data[i]);
+            if (n) {
+                data_as_numbers.push(n);
+                if (n > max_value) {
+                    max_value = n;
+                }
+            }
+        }
+
+        //Define dimensions
+        bar_width = chart_width/(data_as_numbers.length * 1.2);
+        scale = chart_height / (max_value * 1.1);
+        gap_between_bars = bar_width / 5;
+
+        for (var i = 0; i < data_as_numbers.length; i++) {
+            x = 30 + gap_between_bars/2 + i*(bar_width + gap_between_bars);
+            height = data_as_numbers[i]*scale;
+
+            bar = svgDocument.createElementNS(svgNS, "rect");
+            bar.setAttributeNS(null, "class", "bar");
+            bar.setAttributeNS(null, "id", "bar" + i);
+            bar.setAttributeNS(null, "x", x);
+            bar.setAttributeNS(null, "y", chart_height + 10 - height);
+            bar.setAttributeNS(null, "width", bar_width);
+            bar.setAttributeNS(null, "height", height);
+            bar.setAttributeNS(null, "value", data_as_numbers[i]);
+            bar.setAttributeNS(null, "onmouseover", "displayBarValue(evt)");
+            bar.setAttributeNS(null, "onmouseout", "hideBarValue()");
+
+            parent_element.appendChild(bar);
+        }
+    }
+
+    function displayBarValue(evt) {
+        this_bar = evt.target;
+        x = parseInt(this_bar.getAttributeNS(null, "x"));
+        x += parseInt(this_bar.getAttributeNS(null, "width"))/2-5;
+        y = parseInt(this_bar.getAttributeNS(null, "y"))-2;
+        v = this_bar.getAttributeNS(null, "value");
+
+        bar_value = svgDocument.getElementById("bar-value")
+        bar_value.setAttributeNS(null, "x", x);
+        bar_value.setAttributeNS(null, "y", y);
+        bar_value.firstChild.data = v
+        bar_value.setAttributeNS(null, "visibility", "visible");
+    }
+
+    function hideBarValue() {
+        bar_value.setAttributeNS(null, "visibility", "hidden");
+    }
+    ]]>
+  </script>
+
+    <line class="axis" x1="29.5" y1="10.5" x2="29.5" y2="220.5"/>
+    <line class="axis" x1="29.5" y1="220.5" x2="359.5" y2="220.5"/>
+
+    <text x="140" y="240"
+        class="button"
+        id="x-axis-label"
+        cursor="pointer"
+        onmousedown="changeLabel('x-axis-label')">
+        Click to add label
+    </text> 
+  
+    <text x="20" y="160"
+        transform="rotate(270 20 160)"
+        class="button"
+        id="y-axis-label"
+        cursor="pointer"
+        onmousedown="changeLabel('y-axis-label')">
+        Click to add label
+    </text>
+    
+    <text x="360" y="25"
+        class="button"
+        id="add-data-label"
+        cursor="pointer"
+        onmousedown="addData()">
+        Add Data
+    </text>
+
+    <g id="bars"></g>
+    <text x="0" y="0" id="bar-value" visibility="hidden">value</text>
+
+</svg>
