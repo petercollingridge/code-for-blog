@@ -1,0 +1,43 @@
+<svg viewBox="-39 -41 78 76" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .button {
+            fill: #007bbf;
+            cursor: pointer;
+        }
+        .button:hover {
+            fill: #0069d9;
+        }
+        .button-text {
+            font-size: 0.8rem;
+            fill: white;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+    </style>
+
+    <path onmousedown="startRotate(evt)" onmouseup="endRotate()" onmouseout="endRotate()" transform="rotate(0)" class="button" d="M0 -40 10.6 -14.6 38 -12.4 17.1 5.6 23.5 32.4 0 18 -23.5 32.4 -17.1 5.6 -38 -12.4 -10.6 -14.6z"/>
+    <text class="button-text">Button</text>
+
+    <script type="text/javascript"><![CDATA[
+        var rotateTimeout;
+
+        function rotate(rotateTarget) {
+            // Get transforms
+            var transform = rotateTarget.transform.baseVal.getItem(0);
+            var angle = transform.angle;
+            transform.setRotate(angle + 1, 0, 0);
+        }
+
+        function startRotate(evt) {
+            rotateTarget = evt.target;
+            rotate(rotateTarget);
+            rotateTimeout = setInterval("rotate(rotateTarget)", 20);
+        }
+
+        function endRotate() {
+            if (typeof(rotateTimeout) !== "undefined") {
+                clearTimeout(rotateTimeout);
+            }
+        }
+    ]]></script> 
+</svg>
