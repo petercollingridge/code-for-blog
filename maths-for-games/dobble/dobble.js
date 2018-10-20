@@ -54,14 +54,19 @@ var app = new Vue({
         cardSymbols: 3,
         symbols: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         symbolWidth: 24,
+        cardFailed: false,
         cards: [],
         newCard: {},
         newCardSymbolCount: 0,
         matchingCards: {},
+        forcedSymbols: {},
         unusableSymbols: {},
-        symbolCount: {}
+        symbolCount: {},
     },
     computed: {
+        svgHeight: function() {
+            return this.cards.length * 27 + 50;
+        },
         allSymbols: function () {
             return this.symbols.substr(0, this.numSymbols);
         },
@@ -69,15 +74,37 @@ var app = new Vue({
             return this.symbolWidth * this.numSymbols;
         },
     },
+    watch: {
+        numSymbols: function() { this.reset(); },
+        cardSymbols: function() { this.reset(); }
+    },
     methods: {
+        reset: function() {
+            this.cards = [];
+            this.newCard = {};
+            this.newCardSymbolCount = 0;
+            this.matchingCards = {};
+            this.unusableSymbols = {};
+            this.symbolCount = {};
+            this.findForcedSymbols();
+        },
+
+        showSymbol: function(symbol) {
+            if (this.newCard[symbol]) {
+                return true;
+            } else {
+                return this.forcedSymbols[symbol];
+            }
+        },
+
         getTranslation: function(index) {
-            return "translate(20 " + (index * 27 + 24) + ")";
+            return "translate(24 " + (index * 27 + 24) + ")";
         },
 
         getSymbolX: function(symbol) {
             // Convert symbol to index
             if (isNaN(symbol)) { symbol = symbol.charCodeAt(0) - 65; }
-            return (symbol + 0.5) * this.symbolWidth;
+            return (parseFloat(symbol) + 0.5) * this.symbolWidth;
         },
 
         toggleSymbol: function(symbol) {   
@@ -86,14 +113,18 @@ var app = new Vue({
             } else {
                 this.removeSymbol(symbol);
             }
+            this.findForcedSymbols();
         },
 
         addSymbol: function(symbol) {
             Vue.set(this.newCard, symbol, true);
-            this.newCardSymbolCount++
+            this.symbolCount[symbol] = (this.symbolCount[symbol] || 0) + 1;
+
+            this.newCardSymbolCount++;
             if (this.newCardSymbolCount == this.cardSymbols) {
-                this.addCard();
+                this.completeCard(symbol);
             } else {
+                // Mark symbols from matching cards as unusable to avoid duplicating them
                 var matchingCards = this.getCardsWithSymbol(symbol);
                 for (var i = 0; i < matchingCards.length; i++) {
                     var card = matchingCards[i];
@@ -105,6 +136,7 @@ var app = new Vue({
 
         removeSymbol: function(symbol) {
             Vue.set(this.newCard, symbol, false);
+            this.symbolCount[symbol]--;
             this.newCardSymbolCount--;
 
             for (var card in this.matchingCards) {
@@ -112,17 +144,37 @@ var app = new Vue({
                     if (card.indexOf(symbol) > -1) {
                         this.matchingCards[card] = false;
                         for (var i = 0; i < card.length; i++) {
-                            this.unusableSymbols[card[i]] = false;
+                            if (symbol !== card[i]) {
+                                this.unusableSymbols[card[i]]--;
+                            }
                         }
                     }
                 }
             }
         },
 
+        completeCard: function(symbol) {
+            // Check whether we're matching all cards
+            var missingCard = false;
+
+            for (var i = 0; i < this.cards.length; i++) {
+                var card = this.cards[i];
+                if (!this.matchingCards[card.join("")] && card.indexOf(symbol) === -1) {
+                    missingCard = true;
+                    break;
+                }
+            }
+
+            if (!missingCard) {
+                this.addCard();
+            } else {
+                console.log("fail")
+            }
+        },
+
         addCard: function() {
             var card = [];
             for (var symbol in this.newCard) {
-                this.symbolCount[symbol] = (this.symbolCount[symbol] || 0) + 1;
                 if (this.newCard[symbol]) {
                     card.push(symbol);
                 }
@@ -136,6 +188,10 @@ var app = new Vue({
 
         removeCard: function(index) {
             var card = this.cards.splice(index, 1)[0];
+            for (var i = 0; i < card.length; i++) {
+                this.symbolCount[card[i]]--;
+            }
+            this.findForcedSymbols();
         },
 
         getCardsWithSymbol: function(symbol) {
@@ -146,10 +202,40 @@ var app = new Vue({
 
         findUnusableSymbols: function(card, usedSymbol) {
             for (var i = 0; i < card.length; i++) {
-                if (card[i] !== usedSymbol) {
-                    this.unusableSymbols[card[i]] = true;
+                var symbol = card[i];
+                if (symbol !== usedSymbol) {
+                    this.unusableSymbols[symbol] = (this.unusableSymbols[symbol] || 0) + 1;
+                }
+            }
+        },
+
+        findForcedSymbols: function() {
+            this.forcedSymbols = {};
+
+            if (this.cards.length === Object.keys(this.matchingCards).length) {
+                // All cards matched, so forcing cards are just the usable symbols
+                for (var i = 0; i < this.numSymbols; i++) {
+                    var symbol = this.symbols[i];
+                    if (!this.unusableSymbols[symbol]) {
+                        this.forcedSymbols[symbol] = true;
+                    }
+                }
+            } else {
+                // Forced symbols are symbols from unmatched symbols that we can still use
+                for (var i = 0; i < this.cards.length; i++) {
+                    var card = this.cards[i];
+                    if (!this.matchingCards[card.join("")]) {
+                        for (var j = 0; j < card.length; j++) {
+                            var symbol = card[j];
+                            if (!this.unusableSymbols[symbol]) {
+                                this.forcedSymbols[symbol] = true;
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 });
+
+app.reset();
