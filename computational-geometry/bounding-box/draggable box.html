@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+  <html>
+
+<svg xmlns="http://www.w3.org/2000/svg" onload="init(evt)" onmousedown="startDrag(evt)" onmousemove="drag(evt)" onmouseup="endDrag()" width="1000" height="500" viewBox="-269.2582 -269.2582 538.5165 538.5165">
+
+  <style>
+    #box {
+      stroke-width: 1;
+      stroke: rgb(20, 20, 10);
+    }
+
+    .side1 { fill: rgb(10, 60, 160); }
+    .front1 { fill: rgb(20, 100, 200); }
+    .top1 { fill: rgb(60, 160, 250); }
+  </style>
+
+  <script type='text/javascript'>
+    <![CDATA[
+      var nodes = [
+        [1, 0, 0], [0, 1, 0], [0, 0, 1],
+        [-200,  100, -150],
+        [ 200,  100, -150],
+        [ 200,  100,  150],
+        [-200,  100,  150],
+        [-200, -100, -150],
+        [ 200, -100, -150],
+        [ 200, -100,  150],
+        [-200, -100,  150]
+      ];
+
+      var faces = [
+        ['top', 0,1,2,3],  // base
+        ['top', 7,6,5,4],  // top
+        ['side', 0,3,7,4],  // left
+        ['side', 1,5,6,2],  // right
+        ['front', 0,4,5,1],  // front
+        ['front', 2,6,7,3]   // back
+      ];
+
+      // Each element in this array represents a level
+      // Each level is an array of boxes, represented as [index for first coordinate, x, y, z]
+      // Where x, y and z are the index of that box along those axes.
+      var arrangements = [];
+
+      var boxGroup, dg, facePaths = [];
+      var PI = Math.PI;
+      var rx = -0.25 * PI;
+      var ry = PI / 6;
+      var nNodes = nodes.length;
+      var nBoxes = 1;
+      var perspective = 1000;
+      var mx, my;
+
+      var sign = function(x) {
+        return x > 0 ? 1 : (x < 0 ? -1 : 0);
+      };
+
+      function init(e) {
+        var doc, svg;
+        if (window.svgDocument == null) {
+          svg = e.target;
+          doc = e.target.ownerDocument;
+        }
+        
+        svg.addEventListener("touchstart", startDrag, false);
+        svg.addEventListener("touchend", endDrag, false);
+        svg.addEventListener("touchcancel", endDrag, false);
+        svg.addEventListener("touchmove", drag, false);
+        svg.addEventListener("mousedown", startDrag, false);
+        svg.addEventListener("mousemove", drag, false);
+        svg.addEventListener("mouseup", endDrag, false);
+        
+        boxGroup = doc.getElementById('box');
+
+        var i, path;
+        for (i = 0; i < nBoxes * 6; i++) {
+          path = doc.createElementNS('http://www.w3.org/2000/svg', 'path');
+          facePaths.push(path);
+          boxGroup.appendChild(path);
+        }
+
+        getCoordinates();
+      }
+
+      function sortByZ(a, b) { return b[0] - a[0]; }
+
+      function sort2(a, b) { return b[1] - a[1]; }
+
+      function getCoordinates() {
+        var cx = Math.cos(rx);
+        var sx = Math.sin(rx);
+        var cy = Math.cos(ry);
+        var sy = Math.sin(ry);
+        var sxsy = sx * sy;
+        var cxsy = cx * sy;
+        var sxcy = sx * cy;
+        var cxcy = cx * cy;
+        var i, n, x, y, z, z2, p, f, j, d, coords = [];
+
+        for (i = 0; i < nNodes; i++) {
+          n = nodes[i];
+          x = n[0];
+          y = n[1];
+          z = n[2];
+
+          z2 = -x * sxcy + y * sy + z * cxcy;
+          p = perspective / (z2 + perspective);
+
+          coords.push([
+            p * (x * cx + z * sx),
+            p * (x * sxsy + y * cy - z * cxsy),
+            z2
+          ]);
+
+        }
+
+        // Find position of axes
+        var dx = coords[1][2];
+        var dy = coords[0][2];
+        var dz = coords[2][2];
+
+        // Use axes to calculate order in which to draw boxes contained in each level
+        var axes = [
+          [2, Math.abs(dx), sign(dx)],
+          [1, Math.abs(dy), sign(dy)],
+          [3, Math.abs(dz), sign(dz)]
+        ].sort(sort2);
+
+        var d1 = axes[0][0];
+        var d2 = axes[1][0];
+        var d3 = axes[2][0];
+        var s1 = axes[0][2];
+        var s2 = axes[1][2];
+        var s3 = axes[2][2];
+
+        var sortBoxes = function(a, b) {
+          return (s1 * (b[d1] - a[d1])) || (s2 * (b[d2] - a[d2])) || (s3 * (b[d3] - a[d3]));
+        };
+
+        // For each level, sort the arrangement of boxes
+        for (i = 0; i < arrangements.length; i++) {
+          arrangements[i] = arrangements[i].sort(sortBoxes)
+        }
+
+        var faceNumber = 0;
+
+        // Build path for given face from coordinates
+        var drawFace = function(startCoord, face, level) {
+          d = 'M';
+          for (var k = 1; k < 5; k++) {
+            d += coords[startCoord + face[k]][0] + ' ' + coords[startCoord + face[k]][1] + ' ';
+          }
+          facePaths[faceNumber].setAttribute('d', d + 'z');
+          facePaths[faceNumber].setAttribute('class', face[0] + level);
+          faceNumber++;
+        };
+
+        // Recursively draw boxes
+        var drawBoxes = function(offset, level) {
+          
+          // Find normals for each face
+
+          var backFaces = [];
+          var frontFaces = [];
+          for (j = 0; j < 6; j++) {
+            var face = faces[j];
+            var n0 = coords[offset + face[1]];
+            var n1 = coords[offset + face[2]];
+            var n2 = coords[offset + face[4]];
+            if ((n1[0] - n0[0]) * (n2[1] - n0[1]) - (n1[1] - n0[1]) * (n2[0] - n0[0]) < 0) {
+              backFaces.push(faces[j]);
+            } else {
+              frontFaces.push(faces[j]);
+            }
+          }
+          
+          for (j = 0; j < backFaces.length; j++) {
+            drawFace(offset, backFaces[j], level);
+          }
+
+          // Draw its children
+          var arrangement = arrangements[level - 1];
+
+          if (arrangement) {
+            for (i = 0; i < arrangement.length; i++) {
+              drawBoxes(offset + 8 + arrangement[i][0] * 8, level + 1)
+            }
+          }
+
+          for (j = 0; j < frontFaces.length; j++) {
+            drawFace(offset, frontFaces[j], level);
+          }
+        };
+
+        drawBoxes(3, 1);
+      }
+
+      function startDrag(e) {
+        dg = true;
+        if (e.type=='touchstart') {
+          mx=e.touches[0].clientX;
+          my=e.touches[0].clientY;
+        } else {
+          mx=e.clientX;
+          my=e.clientY;
+        }
+      }
+
+      function endDrag() { dg = false; }
+
+      function drag(e){if(dg){var x,y;e.preventDefault();if(e.type=='touchmove'){e=e.touches[0];}x=e.clientX;y=e.clientY;rx-=(x-mx)*0.005;ry+=(y-my)*0.005;mx=x;my=y;
+
+          if (rx < 0) { rx += PI * 2; }
+          if (ry < -PI / 4) { ry = -PI / 4;}
+          if (ry > PI / 4) { ry = PI / 4;}
+ 
+          getCoordinates();
+          
+        }
+      }
+    ]]>
+  </script>
+
+  <g id="box"></g>
+</svg>
+
+<input id="perspective-control" type="range" min="100" max="4000" value="1000"/>
+
+<script type='text/javascript'>
+  var slider = document.getElementById('perspective-control');
+
+  slider.oninput = function(evt) {
+    perspective = parseFloat(slider.value);
+    getCoordinates();
+  };
+</script>
+
+</html>

@@ -1,0 +1,7 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="200" viewBox="-5 -5 330 310">
+
+<line x1="150" x2="150" y1="0" y2="300" stroke="black" stroke-width="1"/>
+<rect id="simple-box" fill="none" stroke="rgb(64, 95, 237)" transform="rotate(53.13, 150, 150)" stroke-width="3" x="30" y="60" width="240" height="180"/>
+<circle cx="150" cy="150" r="3" fill="rgb(64, 95, 237)"/>
+<circle cx="150" cy="150" r="152" fill="none"  stroke="rgb(64, 95, 237)" stroke-width="1"/>
+</svg>
