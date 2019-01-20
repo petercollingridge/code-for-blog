@@ -93,14 +93,14 @@ def write_word_counts(filename, word_counts, limit=0):
 
 if __name__ == '__main__':
     # Get word frequencies
-    word_counts = get_word_counts(os.path.join('word_lists', '500k_wordlist.txt'))
+    word_counts = get_word_counts(os.path.join('..', 'word_lists', '500k_wordlist.txt'))
     set_of_words = set(word_counts.keys())
     # # print(len(set_of_words))  #365,749
     # # print(get_total_count(word_counts, set_of_words))  #404,253,213
 
     # Get list of common words from http://www.gutenberg.org/files/3201/files/
     # common_words = get_word_list(os.path.join('..', 'COMMON.TXT'))
-    common_words = get_word_list(os.path.join('word_lists', 'CROSSWD.TXT'))
+    common_words = get_word_list(os.path.join('..', 'word_lists', 'CROSSWD.TXT'))
     # print(len(common_words))    #113,811
 
     # Find longest words in common_words
@@ -119,4 +119,4 @@ if __name__ == '__main__':
 
     # Save list of filtered words and their counts
     filtered_word_counts = {word: word_counts[word] for word in filtered_words}
-    write_word_counts(os.path.join('word_lists', 'filtered_word_counts.txt'), filtered_word_counts)
+    write_word_counts(os.path.join('..', 'word_lists', 'filtered_word_counts.txt'), filtered_word_counts)

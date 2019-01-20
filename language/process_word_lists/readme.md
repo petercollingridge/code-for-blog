@@ -1,0 +1,1 @@
+process_word_list.py is Python3 program for filtering a list of word counts from a file "500k_wordlist.txt". This file came from http://www.wordfrequency.info and is not included here. All the following work is done with "filter_word_counts.txt" which is in the word_lists folder.
