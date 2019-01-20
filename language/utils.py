@@ -1,6 +1,3 @@
-import os
-
-
 def get_word_counts(filepath):
     word_counts = dict()
 
@@ -14,6 +11,8 @@ def get_word_counts(filepath):
 
 
 if __name__ == '__main__':
+    import os
     word_counts = get_word_counts(os.path.join('word_lists', 'filtered_word_counts.txt'))
+    
     print(word_counts['the'])
     print(word_counts.popitem())
