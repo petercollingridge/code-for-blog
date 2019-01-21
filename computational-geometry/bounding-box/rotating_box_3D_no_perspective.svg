@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" onload="initRotatingBox3D(evt)" height="200" viewBox="-205 -185 410 370">
+
+  <style>
+    .t1{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(60,160,250);}
+    .l1{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(10,60,160);}
+    .f1{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(20,100,200);}
+    .r1{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(10,60,160);}
+    .b1{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(20,100,200);}
+    .a1{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(60,160,250);}
+  </style>
+  <script type='text/ecmascript'>
+    <![CDATA[
+      var sign = function(x) {
+        return x > 0 ? 1 : (x < 0 ? -1 : 0);
+      };
+
+      function sort2(a, b) { return b[1] - a[1]; }
+
+      function initRotatingBox3D(e) {
+        var nodes = [
+            [1, 0, 0], [0, 1, 0], [0, 0, 1],
+            [-200,  100, -150],
+            [ 200,  100, -150],
+            [ 200,  100,  150],
+            [-200,  100,  150],
+            [-200, -100, -150],
+            [ 200, -100, -150],
+            [ 200, -100,  150],
+            [-200, -100,  150]
+        ];
+
+        var faces = [
+            ['a', 0,1,2,3],  // base
+            ['t', 7,6,5,4],  // top
+            ['f', 0,4,5,1],  // front
+            ['b', 2,6,7,3]   // back
+        ];
+
+        // Each element in this array represents a level
+        // Each level is an array of boxes, represented as [index for first coordinate, x, y, z]
+        // Where x, y and z are the index of that box along those axes.
+        var arrangements = [];
+
+        var boxGroup, dragging, facePaths = [];
+        var PI = Math.PI;
+        var rx = 0;
+        var ry = 0;
+        var nNodes = nodes.length;
+        var nBoxes = 1;
+        var mx, my;
+        var doc, svg;
+
+        svg = e.target;
+        doc = e.target.ownerDocument;
+        
+        boxGroup = doc.getElementById('rotating-box-3D');
+
+        var i, path;
+        for (i = 0; i < 4; i++) {
+          path = doc.createElementNS('http://www.w3.org/2000/svg', 'path');
+          facePaths.push(path);
+          boxGroup.appendChild(path);
+        }
+
+        function updateCoordinates() {
+            // Calculate useful values
+            var cx = Math.cos(rx);
+            var sx = Math.sin(rx);
+            var cy = Math.cos(ry);
+            var sy = Math.sin(ry);
+            var sxsy = sx * sy;
+            var cxsy = cx * sy;
+            var sxcy = sx * cy;
+            var cxcy = cx * cy;
+            var i, n, x, y, z, z2, p, f, j, d, coords = [];
+
+            // Update position of nodes
+            for (i = 0; i < nNodes; i++) {
+                n = nodes[i];
+                x = n[0];
+                y = n[1];
+                z = n[2];
+
+                z2 = -x * sxcy + y * sy + z * cxcy;
+                p = 1200 / (z2 + 1200);
+
+                coords.push([x, p * (x * sxsy + y * cy - z * cxsy), z2 ]);
+            }
+
+            var faceNumber = 0;
+
+            // Build path for given face from coordinates
+            var drawFace = function(startCoord, face, level) {
+                d = 'M';
+                for (var k = 1; k < 5; k++) {
+                    d += coords[startCoord + face[k]][0] + ' ' + coords[startCoord + face[k]][1] + ' ';
+                }
+                facePaths[faceNumber].setAttribute('d', d + 'z');
+                facePaths[faceNumber].setAttribute('class', face[0] + level);
+                faceNumber++;
+            };
+
+            // Draw boxes
+            var drawBoxes = function(offset, level) {
+                // Find normals for each face
+                var backFaces = [];
+                var frontFaces = [];
+                for (j = 0; j < 4; j++) {
+                    var face = faces[j];
+                    var n0 = coords[offset + face[1]];
+                    var n1 = coords[offset + face[2]];
+                    var n2 = coords[offset + face[4]];
+                    if ((n1[0] - n0[0]) * (n2[1] - n0[1]) - (n1[1] - n0[1]) * (n2[0] - n0[0]) >= 0) {
+                        frontFaces.push(faces[j]);
+                    } else {
+                        backFaces.push(faces[j]);
+                    }
+                }
+
+                for (j = 0; j < backFaces.length; j++) {
+                    drawFace(offset, backFaces[j], level);
+                }
+
+                for (j = 0; j < frontFaces.length; j++) {
+                    drawFace(offset, frontFaces[j], level);
+                }
+            };
+
+            drawBoxes(3, 1);
+        }
+
+        function rotateBox() {
+            ry += 0.02;
+            updateCoordinates();
+        }
+            
+        function beginAnimation() {
+            setInterval(rotateBox, 20);
+        }
+
+        beginAnimation();
+      }
+    ]]>
+  </script>
+
+  <g id="rotating-box-3D"></g>
+</svg>

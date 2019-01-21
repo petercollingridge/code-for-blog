@@ -1,0 +1,64 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="200" viewBox="-5 -5 330 310" onload="init(evt)">
+
+<script type="text/ecmascript">
+    <![CDATA[
+        var box, heightLine, boundary1, boundary2;
+        var diagonalAngle, diagonalLength, angle = 0;
+
+        function init(evt) {
+            var svgDocument = evt.target.ownerDocument;
+            box = svgDocument.getElementById('simple-box');
+            heightLine = svgDocument.getElementById('box-height');
+            boundary1 = svgDocument.getElementById('box-boundary-1');
+            boundary2 = svgDocument.getElementById('box-boundary-2');
+            
+            var width = box.getAttributeNS(null, 'width');
+            var height = box.getAttributeNS(null, 'height');
+            diagonalAngle = Math.atan(height / width);
+            diagonalLength = Math.sqrt(width * width + height * height) / 2;
+
+            beginAnimation();
+        }
+
+        function updateImage() {
+            angle = (angle + 1) % 360;
+            box.setAttributeNS(null, 'transform', 'rotate(' + angle + ' 150 150)');
+
+            var radians = angle * Math.PI / 180;
+            var h1 = Math.abs(Math.sin(radians - diagonalAngle));
+            var h2 = Math.abs(Math.sin(radians + diagonalAngle));
+            var height = diagonalLength * Math.max(h1, h2);
+
+            heightLine.setAttributeNS(null, 'y1', 150 - height);
+            heightLine.setAttributeNS(null, 'y2', 150 + height);
+            boundary1.setAttributeNS(null, 'y1', 150 - height);
+            boundary1.setAttributeNS(null, 'y2', 150 - height);
+            boundary2.setAttributeNS(null, 'y1', 150 + height);
+            boundary2.setAttributeNS(null, 'y2', 150 + height);
+        }
+
+        function beginAnimation() {
+            var timeout = setInterval(updateImage, 20);
+        }
+        
+    ]]>
+   </script>
+
+<defs>
+    <marker id="arrow" viewBox="0 0 10 8" refX="9" refY="4"
+        markerWidth="6" markerHeight="6"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 4 L 0 8 z" />
+    </marker>
+</defs>
+
+<rect id="simple-box" fill="none" stroke="rgb(64, 95, 237)" stroke-width="3" x="30" y="60" width="240" height="180"/>
+<line id="box-height" stroke="black" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)" x1="320" x2="320" y1="60" y2="240"/>
+
+<g stroke="black" stroke-width="1">
+    <line id="box-boundary-1" x1="-5" x2="330" y1="60" y2="60"/>
+    <line id="box-boundary-2" x1="-5" x2="330" y1="240" y2="240"/>
+</g>
+
+<circle cx="150" cy="150" r="3" fill="rgb(64, 95, 237)"/>
+</svg>

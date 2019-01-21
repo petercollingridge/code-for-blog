@@ -1,0 +1,323 @@
+<svg xmlns="http://www.w3.org/2000/svg" onload="init(evt)" width="300" height="300" viewBox="-406 -406 812 812" style="border:1px solid black">
+
+  <style>
+    .t1{stroke-width:1;stroke:rgb(20,20,10);fill:none}
+    .l1{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(10,60,160);}
+    .f1{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(20,100,200);;fill-opacity:0.7}
+    .r1{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(10,60,160);}
+    .b1{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(20,100,200);}
+    .a1{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(60,160,250);}
+    .t2{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(250,160,50);}
+    .l2{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(160,60,10);}
+    .f2{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(200,100,20);}
+    .r2{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(160,60,10);}
+    .b2{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(200,100,20);}
+    .a2{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(250,160,50);}
+    .t3{stroke-width:1;stroke:rgb(20,20,10);fill:none;}
+    .l3{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(60,160,10);}
+    .f3{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(100,200,20);}
+    .r3{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(60,160,10);}
+    .b3{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(100,200,20);}
+    .a3{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(160,250,50);}
+    .t4{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(200,10,10);}
+    .l4{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(60,60,60);}
+    .f4{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(100,100,100);}
+    .r4{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(60,60,60);}
+    .b4{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(100,100,100);}
+    .a4{stroke-width:1;stroke:rgb(20,20,10);fill:rgb(200,10,10);}
+  </style>
+
+  <script type='text/ecmascript'>
+    <![CDATA[
+
+      function init(e) {
+        var nodes=[
+            [-170,300,-150],[170,300,-150],[170,300,150],[-170,300,150],[-170,120,-150],[170,120,-150],[170,120,150],[-170,120,150],
+            [-160,97,-140],[160,97,-140],[160,97,140],[-160,97,140],[-160,37,-140],[160,37,-140],[160,37,140],[-160,37,140],
+            [-151.5,-126,-125],[-1.5,-126,-125],[-1.5,-126,125],[-151.5,-126,125],[-151.5,-176,-125],[-1.5,-176,-125],[-1.5,-176,125],[-151.5,-176,125],
+            [1.5,-126,-125],[151.5,-126,-125],[151.5,-126,125],[1.5,-126,125],[1.5,-176,-125],[151.5,-176,-125],[151.5,-176,125],[1.5,-176,125],
+            [-160,37,-140],[160,37,-140],[160,37,140],[-160,37,140],[-160,-23,-140],[160,-23,-140],[160,-23,140],[-160,-23,140],
+            [-151.5,-186,-125],[-1.5,-186,-125],[-1.5,-186,125],[-151.5,-186,125],[-151.5,-236,-125],[-1.5,-236,-125],[-1.5,-236,125],[-151.5,-236,125],
+            [1.5,-186,-125],[151.5,-186,-125],[151.5,-186,125],[1.5,-186,125],[1.5,-236,-125],[151.5,-236,-125],[151.5,-236,125],[1.5,-236,125],
+            [-160,-23,-140],[160,-23,-140],[160,-23,140],[-160,-23,140],[-160,-83,-140],[160,-83,-140],[160,-83,140],[-160,-83,140],
+            [-151.5,-246,-125],[-1.5,-246,-125],[-1.5,-246,125],[-151.5,-246,125],[-151.5,-296,-125],[-1.5,-296,-125],[-1.5,-296,125],[-151.5,-296,125],
+            [1.5,-246,-125],[151.5,-246,-125],[151.5,-246,125],[1.5,-246,125],[1.5,-296,-125],[151.5,-296,-125],[151.5,-296,125],[1.5,-296,125]
+        ];
+
+        // Boxes defined as [index, x, y, z, level, [children], visible]
+        var boxes = [
+            [0, 0, 0, 0, 1, []],
+            [1, 0, 0, 1, 1, [
+            [1, 0, 0, 0, 2, []],
+            [4, 0, 0, 1, 2, []],
+            [7, 0, 0, 2, 2, []],
+            ], 1],
+            [2, 0, 0, 2, 1, [
+            [2, 0, 0, 0, 3, []],
+            [3, 1, 0, 0, 3, []],
+            [5, 0, 0, 1, 3, []],
+            [6, 1, 0, 1, 3, []],
+            [8, 0, 0, 2, 3, []],
+            [9, 1, 0, 2, 3, []],
+            ], 1]
+        ];
+
+        var normals,
+        nBoxes=10,
+        counts=[3,1,1],
+        ex=[1,1,0,0,];
+
+        var sizes = [
+            [400, 300, 200],
+            [180, 180, 120],
+            [80, 80, 100]
+        ];
+
+        var faces = [
+            ['a',0,1,2,3],  // base
+            ['t',7,6,5,4],  // top
+            ['l',0,3,7,4],  // left
+            ['r',1,5,6,2],  // right
+            ['f',0,4,5,1],  // front
+            ['b',2,6,7,3]   // back
+        ];
+
+        var i, s1, s2, s3, c, n, dragging, facePaths = [];
+        var PI = Math.PI;
+        var rx = -0.25 * Math.PI;
+        var ry = Math.PI / 6;
+        var nNodes = nodes.length;
+        var sortBoxes;
+        var sortFunc;
+
+        if (window.svgDocument == null) {
+          svgDocument = e.target.ownerDocument;
+        }
+        
+        var p, g = svgDocument.getElementById('spinning-box-1');
+        for (i = 0; i < nBoxes * 6; i++) {
+          p = svgDocument.createElementNS('http://www.w3.org/2000/svg', 'path');
+          facePaths.push(p);
+          g.appendChild(p);
+        }
+
+        svgDocument.addEventListener('mousedown', startDrag);
+        svgDocument.addEventListener('mousemove', drag);
+        svgDocument.addEventListener('mouseup', endDrag);
+
+        function sortAxes(a, b) { return Math.abs(b[1]) - Math.abs(a[1]); }
+
+        var drawFace = function(s, f, L) {
+            var d = 'M';
+            for (var i = 1; i < 5; i++) {
+            d += c[s + f[i]][0] + ' ' + c[s + f[i]][1] + ' ';
+            }
+            facePaths[n].setAttribute('d', d + 'z');
+            facePaths[n++].setAttribute('class', f[0] + L);
+        };
+
+        function drawBox(box) {
+            var f1 = [];  // back faces
+            var f2 = [];  // front faces
+
+            // Check this isn't a virtual box
+            if (!box[6]) {
+            var index = box[0] * 8;
+
+            // Collect faces facing away and faces facing forward in separate arrays
+            for (var i = 0; i < 6; i++) {
+                f = faces[i];
+                x = c[index + f[1]];
+                y = c[index + f[2]];
+                z = c[index + f[4]];
+
+                if ((y[0] - x[0]) * (z[1] - x[1]) - (y[1] - x[1]) * (z[0] - x[0]) < 0) {
+                f1.push(f);
+                } else {
+                f2.push(f);
+                }
+            }
+            }
+
+            var L = box[4];
+
+            // Draw back faces
+            for (i = 0; i < f1.length; i++) {
+            drawFace(index, f1[i], L);
+            }
+
+            // Draw children
+            if (box[5].length) {
+            drawBoxes(box[5], L + 1);
+            }
+
+            // Draw front faces
+            for (i = 0; i < f2.length; i++) {
+            drawFace(index, f2[i], L);
+            }
+        }
+
+        // Draw boxes for a given level
+        function drawBoxes(boxes) {
+            var mins = [1, 1, 1];
+            var maxs = [-1, -1, -1];
+
+            for (var i = 0; i < boxes.length; i++) {
+            var index = boxes[i][0];
+            for (var j = 0; j < 3; j++) {
+                mins[j] = Math.min(mins[j], normals[index][j]);
+                maxs[j] = Math.max(maxs[j], normals[index][j]);
+            }
+            }
+
+            // Whether we reverse the sort, take the absolute value 
+            sortFunc = [
+            boxes[0][0],
+            Math.sign(mins[0]) === Math.sign(maxs[0]) ? Math.sign(mins[0]) : 0,
+            Math.sign(mins[1]) === Math.sign(maxs[1]) ? Math.sign(mins[1]) : 0,
+            Math.sign(mins[2]) === Math.sign(maxs[2]) ? Math.sign(mins[2]) : 0
+            ];
+
+            // Sort boxes bases on their axes
+            boxes.sort(sortBoxes);
+
+            for (var i = 0; i < boxes.length; i++) {
+            drawBox(boxes[i]);
+            }
+        };
+
+        function update() {
+            var cx = Math.cos(rx),
+                sx = Math.sin(rx),
+                cy = Math.cos(ry),
+                sy = Math.sin(ry),
+                sxsy = sx * sy,
+                cxsy = cx * sy,
+                sxcy = sx * cy,
+                cxcy = cx * cy,
+                a,x,y,z,j,k,d,f;
+
+            c = [];
+
+            for (i = 0; i < nNodes; i++) {
+            n = nodes[i];
+            x = n[0];
+            y = n[1];
+            z = n[2];
+            j = -x * sxcy + y * sy + z * cxcy;
+            k = 1000/(j+1000);
+            c[i] = [
+                k * (x * cx + z * sx),
+                k * (x * sxsy + y * cy - z * cxsy),
+                j
+            ];
+            }
+
+            var getVector = function(c1, c2) {
+            var dx = c2[0] - c1[0];
+            var dy = c2[1] - c1[1];
+            var dz = c2[2] - c1[2];
+            var d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            return [dx / d, dy / d];
+            };
+
+            // For each box calculate the normal for its three othogonal faces.
+            normals = [];
+            for (i = 0; i < nBoxes; i++) {
+            var s = i * 8;
+
+            var x1 = getVector(c[s + 4], c[s + 5]);   // along x-axis
+            var x2 = getVector(c[s + 2], c[s + 3]);   // along x-axis
+            var y1 = getVector(c[s + 4], c[s + 7]);   // along y-axis
+            var y2 = getVector(c[s + 2], c[s + 1]);   // along y-axis
+            var z1 = getVector(c[s + 4], c[s + 0]);   // along z-axis
+            var z2 = getVector(c[s + 2], c[s + 6]);   // along z-axis
+
+            
+            // Z-component of normal of each plane
+            normals.push([
+                z1[0] * y1[1] - z1[1] * y1[0] + z2[0] * y2[1] - z2[1] * y2[0],   // x
+                z1[0] * x1[1] - z1[1] * x1[0] + z2[0] * x2[1] - z2[1] * x2[0],   // y
+                x1[0] * y1[1] - x1[1] * y1[0] + x2[0] * y2[1] - x2[1] * y2[0]    // z
+            ]);
+            }
+
+            // Calculate order in which we should sort axes
+            a = [
+            [1, (c[1][2] - c[0][2]) / sizes[0][0]],
+            [2, (c[3][2] - c[0][2]) / sizes[0][1]],
+            [3, (c[4][2] - c[0][2]) / sizes[0][2]]
+            ].sort(sortAxes);
+
+            var axis1 = a[0][0];
+            var axis2 = a[1][0];
+            var axis3 = a[2][0];
+            s1 = Math.sign(a[0][1]);
+            s2 = Math.sign(a[1][1]);
+            s3 = Math.sign(a[2][1]);
+
+            sortBoxes = function(a, b) {
+            // Get normal of box or its first child if its a virtual box
+            var n1 = normals[a[0]];
+            var n2 = normals[b[0]];
+
+            // Sort by axis where axis is different
+            // Order determined by sortFunc
+            // If it is 0 then sort by absolute value of normal instead
+
+            if (b[axis1] - a[axis1]) {
+                return sortFunc[axis1] ? sortFunc[axis1] * (b[axis1] - a[axis1]) : Math.abs(n2[axis1 - 1]) - Math.abs(n1[axis1 - 1]);
+            } else if (b[axis2] - a[axis2]) {
+                return sortFunc[axis2] ? sortFunc[axis2] * (b[axis2] - a[axis2]) : Math.abs(n2[axis2 - 1]) - Math.abs(n1[axis2 - 1]);
+            } else {
+                return sortFunc[axis3] ? sortFunc[axis3] * (b[axis3] - a[axis3]) : Math.abs(n2[axis3 - 1]) - Math.abs(n1[axis3 - 1]);
+            }
+            };
+
+            n = 0;
+            drawBoxes(boxes);
+        }
+
+        function startDrag(e) {
+            dragging = true;
+            cx = e.clientX;
+            cy = e.clientY;
+        }
+
+        function endDrag() { dragging = false; }
+
+        function drag(e) {
+            if (dragging) {
+            var x = e.clientX;
+            var y = e.clientY;
+            rx -= (x - cx) * 0.005;
+            ry += (y - cy) * 0.005;
+            cx = x;
+            cy = y;
+            update();
+            if (rx < 0) { rx += PI * 2; }
+            //if (ry < -PI / 4) { ry = -PI / 4;}
+            //if (ry > PI / 4) { ry = PI / 4;}
+            }
+        }
+
+        function rotateBox() {
+            if (!dragging) {
+            rx += 0.02;
+            update();
+            }
+        }
+            
+        function beginAnimation() {
+            setInterval(rotateBox, 20);
+        }
+
+        beginAnimation();
+      }
+
+
+    ]]>
+  </script>
+
+  <g id="spinning-box-1"></g>
+</svg>

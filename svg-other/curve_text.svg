@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 4" id="curve-text">
+
+    <style>
+        polygon, rect {
+            fill: #444;
+            stroke: #444;
+            stroke-width: 0.01;
+        }
+        .curve-path {
+            stroke: black;
+            stroke-width: 0.01;
+            fill: none;
+        }
+    </style>
+    <rect x="0" y="0" width="4" height="4" opacity="0.2"/>
+    <script type="text/javascript"><![CDATA[
+        var svg = document.getElementById('curve-text');
+        var NS = "http://www.w3.org/2000/svg";
+
+        var points = [
+            [0, 0],
+            [0.1, 0],
+            [0.2, 0],
+            [0.2, -0.1],
+            [0.2, -0.2],
+            [0.2, -0.3],
+            [0.2, -0.4],
+            [0.2, -0.5],
+            [0.2, -0.6],
+            [0.3, 0],
+            [0.4, 0]
+        ];
+    
+        var cx = 2;
+        var cy = 2;
+        var r = 2;
+        var size = 0.1;
+
+        drawCircle(cx, cy , r - 0.7);
+
+        var circumference = Math.PI * 2 * r;
+        var angle = 360 / circumference;
+        var radians = 1 / r;
+
+        for (var i = 0; i < points.length; i++) {
+            //addBox(points[i][0], points[i][1], size);
+            for (var j = 0; j < 12; j++) {
+                addCurveBox2(points[i][0] + j, points[i][1], size, cx, cy, r)
+            }
+        }
+
+        function drawCircle(cx, cy , r) {
+            var circle = document.createElementNS(NS, 'circle');
+            circle.setAttributeNS(null, 'cx', cx);
+            circle.setAttributeNS(null, 'cy', cy);
+            circle.setAttributeNS(null, 'r', r);
+            circle.setAttributeNS(null, 'class', 'curve-path');
+            svg.appendChild(circle);
+        }
+
+        function addBox(x, y, size) {
+            var box = document.createElementNS(NS, 'rect');
+            box.setAttributeNS(null, 'x', x);
+            box.setAttributeNS(null, 'y', -y);
+            box.setAttributeNS(null, 'width', size);
+            box.setAttributeNS(null, 'height', size);
+            svg.appendChild(box);
+        }
+
+        function addCurveBox(x, y, size, cx, cy, r, angle) {
+            var box = document.createElementNS(NS, 'rect');
+            box.setAttributeNS(null, 'x', cx);
+            box.setAttributeNS(null, 'y', cy - r - y);
+            box.setAttributeNS(null, 'width', size);
+            box.setAttributeNS(null, 'height', size);
+            //box.setAttributeNS(null, 'transform', 'rotate(' + (x * angle) + ' ' + cx + ' ' + cy + ')');
+            svg.appendChild(box);
+        }
+
+        function addCurveBox2(x, y, size, cx, cy, r) {
+            var d1 = r + y;
+            var d2 = r + y - 0.1;
+            var theta1 = x / r;
+            var theta2 = (x + 0.1) / r;
+
+            var coords = [
+                cx + d1 * Math.cos(theta1),
+                cy - d1 * Math.sin(theta1),
+                cx + d1 * Math.cos(theta2),
+                cy - d1 * Math.sin(theta2),
+                cx + d2 * Math.cos(theta2),
+                cy - d2 * Math.sin(theta2),
+                cx + d2 * Math.cos(theta1),
+                cy - d2 * Math.sin(theta1)
+            ]
+
+            var box = document.createElementNS(NS, 'polygon');
+            box.setAttributeNS(null, 'points', coords.join(" "));
+            svg.appendChild(box);
+        }
+
+function addCurveBox2(x, y, size, cx, cy, r) {
+    var dotR = size / 2;
+    var d = r + (y - dotR);
+    var theta = (x + dotR) / r;
+
+    var x = cx + d * Math.cos(theta);
+    var y = cy - d * Math.sin(theta);
+
+    var dot = document.createElementNS(NS, 'circle');
+    dot.setAttributeNS(null, 'cx', x);
+    dot.setAttributeNS(null, 'cy', y);
+    dot.setAttributeNS(null, 'r', dotR);
+    svg.appendChild(dot);
+}
+
+    ]]></script>
+  </svg>

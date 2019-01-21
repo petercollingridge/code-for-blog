@@ -115,11 +115,17 @@ circle.highlight {
     opacity: 0.75;
 }
 
+#app {
+    margin-left: 1rem;
+}
+
 .dobble-controls {
     width: 420px;
     position: relative;
-    background-color: #eee;
     padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
 }
 
 .dobble-controls input {
@@ -129,6 +135,7 @@ circle.highlight {
 
 .slider-wrapper {
     height: 28px;
+    margin-bottom: 5px;
 }
 
 .slider-wrapper label {
@@ -140,7 +147,8 @@ circle.highlight {
 }
 
 .dobble-builder {
-    margin: 0 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 .dobble-header {
