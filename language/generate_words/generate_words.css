@@ -1,0 +1,13 @@
+h1 {
+    font-family: 'Ranchers', cursive;
+}
+
+.generated-word {
+    font-family: 'Ranchers', cursive;
+    font-size: 2.5rem;
+    margin: 10px;
+}
+
+.word-list-enter-active, .word-list-leave-active {
+    transition: all 1s;
+  }

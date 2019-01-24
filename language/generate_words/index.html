@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Codeword</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+        <link href="https://fonts.googleapis.com/css?family=Ranchers" rel="stylesheet">
+        <link rel="stylesheet" href="generate_words.css">
+    </head>
+
+    <body>
+
+        <h1>Words</h1>
+        <div id="generate-words">
+            <button v-on:click="addWord">Get word</button>
+
+            <div class="word-list">
+                <transition-group name="word-list" tag="div">
+                    <span class="generated-word" v-for="(word, index) in words" v-bind:key="word + index">{{ word }}</span>
+                </transition-group>
+            </div>
+        </div>
+
+        <script src="generate_words.js"></script>
+
+    </body>
+</html>

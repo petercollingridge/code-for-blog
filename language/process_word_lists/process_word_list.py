@@ -2,17 +2,6 @@ import os
 from collections import defaultdict 
 
 
-def get_words_from_unix_dict():
-    """ Get list of lowercase words with no hyphens from /usr/share/dict/words. """
-
-    process = subprocess.Popen("cat /usr/share/dict/words".split(), stdout=subprocess.PIPE)
-    output, error = process.communicate()
-    output = output.decode("utf-8")
-
-    words = set(word.lower() for word in output.splitlines() if "-" not in word)
-    return words
-
-
 def get_word_list(filepath):
     """ Open a file of words separated by new lines and return a list of them. """
 
