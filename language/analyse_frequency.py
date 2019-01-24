@@ -1,4 +1,4 @@
-from utils import get_word_counts
+from utils import get_word_counts, show_in_order
 from collections import defaultdict
 
 
@@ -50,11 +50,6 @@ def find_median_word_length(word_lengths):
         if middle_word_count <= 0:
             print(word_length)
             break
-
-
-def show_in_order(counts):
-    for item in sorted(counts.items(), key=lambda item: -item[1]):
-        print(item)
 
 
 if __name__ == '__main__':
