@@ -1,4 +1,4 @@
-from utils import get_word_counts
+from utils import get_word_counts, show_in_order
 from collections import defaultdict
 
 
@@ -14,9 +14,17 @@ def get_bigram_frequencies(word_counts):
     return bigrams
 
 
+def find_word_containing_substring(words, substring):
+    for word in words:
+        if substring in "^{}$".format(word):
+            return word
+
+
 if __name__ == '__main__':
     import os
     word_counts = get_word_counts(os.path.join('word_lists', 'filtered_word_counts.txt'))
     bigrams = get_bigram_frequencies(word_counts)
 
-    print(bigrams)
+    show_in_order(bigrams)
+
+    print(find_word_containing_substring(word_counts.keys(), 'jn'))
