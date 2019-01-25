@@ -1,5 +1,4 @@
-import os
-from utils import get_word_counts
+from utils import get_word_counts, show_in_order
 from collections import defaultdict
 
 
@@ -43,19 +42,28 @@ def convert_to_percentage(counts):
     return percentages
 
 
-def show_in_order(counts):
-    for item in sorted(counts.items(), key=lambda item: -item[1]):
-        print(item)
+def find_median_word_length(word_lengths):
+    middle_word_count = sum(word_lengths.values()) / 2
+
+    for word_length, count in sorted(word_lengths.items(), key=lambda item: item[0]):
+        middle_word_count -= count
+        if middle_word_count <= 0:
+            print(word_length)
+            break
 
 
 if __name__ == '__main__':
     import os
     word_counts = get_word_counts(os.path.join('word_lists', 'filtered_word_counts.txt'))
+    total_word_count = sum(word_counts.values())
 
     # common_word_counts = get_most_common_words(word_counts)
     length_distribution = get_length_distribution(word_counts)
 
-    letter_counts = get_letter_counts(word_counts)
+    # Mean word count
+    # print(sum(word * count for word, count in length_distribution.items()) / total_word_count)
+    find_median_word_length(length_distribution)
 
-    show_in_order(letter_counts)
+    #letter_counts = get_letter_counts(word_counts)
+    #show_in_order(letter_counts)
 

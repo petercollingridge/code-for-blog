@@ -10,6 +10,11 @@ def get_word_counts(filepath):
     return word_counts
 
 
+def show_in_order(counts):
+    for item in sorted(counts.items(), key=lambda item: -item[1]):
+        print(item)
+
+
 if __name__ == '__main__':
     import os
     word_counts = get_word_counts(os.path.join('word_lists', 'filtered_word_counts.txt'))
