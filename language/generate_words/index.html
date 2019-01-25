@@ -18,7 +18,7 @@
         <div id="generate-words">
             <button v-on:click="addWord">Get word</button>
 
-            <div class="word-list">
+            <div>
                 <transition-group name="word-list" tag="div">
                     <span class="generated-word" v-for="(word, index) in words" v-bind:key="word + index">{{ word }}</span>
                 </transition-group>

@@ -9,5 +9,9 @@ h1 {
 }
 
 .word-list-enter-active, .word-list-leave-active {
-    transition: all 1s;
-  }
+    transition: opacity 1s;
+}
+
+.word-list-enter, .word-list-leave-to {
+    opacity: 0;
+}
