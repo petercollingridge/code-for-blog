@@ -20,11 +20,17 @@ def find_word_containing_substring(words, substring):
             return word
 
 
+def find_words_containing_substring(words, substring):
+    return [word for word in words if substring in word]
+
+
 if __name__ == '__main__':
     import os
     word_counts = get_word_counts(os.path.join('word_lists', 'filtered_word_counts.txt'))
+    words = word_counts.keys()
     bigrams = get_bigram_frequencies(word_counts)
 
-    show_in_order(bigrams)
+    #show_in_order(bigrams)
 
-    print(find_word_containing_substring(word_counts.keys(), 'jn'))
+    for bigram, count in sorted(bigrams.items(), key=lambda item: item[1])[:10]:
+        print(bigram, count, find_words_containing_substring(words, bigram))
