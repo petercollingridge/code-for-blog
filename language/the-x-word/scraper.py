@@ -68,7 +68,7 @@ def parse_search_results(raw_html):
     results = results_list.find_all('h3')
 
     for result in results:
-        print(result.find('a').renderContents())
+        print(" ".join(result.find('a').stripped_strings))
 
 
 
