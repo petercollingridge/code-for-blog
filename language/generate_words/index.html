@@ -20,7 +20,14 @@
 
             <div>
                 <transition-group name="word-list" tag="div">
-                    <span class="generated-word" v-for="(word, index) in words" v-bind:key="word + index">{{ word }}</span>
+                    <span
+                        class="generated-word"
+                        v-for="(word, index) in words" 
+                        v-bind:key="word + index"
+                        v-bind:style="{ color: colours[index] }"
+                    >
+                        {{ word }}
+                    </span>
                 </transition-group>
             </div>
         </div>
