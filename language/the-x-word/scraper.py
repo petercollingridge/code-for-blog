@@ -54,7 +54,7 @@ def get_results_count(html):
     return result_count
 
 
-def write_html(filename, html):
+gdef write_html(filename, html):
     with open(filename, 'w') as f:
         f.write(html.prettify())
 
