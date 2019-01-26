@@ -12,7 +12,7 @@ def get_word_counts(filepath):
 
 def show_in_order(counts):
     for item in sorted(counts.items(), key=lambda item: -item[1]):
-        print(item)
+        print("{}: {}".format(*item))
 
 
 if __name__ == '__main__':
