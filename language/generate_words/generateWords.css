@@ -3,9 +3,9 @@
     font-size: 2.5rem;
     background-color: black;
     color: white;
-    padding: 0.3rem 0.8rem;
+    padding: 0.8rem 0.6rem;
     border: none;
-    border-radius: 0.3rem;
+    border-radius: 0.5rem;
 }
 
 .word-list {
@@ -16,7 +16,8 @@
 .generated-word {
     font-family: 'Ranchers', cursive;
     font-size: 2.5rem;
-    margin: 10px;
+    line-height: 3rem;
+    margin-right: 1rem;
 }
 
 .word-list-enter-active, .word-list-leave-active {
