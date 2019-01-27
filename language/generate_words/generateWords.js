@@ -83,7 +83,7 @@ var getSillyWord = (function() {
             } else if (r < 0.65) {
                 word += randFromArray(vowels);
             } else if (r < 0.8) {
-                var finalConsonant = parts[2].charAt(word.length - 1);
+                var finalConsonant = word.charAt(word.length - 1);
                 var vowel = randFromArrayNotX(vowels, "e");
                 word += vowel + finalConsonant + vowel;
             }
