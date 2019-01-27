@@ -16,9 +16,9 @@
 
         <h1>Words</h1>
         <div id="generate-words">
-            <button v-on:click="addWord">Get word</button>
+            <button class="get-word-button" v-on:click="addWord">Get word</button>
 
-            <div>
+            <div class="word-list">
                 <transition-group name="word-list" tag="div">
                     <span
                         class="generated-word"

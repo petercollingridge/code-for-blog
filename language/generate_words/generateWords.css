@@ -1,5 +1,16 @@
-h1 {
+.get-word-button {
     font-family: 'Ranchers', cursive;
+    font-size: 2.5rem;
+    background-color: black;
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border: none;
+    border-radius: 0.3rem;
+}
+
+.word-list {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .generated-word {
