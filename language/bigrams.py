@@ -1,5 +1,5 @@
 from utils import get_word_counts, show_in_order
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 
 def get_bigram_frequencies(word_counts):
@@ -30,7 +30,14 @@ if __name__ == '__main__':
     words = word_counts.keys()
     bigrams = get_bigram_frequencies(word_counts)
 
-    #show_in_order(bigrams)
+    # show_in_order(bigrams)
+    # total_bigrams = sum(count for count in bigrams.values())
+    # print(total_bigrams)
 
-    for bigram, count in sorted(bigrams.items(), key=lambda item: item[1])[:10]:
-        print(bigram, count, find_words_containing_substring(words, bigram))
+    # for bigram, count in sorted(bigrams.items(), key=lambda item: item[1])[:10]:
+    #     print(bigram, count, find_words_containing_substring(words, bigram))
+
+    # Top 40 bigrams
+    top_bigrams = [item for item, count in sorted(bigrams.items(), key=lambda item: item[1])[:40]]
+    letter_counts = Counter("".join(top_bigrams))
+    print(letter_counts)
