@@ -54,14 +54,21 @@ def get_results_count(html):
     return result_count
 
 
+def write_html(filename, html):
+    with open(filename, 'w') as f:
+        f.write(html.prettify())
+
+
 def parse_search_results(raw_html):
     html = BeautifulSoup(raw_html, 'html.parser')
     results_count = get_results_count(html)
     print(results_count)
 
-    print(html.prettify())
-    results_group = html.find_all("div", class_="srg")
-    print(results_group)
+    results_list = html.find("div", { 'id': "ires" }).find("ol")
+    results = results_list.find_all('h3')
+
+    for result in results:
+        print(" ".join(result.find('a').stripped_strings))
 
 
 
