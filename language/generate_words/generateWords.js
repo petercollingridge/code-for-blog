@@ -29,7 +29,11 @@ var getSillyWord = (function() {
     var avoidUglyPatterns = function(start, vowel, end) {
         // Avoid "ror" patterns
         if (start.charAt(start.length - 1) === end.charAt(0)) {
-            end = end.substr(1);
+            if (end.length === 1) {
+                end = randFromArrayNotX(shortEndings, end[0]);
+            } else {
+                end = end.substr(1);
+            }
         }
         
         // Avoid "Squu"
