@@ -10,9 +10,11 @@ def get_word_counts(filepath):
     return word_counts
 
 
-def show_in_order(counts):
-    for item in sorted(counts.items(), key=lambda item: -item[1]):
+def show_in_order(counts, max_count=-1):
+    for index, item in enumerate(sorted(counts.items(), key=lambda item: -item[1])):
         print("{}: {}".format(*item))
+        if index == max_count:
+            break
 
 
 if __name__ == '__main__':
