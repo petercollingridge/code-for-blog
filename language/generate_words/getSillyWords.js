@@ -1,9 +1,9 @@
 var getSillyWord = (function() {
-    var prefixes = ["B", "Br", "Dw", "Fl", "Fw", "Thr", "Pr", "Tr", "L", "Y", "Scr", "Sm", "Sp", "Squ", "M", "Wh"];
+    var prefixes = ["B", "Br", "Dw", "Fl", "Fw", "Thr", "Pr", "Tr", "L", "Y", "Scr", "Sm", "Sp", "Spl", "Squ", "M", "Wh"];
     var vowels = ["a", "e", "ee", "o", "oo", "i", "u"];
     var shortEndings = ["m", "rp", "rk", "rf", "nk", "mp", "b", "f", "zz", "x", "ng", "d", "p"];
     var longEndings = ["zz", "dd", "rp", "mp", "pp", "ck", "bb", "nk", "rf", "ng"];
-    var longEndings2 = ["ok", "le", "le", "le", "et", "et", "aldo"];
+    var longEndings2 = ["o", "ok", "le", "le", "le", "et", "et", "aldo"];
 
     var randFromArray = function(arr) {
         return arr[Math.floor(arr.length * Math.random())];
@@ -29,7 +29,11 @@ var getSillyWord = (function() {
     var avoidUglyPatterns = function(start, vowel, end) {
         // Avoid "ror" patterns
         if (start.charAt(start.length - 1) === end.charAt(0)) {
-            end = end.substr(1);
+            if (end.length === 1) {
+                end = randFromArrayNotX(shortEndings, end[0]);
+            } else {
+                end = end.substr(1);
+            }
         }
         
         // Avoid "Squu"
@@ -80,9 +84,13 @@ var getSillyWord = (function() {
                 word += "-" + getLongName().join("");
             } else if (r < 0.4) {
                 word = getLongName().join("") + "-" + word;
-            } else if (r < 0.65) {
-                word += randFromArray(vowels);
+            } else if (r < 0.6) {
+                word += yungoSpungo.apply(null, parts);
+            } else if (r < 0.7) {
+                word += mickleMackleMoo.apply(null, parts);
             } else if (r < 0.8) {
+                word += randFromArray(vowels);
+            } else if (r < 0.85) {
                 var finalConsonant = parts[2].charAt(word.length - 1);
                 var vowel = randFromArrayNotX(vowels, "e");
                 word += vowel + finalConsonant + vowel;
