@@ -39,6 +39,28 @@ def print_longest_variants(variants):
     print([word for word in variants if len(word) == max_length])
 
 
+def get_all_variants_at_each_postion(words):
+    variants = dict()
+
+    for word in words:
+        best_word_list = []
+
+        for index, letter in enumerate(word):
+            word_list = []
+
+            for new_letter in ascii_lowercase[ascii_lowercase.index(letter) + 1:]:
+                new_word = word[:index] + new_letter + word[index + 1:]
+                if new_word in words:
+                    word_list.append(new_word)
+
+            if len(word_list) > len(best_word_list):
+                best_word_list = word_list
+
+        variants[word] = best_word_list
+
+    return variants
+
+
 def get_all_variants(words):
     variants = dict()
 
@@ -81,7 +103,8 @@ if __name__ == '__main__':
     # print_longest_variants(variants)
 
     # Get all variants
-    variants = get_all_variants(words)
-    print_most_variants(variants, 10)
+    variants = get_all_variants_at_each_postion(words)
+    # variants = get_all_variants(words)
+    print_most_variants(variants, 12)
     
     
