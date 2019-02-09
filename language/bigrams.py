@@ -49,7 +49,8 @@ def find_missing_bigrams(bigrams):
             bigram = first_letter + second_letter
             if not bigrams.get(bigram):
                 letter_counts[bigram[0]].append(bigram)
-                letter_counts[bigram[1]].append(bigram)
+                if first_letter != second_letter:
+                    letter_counts[bigram[1]].append(bigram)
                 bigram_count += 1
 
                 # Show missing bigrams containing vowels
