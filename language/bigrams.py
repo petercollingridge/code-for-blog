@@ -75,6 +75,15 @@ def write_most_disproportionate_bigrams(bigram_dict):
         print(bigram, proportion * 100)
 
 
+def filter_dict(counts, filter):
+    filtered_dict = dict()
+
+    for item, count in counts.items():
+        if filter(item):
+            filtered_dict[item] = count
+
+    return filtered_dict
+
 def strip_pseduo_bigrams(bigram_dict):
     filtered_bigrams = dict()
 
@@ -200,6 +209,14 @@ if __name__ == '__main__':
     # for bigram, count in sorted(bigrams.items(), key=lambda item: item[1])[:10]:
     #     print(bigram, count, find_words_containing_substring(words, bigram))
 
+    # Get bigrams that contain no vowels or just vowels
+    no_vowel_filter = lambda bigram: all(letter not in VOWELS for letter in bigram)
+    all_vowel_filter = lambda bigram: all(letter in VOWELS for letter in bigram)
+
+    # filtered_counts = filter_dict(bigrams, no_vowel_filter)
+    filtered_counts = filter_dict(bigrams, all_vowel_filter)
+    show_in_order(filtered_counts, 10)
+
     # Top 40 bigrams
     # top_bigrams = [item for item, count in sorted(bigrams.items(), key=lambda item: item[1])[:40]]
     # letter_counts = Counter("".join(top_bigrams))
@@ -210,9 +227,9 @@ if __name__ == '__main__':
     # bigram_dict = normalise_bigram_dict(bigram_dict)
     # write_most_disproportionate_bigrams(bigram_dict)
 
-    word_to_blocks = convert_words_to_vowel_and_consonant_blocks(words)
-    block_counts = count_blocks(word_to_blocks, word_counts)
+    # word_to_blocks = convert_words_to_vowel_and_consonant_blocks(words)
+    # block_counts = count_blocks(word_to_blocks, word_counts)
 
-    show_in_order(block_counts, 10)
+    # show_in_order(block_counts, 10)
 
     # get_cluster_chain_dictionary(words, clusters)
