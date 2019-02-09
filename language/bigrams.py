@@ -224,8 +224,8 @@ if __name__ == '__main__':
 
     # find_missing_bigrams(bigrams)
 
-    # bigram_dict = normalise_bigram_dict(bigram_dict)
-    # write_most_disproportionate_bigrams(bigram_dict)
+    bigram_dict = normalise_bigram_dict(bigram_dict)
+    write_most_disproportionate_bigrams(bigram_dict)
 
     # word_to_blocks = convert_words_to_vowel_and_consonant_blocks(words)
     # block_counts = count_blocks(word_to_blocks, word_counts)
