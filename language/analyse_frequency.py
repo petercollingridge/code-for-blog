@@ -1,4 +1,4 @@
-from utils import get_word_counts, show_in_order
+from utils import get_word_counts, show_in_order, convert_counts_to_percentages
 from collections import defaultdict
 
 
@@ -79,5 +79,10 @@ if __name__ == '__main__':
     #show_in_order(letter_counts)
 
     first_letters, last_letters = get_starting_letter_counts(word_counts)
-    # show_in_order(first_letters)
-    show_in_order(last_letters)
+    percentages = convert_counts_to_percentages(first_letters)
+    percentages = convert_counts_to_percentages(last_letters)
+
+    start_to_end_ratio = {letter: count / (count + last_letters.get(letter, 0)) for letter, count in first_letters.items()}
+
+    show_in_order(start_to_end_ratio)
+    print(list((word, count) for word, count in word_counts.items() if word[-1] == 'x'))
