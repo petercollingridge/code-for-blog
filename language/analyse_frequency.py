@@ -32,6 +32,17 @@ def get_letter_counts(word_counts):
     return letter_counts
 
 
+def get_starting_letter_counts(word_counts):
+    first_letters = defaultdict(int)
+    last_letters = defaultdict(int)
+
+    for word, count in word_counts.items():
+        first_letters[word[0]] += count
+        last_letters[word[-1]] += count
+
+    return first_letters, last_letters
+
+
 def convert_to_percentage(counts):
     total = sum(counts.values())
     percentages = dict()
@@ -58,12 +69,15 @@ if __name__ == '__main__':
     total_word_count = sum(word_counts.values())
 
     # common_word_counts = get_most_common_words(word_counts)
-    length_distribution = get_length_distribution(word_counts)
+    # length_distribution = get_length_distribution(word_counts)
 
     # Mean word count
     # print(sum(word * count for word, count in length_distribution.items()) / total_word_count)
-    find_median_word_length(length_distribution)
+    # find_median_word_length(length_distribution)
 
     #letter_counts = get_letter_counts(word_counts)
     #show_in_order(letter_counts)
 
+    first_letters, last_letters = get_starting_letter_counts(word_counts)
+    # show_in_order(first_letters)
+    show_in_order(last_letters)
