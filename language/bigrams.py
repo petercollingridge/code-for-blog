@@ -213,11 +213,10 @@ if __name__ == '__main__':
     words = word_counts.keys()
 
     bigrams = get_bigram_frequencies(word_counts)
-    bigram_dict = get_bigram_dictionary(word_counts)
-    # show_in_order(bigrams)
+    total_bigrams = sum(count for count in bigrams.values())
 
-    # total_bigrams = sum(count for count in bigrams.values())
-    # print(total_bigrams)
+    # bigram_dict = get_bigram_dictionary(word_counts)
+    # show_in_order(bigrams)
 
     # for bigram, count in sorted(bigrams.items(), key=lambda item: item[1])[:10]:
     #     print(bigram, count, find_words_containing_substring(words, bigram))
@@ -226,14 +225,17 @@ if __name__ == '__main__':
     no_vowel_filter = lambda bigram: all(letter not in VOWELS for letter in bigram)
     all_vowel_filter = lambda bigram: all(letter in VOWELS for letter in bigram)
 
-    # filtered_counts = filter_dict(bigrams, no_vowel_filter)
-    filtered_counts = filter_dict(bigrams, all_vowel_filter)
-    show_in_order(filtered_counts, 10)
+    filtered_counts = filter_dict(bigrams, no_vowel_filter)
+    # filtered_counts = filter_dict(bigrams, all_vowel_filter)
+
+    percentages = { key: value * 100.0 / total_bigrams for key, value in filtered_counts.items() }
+
+    show_in_order(percentages, 10)
 
     # Show letters from the the 40 least common bigrams
     # write_letters_from_least_common_bigrams(bigrams, 40)
 
-    find_missing_bigrams(bigrams)
+    # find_missing_bigrams(bigrams)
 
     # bigram_dict = normalise_bigram_dict(bigram_dict)
     # write_most_disproportionate_bigrams(bigram_dict)
