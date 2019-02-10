@@ -81,7 +81,7 @@ def get_all_variants(words):
 
 def print_most_variants(variants, max_count=-1):
     for index, item in enumerate(sorted(variants.items(), key=lambda item: -len(item[1]))):
-        print("{} ({}): {}".format(item[0], len(item[1]), ', '.join(item[1])))
+        print("{} ({}): {}".format(item[0], len(item[1]), ', '.join(word[0] for word in item[1])))
         if index == max_count:
             break
 
