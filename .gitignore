@@ -1,5 +1,6 @@
 .DS_Store
 .vscode/
+the-x-word-results.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
