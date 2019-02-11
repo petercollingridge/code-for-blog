@@ -39,6 +39,14 @@ def print_longest_variants(variants):
     print([word for word in variants if len(word) == max_length])
 
 
+def print_variant_counts(word, word_counts):
+    index = word.find('a')
+    if index > -1:
+        for vowel in VOWELS:
+            word = word[:index] + vowel + word[index + 1:]
+            print("{}: {}".format(word, word_counts.get(word, 0)))
+
+
 def get_all_variants_at_each_postion(words):
     variants = dict()
 
@@ -97,14 +105,16 @@ if __name__ == '__main__':
     print(len(words))
 
     # Get vowel variants
-    # variants = get_vowel_variants(words)
+    variants = get_vowel_variants(words)
     # print(variants)
     # print(len(variants))
     # print_longest_variants(variants)
 
+    print_variant_counts('patting', word_counts)
+
     # Get all variants
-    variants = get_all_variants_at_each_postion(words)
+    # variants = get_all_variants_at_each_postion(words)
     # variants = get_all_variants(words)
-    print_most_variants(variants, 12)
+    # print_most_variants(variants, 12)
     
     
