@@ -41,23 +41,34 @@ def get_bigram_dictionary(word_counts):
 
 
 def find_missing_bigrams(bigrams):
-    character_counts = defaultdict(int)
+    letter_counts = defaultdict(list)
     bigram_count = 0
 
-    for first_character in ascii_lowercase:
-        for second_character in ascii_lowercase:
-            bigram = first_character + second_character
+    for first_letter in ascii_lowercase:
+        for second_letter in ascii_lowercase:
+            bigram = first_letter + second_letter
             if not bigrams.get(bigram):
-                character_counts[bigram[0]] += 1
-                character_counts[bigram[1]] += 1
+                letter_counts[bigram[0]].append(bigram)
+                if first_letter != second_letter:
+                    letter_counts[bigram[1]].append(bigram)
                 bigram_count += 1
-                if first_character in VOWELS or second_character in VOWELS:
+
+                # Show missing bigrams containing vowels
+                if first_letter in VOWELS or second_letter in VOWELS:
                     print(bigram)
 
-    for character, count in sorted(character_counts.items(), key=lambda x: -x[1]):
-        print(character, count)
+    for letter, bigrams in sorted(letter_counts.items(), key=lambda x: -len(x[1])):
+        print(letter, len(bigrams), ", ".join(bigrams))
 
     print(bigram_count)
+
+
+def write_letters_from_least_common_bigrams(bigrams, n):
+    top_bigrams = [item for item, count in sorted(bigrams.items(), key=lambda item: item[1])[:n]]
+    letter_counts = Counter("".join(top_bigrams))
+
+    for letter, count in letter_counts.most_common(10):
+        print(letter, count, ", ".join(bigram for bigram in top_bigrams if letter in bigram))
 
 
 def write_most_disproportionate_bigrams(bigram_dict):
@@ -73,6 +84,16 @@ def write_most_disproportionate_bigrams(bigram_dict):
 
     for bigram, proportion in sorted(bigrams.items(), key=lambda x: -x[1])[:10]:
         print(bigram, proportion * 100)
+
+
+def filter_dict(counts, filter):
+    filtered_dict = dict()
+
+    for item, count in counts.items():
+        if filter(item):
+            filtered_dict[item] = count
+
+    return filtered_dict
 
 
 def strip_pseduo_bigrams(bigram_dict):
@@ -190,25 +211,34 @@ if __name__ == '__main__':
     import os
     word_counts = get_word_counts(os.path.join('word_lists', 'filtered_word_counts.txt'))
     words = word_counts.keys()
-    bigrams = get_bigram_frequencies(word_counts)
-    bigram_dict = get_bigram_dictionary(word_counts)
 
+    bigrams = get_bigram_frequencies(word_counts)
+    total_bigrams = sum(count for count in bigrams.values())
+
+    # bigram_dict = get_bigram_dictionary(word_counts)
     # show_in_order(bigrams)
-    # total_bigrams = sum(count for count in bigrams.values())
-    # print(total_bigrams)
 
     # for bigram, count in sorted(bigrams.items(), key=lambda item: item[1])[:10]:
     #     print(bigram, count, find_words_containing_substring(words, bigram))
 
-    # Top 40 bigrams
-    # top_bigrams = [item for item, count in sorted(bigrams.items(), key=lambda item: item[1])[:40]]
-    # letter_counts = Counter("".join(top_bigrams))
-    # print(letter_counts)
+    # Get bigrams that contain no vowels or just vowels
+    no_vowel_filter = lambda bigram: all(letter not in VOWELS for letter in bigram)
+    all_vowel_filter = lambda bigram: all(letter in VOWELS for letter in bigram)
+
+    filtered_counts = filter_dict(bigrams, no_vowel_filter)
+    # filtered_counts = filter_dict(bigrams, all_vowel_filter)
+
+    percentages = { key: value * 100.0 / total_bigrams for key, value in filtered_counts.items() }
+
+    show_in_order(percentages, 10)
+
+    # Show letters from the the 40 least common bigrams
+    # write_letters_from_least_common_bigrams(bigrams, 40)
 
     # find_missing_bigrams(bigrams)
 
-    bigram_dict = normalise_bigram_dict(bigram_dict)
-    write_most_disproportionate_bigrams(bigram_dict)
+    # bigram_dict = normalise_bigram_dict(bigram_dict)
+    # write_most_disproportionate_bigrams(bigram_dict)
 
     # word_to_blocks = convert_words_to_vowel_and_consonant_blocks(words)
     # block_counts = count_blocks(word_to_blocks, word_counts)

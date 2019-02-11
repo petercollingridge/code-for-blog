@@ -17,6 +17,13 @@ def show_in_order(counts, max_count=-1):
             break
 
 
+def convert_counts_to_percentages(counts, total=None):
+    if not total:
+        total = sum(value for value in counts.values())
+    
+    return { key: value * 100.0 / total for key, value in counts.items() }
+
+
 if __name__ == '__main__':
     import os
     word_counts = get_word_counts(os.path.join('word_lists', 'filtered_word_counts.txt'))
