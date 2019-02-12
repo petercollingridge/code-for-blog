@@ -4,6 +4,7 @@ from string import ascii_lowercase
 
 from process_word_lists.process_word_list import get_word_list
 from utils import get_word_counts
+from math import log
 
 VOWELS = 'aeiou'
 
@@ -99,8 +100,12 @@ if __name__ == '__main__':
     # words = get_words_from_unix_dict()
     # words = set(get_word_list(os.path.join('word_lists', 'CROSSWD.TXT')))
     # words = set(get_word_list(os.path.join('word_lists', 'COMMON.TXT')))
+
     word_counts = get_word_counts(os.path.join('word_lists', 'filtered_word_counts.txt'))
+
     words = set(word_counts.keys())
+    total_words = sum(word_counts.values())
+    word_log_frequencies = { word: log(count / total_words) for word, count in word_counts.items() }
 
     print(len(words))
 
@@ -110,7 +115,9 @@ if __name__ == '__main__':
     # print(len(variants))
     # print_longest_variants(variants)
 
-    print_variant_counts('patting', word_counts)
+    # print_variant_counts('blander', word_log_frequencies)
+    print_variant_counts('balling', word_log_frequencies)
+    # print_variant_counts('patting', word_log_frequencies)
 
     # Get all variants
     # variants = get_all_variants_at_each_postion(words)
