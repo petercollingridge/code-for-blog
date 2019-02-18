@@ -1,10 +1,12 @@
 import os
 import subprocess
+from math import log
+from collections import defaultdict
 from string import ascii_lowercase
+
 
 from process_word_lists.process_word_list import get_word_list
 from utils import get_word_counts
-from math import log
 
 VOWELS = 'aeiou'
 
@@ -50,6 +52,7 @@ def print_variant_counts(word, word_counts):
 
 def get_all_variants_at_each_postion(words):
     variants = dict()
+    letter_swaps = defaultdict(int)
 
     for word in words:
         best_word_list = []
@@ -61,13 +64,26 @@ def get_all_variants_at_each_postion(words):
                 new_word = word[:index] + new_letter + word[index + 1:]
                 if new_word in words:
                     word_list.append(new_word)
+                    letter_swaps[letter + new_letter] += 1
 
             if len(word_list) > len(best_word_list):
                 best_word_list = word_list
 
         variants[word] = best_word_list
 
-    return variants
+    return variants, letter_swaps
+
+
+def find_most_swappable_letter(letter_swaps):
+    letters = { letter: { 'total': 0} for letter in ascii_lowercase }
+    
+    for letter_pair, count in letter_swaps.items():
+        letters[letter_pair[0]][letter_pair[1]] = count
+        letters[letter_pair[1]][letter_pair[0]] = count
+        letters[letter_pair[0]]['total'] += count
+        letters[letter_pair[1]]['total'] += count
+
+    return letters
 
 
 def get_all_variants(words):
@@ -120,8 +136,18 @@ if __name__ == '__main__':
     # print_variant_counts('patting', word_log_frequencies)
 
     # Get all variants
-    # variants = get_all_variants_at_each_postion(words)
+    variants, letter_swaps = get_all_variants_at_each_postion(words)
     # variants = get_all_variants(words)
     # print_most_variants(variants, 12)
     
-    
+    print(len(list(letter_swaps.keys())))
+
+    # Find most common letter swaps
+    for letter_pair, count in sorted(letter_swaps.items(), key=lambda item: -item[1]):
+        print(letter_pair, count)
+
+    # Find letters that can be swapped most
+    letter_swap_counts = find_most_swappable_letter(letter_swaps)
+
+    for letter, counts in sorted(letter_swap_counts.items(), key=lambda item: -item[1]['total']):
+        print(letter, counts['total'])
