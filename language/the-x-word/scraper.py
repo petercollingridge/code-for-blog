@@ -2,21 +2,14 @@ from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
 from bs4 import BeautifulSoup
+from string import ascii_lowercase
+
 import re
 
-USER_AGENT = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'}
 
-
-def fetch_results(search_term):
-    assert isinstance(search_term, str), 'Search term must be a string'
-    assert isinstance(number_results, int), 'Number of results must be an integer'
-    escaped_search_term = search_term.replace(' ', '+')
-
-    google_url = 'https://www.google.com/search?q={}&num={}&hl={}'.format(escaped_search_term, number_results, language_code)
-    response = requests.get(google_url, headers=USER_AGENT)
-    response.raise_for_status()
-
-    return search_term, response.text
+def search_the_x_word(letter):
+    url = 'https://www.google.com/search?q="the+{}+word"'.format(letter)
+    return simple_get(url)
 
 
 def simple_get(url):
@@ -30,11 +23,13 @@ def simple_get(url):
         log_error('Error during requests to {0} : {1}'.format(url, str(e)))
         return None
 
+
 def is_good_response(resp):
     content_type = resp.headers['Content-Type'].lower()
     return (resp.status_code == 200
             and content_type is not None
             and content_type.find('html') > -1)
+
 
 def log_error(e):
     print(e)
@@ -61,23 +56,36 @@ def write_html(filename, html):
 
 def parse_search_results(raw_html):
     html = BeautifulSoup(raw_html, 'html.parser')
-    results_count = get_results_count(html)
-    print(results_count)
 
-    results_list = html.find("div", { 'id': "ires" }).find("ol")
-    results = results_list.find_all('h3')
+    results = {
+        'count': get_results_count(html),
+        'pages': []
+    }
 
-    for result in results:
-        print(" ".join(result.find('a').stripped_strings))
+    page_list = html.find("div", { 'id': "ires" }).find("ol")
+    pages = page_list.find_all('h3')
 
+    for page in pages:
+        results['pages'].append({
+            'text': " ".join(page.find('a').stripped_strings),
+            'link': page.find('a').get('href')[7:]
+        })
+
+    return results
+
+
+def write_page_results(filename, letter, results):
+    with open(filename, 'a') as f:
+        f.write(letter + '\n')
+
+        for page in results['pages']:
+            f.write("{}\n\t{}\n".format(page['text'], page['link']))
 
 
 if __name__ == '__main__':
-    search_term = '"the a word"'
-    escaped_search_term = search_term.replace(' ', '+')
-    url = 'https://www.google.com/search?q={}'.format(search_term)
+    for letter in ascii_lowercase:
+        raw_html = search_the_x_word(letter)
+        results = parse_search_results(raw_html)
 
-    raw_html = simple_get(url)
-    parse_search_results(raw_html)
-
-
+        print("{}: {}".format(letter, results['count']))
+        write_page_results('the-x-word-results.txt', letter, results)
