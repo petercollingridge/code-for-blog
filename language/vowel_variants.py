@@ -1,6 +1,6 @@
 import os
 import subprocess
-from math import log
+from math import log, sqrt
 from collections import defaultdict
 from string import ascii_lowercase
 
@@ -147,7 +147,13 @@ if __name__ == '__main__':
         variant_counts = { (word_1, word_2): word_counts[word_1] * word_counts[word_2] for word_1, word_2 in variants }
         most_common_count = max(variant_counts.values())
         most_common_variant = [word for word, count in variant_counts.items() if count == most_common_count]
-        print(letter_pair, most_common_count, most_common_variant)
+        freq = "{0:.2f}%".format(100 * sqrt(most_common_count) / total_words)
+        print("<tr>")
+        print(f"\t<td>{ letter_pair[0] } - { letter_pair[1] }</td>")
+        print(f"\t<td>{ len(variants) }</td>")
+        print(f"\t<td>{ ', '.join(most_common_variant[0]) }</td>")
+        print(f"\t<td>{ freq }</td>")
+        print("</tr>")
 
     # Find letters that can be swapped most
     # letter_swap_counts = find_most_swappable_letter(letter_swaps)
