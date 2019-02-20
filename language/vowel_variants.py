@@ -52,7 +52,7 @@ def print_variant_counts(word, word_counts):
 
 def get_all_variants_at_each_postion(words):
     variants = dict()
-    letter_swaps = defaultdict(int)
+    letter_swaps = defaultdict(list)
 
     for word in words:
         best_word_list = []
@@ -64,7 +64,7 @@ def get_all_variants_at_each_postion(words):
                 new_word = word[:index] + new_letter + word[index + 1:]
                 if new_word in words:
                     word_list.append(new_word)
-                    letter_swaps[letter + new_letter] += 1
+                    letter_swaps[letter + new_letter].append((word, new_word))
 
             if len(word_list) > len(best_word_list):
                 best_word_list = word_list
@@ -132,7 +132,7 @@ if __name__ == '__main__':
     # print_longest_variants(variants)
 
     # print_variant_counts('blander', word_log_frequencies)
-    print_variant_counts('balling', word_log_frequencies)
+    # print_variant_counts('balling', word_log_frequencies)
     # print_variant_counts('patting', word_log_frequencies)
 
     # Get all variants
@@ -143,11 +143,14 @@ if __name__ == '__main__':
     print(len(list(letter_swaps.keys())))
 
     # Find most common letter swaps
-    for letter_pair, count in sorted(letter_swaps.items(), key=lambda item: -item[1]):
-        print(letter_pair, count)
+    for letter_pair, variants in sorted(letter_swaps.items(), key=lambda item: -len(item[1]))[:10]:
+        variant_counts = { (word_1, word_2): word_counts[word_1] * word_counts[word_2] for word_1, word_2 in variants }
+        most_common_count = max(variant_counts.values())
+        most_common_variant = [word for word, count in variant_counts.items() if count == most_common_count]
+        print(letter_pair, most_common_count, most_common_variant)
 
     # Find letters that can be swapped most
-    letter_swap_counts = find_most_swappable_letter(letter_swaps)
+    # letter_swap_counts = find_most_swappable_letter(letter_swaps)
 
-    for letter, counts in sorted(letter_swap_counts.items(), key=lambda item: -item[1]['total']):
-        print(letter, counts['total'])
+    # for letter, counts in sorted(letter_swap_counts.items(), key=lambda item: -item[1]['total']):
+    #     print(letter, counts['total'])
