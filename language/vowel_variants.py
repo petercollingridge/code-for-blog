@@ -146,12 +146,15 @@ if __name__ == '__main__':
     for letter_pair, variants in sorted(letter_swaps.items(), key=lambda item: -len(item[1]))[:10]:
         variant_counts = { (word_1, word_2): word_counts[word_1] * word_counts[word_2] for word_1, word_2 in variants }
         most_common_count = max(variant_counts.values())
-        most_common_variant = [word for word, count in variant_counts.items() if count == most_common_count]
-        freq = "{0:.2f}%".format(100 * sqrt(most_common_count) / total_words)
+        most_common_variant = [word for word, count in variant_counts.items() if count == most_common_count][0]
+        # freq = "{0:.2f}%".format(100 * sqrt(most_common_count) / total_words)
+        freq = "{0:.2f}%, {1:.2f}%".format(100 * word_counts[most_common_variant[0]] / total_words,
+                                           100 * word_counts[most_common_variant[1]] / total_words)
+
         print("<tr>")
         print(f"\t<td>{ letter_pair[0] } - { letter_pair[1] }</td>")
         print(f"\t<td>{ len(variants) }</td>")
-        print(f"\t<td>{ ', '.join(most_common_variant[0]) }</td>")
+        print(f"\t<td>{ ', '.join(most_common_variant) }</td>")
         print(f"\t<td>{ freq }</td>")
         print("</tr>")
 
