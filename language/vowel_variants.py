@@ -111,6 +111,22 @@ def print_most_variants(variants, max_count=-1):
             break
 
 
+def get_unswappable_pairs(letter_swaps):
+    for i in range(25):
+        for j in range(i + 1, 26):
+            letter_pair = ascii_lowercase[i] + ascii_lowercase[j]
+            if letter_pair not in letter_swaps:
+                print(letter_pair)
+
+
+def print_q_swap_words(letter_swaps):
+    q_swaps = ["".join(sorted([letter, 'q'])) for letter in ascii_lowercase]
+
+    for letter_pair in q_swaps:
+        if letter_swaps.get(letter_pair):
+            print(letter_swaps[letter_pair])
+
+
 if __name__ == '__main__':
     # Get words
     # words = get_words_from_unix_dict()
@@ -139,8 +155,12 @@ if __name__ == '__main__':
     variants, letter_swaps = get_all_variants_at_each_postion(words)
     # variants = get_all_variants(words)
     # print_most_variants(variants, 12)
-    
+
+    # Number of letter pairs that can be swapped (out of a possible 325 (25 * 26  /2))
     print(len(list(letter_swaps.keys())))
+
+    # get_unswappable_pairs(letter_swaps.keys())
+    print_q_swap_words(letter_swaps)
 
     # Find most common letter swaps
     for letter_pair, variants in sorted(letter_swaps.items(), key=lambda item: -len(item[1]))[:10]:
