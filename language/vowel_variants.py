@@ -36,10 +36,10 @@ def get_vowel_variants(words):
     return variants
 
 
-def print_longest_variants(variants):
+def print_longest_variants(variants, offset=0):
     max_length = max(len(word) for word in variants)
     print(max_length)
-    print([word for word in variants if len(word) == max_length])
+    print([word for word in variants if len(word) == max_length - offset])
 
 
 def print_variant_counts(word, word_counts):
@@ -69,7 +69,8 @@ def get_all_variants_at_each_postion(words):
             if len(word_list) > len(best_word_list):
                 best_word_list = word_list
 
-        variants[word] = best_word_list
+        if best_word_list:
+            variants[word] = best_word_list
 
     return variants, letter_swaps
 
@@ -134,49 +135,53 @@ if __name__ == '__main__':
     # words = set(get_word_list(os.path.join('word_lists', 'COMMON.TXT')))
 
     word_counts = get_word_counts(os.path.join('word_lists', 'filtered_word_counts.txt'))
-
     words = set(word_counts.keys())
     total_words = sum(word_counts.values())
-    word_log_frequencies = { word: log(count / total_words) for word, count in word_counts.items() }
 
     print(len(words))
 
     # Get vowel variants
-    variants = get_vowel_variants(words)
+    # variants = get_vowel_variants(words)
     # print(variants)
     # print(len(variants))
-    # print_longest_variants(variants)
+    # print_longest_variants(variants, 2)
 
-    # print_variant_counts('blander', word_log_frequencies)
-    # print_variant_counts('balling', word_log_frequencies)
-    # print_variant_counts('patting', word_log_frequencies)
+    # print_variant_counts('blander', word_counts)
+    # word_log_frequencies = { word: log(count / total_words) for word, count in word_counts.items() }
 
     # Get all variants
     variants, letter_swaps = get_all_variants_at_each_postion(words)
     # variants = get_all_variants(words)
     # print_most_variants(variants, 12)
+    print(len(variants.keys()))
+    print_longest_variants(variants)
+    print(variants['counterterrorism'])
+
+    #  TODO show longest variants
+    #   show words with the most variants
+    #   show longest words that have a variant at each of its positions
 
     # Number of letter pairs that can be swapped (out of a possible 325 (25 * 26  /2))
-    print(len(list(letter_swaps.keys())))
+    # print(len(list(letter_swaps.keys())))
 
     # get_unswappable_pairs(letter_swaps.keys())
-    print_q_swap_words(letter_swaps)
+    # print_q_swap_words(letter_swaps)
 
     # Find most common letter swaps
-    for letter_pair, variants in sorted(letter_swaps.items(), key=lambda item: -len(item[1]))[:10]:
-        variant_counts = { (word_1, word_2): word_counts[word_1] * word_counts[word_2] for word_1, word_2 in variants }
-        most_common_count = max(variant_counts.values())
-        most_common_variant = [word for word, count in variant_counts.items() if count == most_common_count][0]
-        # freq = "{0:.2f}%".format(100 * sqrt(most_common_count) / total_words)
-        freq = "{0:.2f}%, {1:.2f}%".format(100 * word_counts[most_common_variant[0]] / total_words,
-                                           100 * word_counts[most_common_variant[1]] / total_words)
+    # for letter_pair, variants in sorted(letter_swaps.items(), key=lambda item: -len(item[1]))[:10]:
+    #     variant_counts = { (word_1, word_2): word_counts[word_1] * word_counts[word_2] for word_1, word_2 in variants }
+    #     most_common_count = max(variant_counts.values())
+    #     most_common_variant = [word for word, count in variant_counts.items() if count == most_common_count][0]
+    #     # freq = "{0:.2f}%".format(100 * sqrt(most_common_count) / total_words)
+    #     freq = "{0:.2f}%, {1:.2f}%".format(100 * word_counts[most_common_variant[0]] / total_words,
+    #                                        100 * word_counts[most_common_variant[1]] / total_words)
 
-        print("<tr>")
-        print(f"\t<td>{ letter_pair[0] } - { letter_pair[1] }</td>")
-        print(f"\t<td>{ len(variants) }</td>")
-        print(f"\t<td>{ ', '.join(most_common_variant) }</td>")
-        print(f"\t<td>{ freq }</td>")
-        print("</tr>")
+    #     print("<tr>")
+    #     print(f"\t<td>{ letter_pair[0] } - { letter_pair[1] }</td>")
+    #     print(f"\t<td>{ len(variants) }</td>")
+    #     print(f"\t<td>{ ', '.join(most_common_variant) }</td>")
+    #     print(f"\t<td>{ freq }</td>")
+    #     print("</tr>")
 
     # Find letters that can be swapped most
     # letter_swap_counts = find_most_swappable_letter(letter_swaps)
