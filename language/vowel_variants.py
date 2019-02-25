@@ -75,6 +75,42 @@ def get_all_variants_at_each_postion(words):
     return variants, letter_swaps
 
 
+def get_words_with_variants_at_each_position(words):
+    variants = dict()
+
+    for word in words:
+        all_word_lists = []
+
+        for index, letter in enumerate(word):
+            word_list = []
+
+            for new_letter in ascii_lowercase:
+                if new_letter != letter:
+                    new_word = word[:index] + new_letter + word[index + 1:]
+                    if new_word in words:
+                        word_list.append(new_word)
+
+            if word_list:
+                all_word_lists.append(word_list)
+            else:
+                break
+
+        if len(all_word_lists) == len(word):
+            variants[word] = all_word_lists
+
+    return variants
+
+
+def print_longest_word_with_variants_at_all_positions(variants, word_counts):
+    max_length = max(len(word) for word in variants.keys())
+    print(max_length)
+
+    for word, word_lists in variants.items():
+        if len(word) == max_length:
+            # Sort variants
+            print(word, [sorted(word_list, key=lambda word: -word_counts[word])[0] for word_list in word_lists])
+            
+
 def find_most_swappable_letter(letter_swaps):
     letters = { letter: { 'total': 0} for letter in ascii_lowercase }
     
@@ -156,10 +192,14 @@ if __name__ == '__main__':
     print(len(words))
 
     # Get vowel variants
-    variants = get_vowel_variants(words)
-    # print(variants)
-    print(len(variants))
-    print_longest_variants(variants)
+    # variants = get_vowel_variants(words)
+    # # print(variants)
+    # print(len(variants))
+    # print_longest_variants(variants)
+
+    # Show longest words that have a variant at each of its positions
+    all_position_variants = get_words_with_variants_at_each_position(words)
+    print_longest_word_with_variants_at_all_positions(all_position_variants, word_counts)
 
     # print_variant_counts('blander', word_counts)
     # word_log_frequencies = { word: log(count / total_words) for word, count in word_counts.items() }
@@ -178,7 +218,6 @@ if __name__ == '__main__':
 
     #  TODO 
     #   show words with the most variants
-    #   show longest words that have a variant at each of its positions
     #   for each letter, show which letter can most often replace it
 
     # Number of letter pairs that can be swapped (out of a possible 325 (25 * 26  /2))
