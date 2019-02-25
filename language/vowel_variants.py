@@ -105,9 +105,24 @@ def get_all_variants(words):
     return variants
 
 
+def find_longest_word_without_variants(word_counts, variants):
+    for word in sorted(word_counts.keys(), key=lambda word: -len(word)):
+        if not variants.get(word):
+            print(word)
+            break
+
+
+def find_most_common_word_without_variants(word_counts, variants):
+    for word, count in sorted(word_counts.items(), key=lambda item: -item[1]):
+        if not variants.get(word):
+            print(word, count)
+            break
+ 
+
 def print_most_variants(variants, max_count=-1):
     for index, item in enumerate(sorted(variants.items(), key=lambda item: -len(item[1]))):
-        print("{} ({}): {}".format(item[0], len(item[1]), ', '.join(word[0] for word in item[1])))
+        print("{} ({}): {}".format(item[0], len(item[1]), ', '.join(item[1])))
+        # print("{} ({}): {}".format(item[0], len(item[1]), ', '.join(word[0] for word in item[1])))
         if index == max_count:
             break
 
@@ -141,25 +156,30 @@ if __name__ == '__main__':
     print(len(words))
 
     # Get vowel variants
-    # variants = get_vowel_variants(words)
+    variants = get_vowel_variants(words)
     # print(variants)
-    # print(len(variants))
-    # print_longest_variants(variants, 2)
+    print(len(variants))
+    print_longest_variants(variants)
 
     # print_variant_counts('blander', word_counts)
     # word_log_frequencies = { word: log(count / total_words) for word, count in word_counts.items() }
 
     # Get all variants
-    variants, letter_swaps = get_all_variants_at_each_postion(words)
+    # variants, letter_swaps = get_all_variants_at_each_postion(words)
     # variants = get_all_variants(words)
+    
     # print_most_variants(variants, 12)
-    print(len(variants.keys()))
-    print_longest_variants(variants)
-    print(variants['counterterrorism'])
+    # find_most_common_word_without_variants(word_counts, variants)
+    # find_longest_word_without_variants(word_counts, variants)
 
-    #  TODO show longest variants
+    # print(len(variants.keys()))
+    # print_longest_variants(variants)
+    # print(variants['nationalizations'])
+
+    #  TODO 
     #   show words with the most variants
     #   show longest words that have a variant at each of its positions
+    #   for each letter, show which letter can most often replace it
 
     # Number of letter pairs that can be swapped (out of a possible 325 (25 * 26  /2))
     # print(len(list(letter_swaps.keys())))
