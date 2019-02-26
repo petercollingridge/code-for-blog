@@ -50,9 +50,46 @@ def print_variant_counts(word, word_counts):
             print("{}: {}".format(word, word_counts.get(word, 0)))
 
 
+def get_letter_swaps(words):
+    """
+    Given a list of words, return a dict that maps pairs of letters to a 
+    list of word pairs, where those two letters are swapped.
+    """
+
+    letter_swaps = defaultdict(list)
+
+    for word in words:
+        for index, letter in enumerate(word):
+            for new_letter in ascii_lowercase[ascii_lowercase.index(letter) + 1:]:
+                new_word = word[:index] + new_letter + word[index + 1:]
+                if new_word in words:
+                    letter_swaps[letter + new_letter].append((word, new_word))
+
+    return letter_swaps
+
+
+def get_letter_to_letter_swaps(words):
+    """
+    Given a list of words, return a dict that maps pairs of letters to a 
+    list of word pairs, where those two letters are swapped.
+    """
+
+    letter_swaps = { letter: defaultdict(list) for letter in ascii_lowercase }
+
+    for word in words:
+        for index, letter in enumerate(word):
+            for new_letter in ascii_lowercase[ascii_lowercase.index(letter) + 1:]:
+                new_word = word[:index] + new_letter + word[index + 1:]
+                if new_word in words:
+                    letter_swaps[letter][new_letter].append((word, new_word))
+                    letter_swaps[new_letter][letter].append((word, new_word))
+
+    return letter_swaps
+
+
+
 def get_all_variants_at_each_postion(words):
     variants = dict()
-    letter_swaps = defaultdict(list)
 
     for word in words:
         best_word_list = []
@@ -64,7 +101,6 @@ def get_all_variants_at_each_postion(words):
                 new_word = word[:index] + new_letter + word[index + 1:]
                 if new_word in words:
                     word_list.append(new_word)
-                    letter_swaps[letter + new_letter].append((word, new_word))
 
             if len(word_list) > len(best_word_list):
                 best_word_list = word_list
@@ -72,7 +108,7 @@ def get_all_variants_at_each_postion(words):
         if best_word_list:
             variants[word] = best_word_list
 
-    return variants, letter_swaps
+    return variants
 
 
 def get_words_with_variants_at_each_position(words):
@@ -123,18 +159,6 @@ def print_longest_word_with_variants_at_all_positions(variants, word_counts):
     for word in sorted(word_scores, key=lambda score: -score[1]):
         print(word)
 
-def find_most_swappable_letter(letter_swaps):
-    letters = { letter: { 'total': 0} for letter in ascii_lowercase }
-    
-    for letter_pair, count in letter_swaps.items():
-        letters[letter_pair[0]][letter_pair[1]] = count
-        letters[letter_pair[1]][letter_pair[0]] = count
-        letters[letter_pair[0]]['total'] += count
-        letters[letter_pair[1]]['total'] += count
-
-    return letters
-
-
 def get_all_variants(words):
     variants = dict()
 
@@ -175,6 +199,35 @@ def print_most_variants(variants, max_count=-1):
             break
 
 
+def find_most_swappable_letter(letter_swaps):
+    letters = { letter: { 'total': 0} for letter in ascii_lowercase }
+    
+    for letter_pair, count in letter_swaps.items():
+        letters[letter_pair[0]][letter_pair[1]] = count
+        letters[letter_pair[1]][letter_pair[0]] = count
+        letters[letter_pair[0]]['total'] += count
+        letters[letter_pair[1]]['total'] += count
+
+    return letters
+
+
+def print_most_common_letter_swaps(letter_swaps, word_counts):
+    for letter_pair, variants in sorted(letter_swaps.items(), key=lambda item: -len(item[1]))[:10]:
+        variant_counts = { (word_1, word_2): word_counts[word_1] * word_counts[word_2] for word_1, word_2 in variants }
+        most_common_count = max(variant_counts.values())
+        most_common_variant = [word for word, count in variant_counts.items() if count == most_common_count][0]
+        # freq = "{0:.2f}%".format(100 * sqrt(most_common_count) / total_words)
+        freq = "{0:.2f}%, {1:.2f}%".format(100 * word_counts[most_common_variant[0]] / total_words,
+                                           100 * word_counts[most_common_variant[1]] / total_words)
+
+        print("<tr>")
+        print(f"\t<td>{ letter_pair[0] } - { letter_pair[1] }</td>")
+        print(f"\t<td>{ len(variants) }</td>")
+        print(f"\t<td>{ ', '.join(most_common_variant) }</td>")
+        print(f"\t<td>{ freq }</td>")
+        print("</tr>")
+
+
 def get_unswappable_pairs(letter_swaps):
     for i in range(25):
         for j in range(i + 1, 26):
@@ -210,16 +263,20 @@ if __name__ == '__main__':
     # print_longest_variants(variants)
 
     # Show longest words that have a variant at each of its positions
-    all_position_variants = get_words_with_variants_at_each_position(words)
-    print_longest_word_with_variants_at_all_positions(all_position_variants, word_counts)
+    # all_position_variants = get_words_with_variants_at_each_position(words)
+    # print_longest_word_with_variants_at_all_positions(all_position_variants, word_counts)
 
     # print_variant_counts('blander', word_counts)
     # word_log_frequencies = { word: log(count / total_words) for word, count in word_counts.items() }
 
     # Get all variants
-    # variants, letter_swaps = get_all_variants_at_each_postion(words)
     # variants = get_all_variants(words)
+
+    # Get letter swaps
+    letter_swaps = get_letter_to_letter_swaps(words)
     
+    print(letter_swaps['a']['b'])
+
     # print_most_variants(variants, 12)
     # find_most_common_word_without_variants(word_counts, variants)
     # find_longest_word_without_variants(word_counts, variants)
@@ -237,22 +294,6 @@ if __name__ == '__main__':
 
     # get_unswappable_pairs(letter_swaps.keys())
     # print_q_swap_words(letter_swaps)
-
-    # Find most common letter swaps
-    # for letter_pair, variants in sorted(letter_swaps.items(), key=lambda item: -len(item[1]))[:10]:
-    #     variant_counts = { (word_1, word_2): word_counts[word_1] * word_counts[word_2] for word_1, word_2 in variants }
-    #     most_common_count = max(variant_counts.values())
-    #     most_common_variant = [word for word, count in variant_counts.items() if count == most_common_count][0]
-    #     # freq = "{0:.2f}%".format(100 * sqrt(most_common_count) / total_words)
-    #     freq = "{0:.2f}%, {1:.2f}%".format(100 * word_counts[most_common_variant[0]] / total_words,
-    #                                        100 * word_counts[most_common_variant[1]] / total_words)
-
-    #     print("<tr>")
-    #     print(f"\t<td>{ letter_pair[0] } - { letter_pair[1] }</td>")
-    #     print(f"\t<td>{ len(variants) }</td>")
-    #     print(f"\t<td>{ ', '.join(most_common_variant) }</td>")
-    #     print(f"\t<td>{ freq }</td>")
-    #     print("</tr>")
 
     # Find letters that can be swapped most
     # letter_swap_counts = find_most_swappable_letter(letter_swaps)
