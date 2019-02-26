@@ -103,13 +103,25 @@ def get_words_with_variants_at_each_position(words):
 
 def print_longest_word_with_variants_at_all_positions(variants, word_counts):
     max_length = max(len(word) for word in variants.keys())
-    print(max_length)
+    word_scores = []
 
     for word, word_lists in variants.items():
         if len(word) == max_length:
             # Sort variants
-            print(word, [sorted(word_list, key=lambda word: -word_counts[word])[0] for word_list in word_lists])
+            word_list = [sorted(word_list, key=lambda word: -word_counts[word])[0] for word_list in word_lists]
+            score = sum(word_counts[word] for word in word_list)
+            word_list_str = ", ".join(word_list)
+
+            word_scores.append((word, score))
+
+            # Print table
+            # print("<tr>")
+            # print(f"  <td>{ word }</td>")
+            # print(f"  <td>{ word_list_str }</td>")
+            # print("</tr>")
             
+    for word in sorted(word_scores, key=lambda score: -score[1]):
+        print(word)
 
 def find_most_swappable_letter(letter_swaps):
     letters = { letter: { 'total': 0} for letter in ascii_lowercase }
