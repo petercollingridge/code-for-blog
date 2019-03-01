@@ -109,11 +109,14 @@ def get_letter_swap_proportions(letter_swaps):
     return letter_swap_proportions
 
 
+def print_most_swapped_letters(letter_swaps):
+    for letter, count in sorted(letter_swaps.items(), key=lambda item: -item[1]['total']):
+        print(letter, count['total'])
+
+
 def print_proportion_of_words_with_swaps(letter_swaps, letter_counts):
     proportion_of_swapped_letter = { letter: counts['total'] / letter_counts[letter] for letter, counts in letter_swaps.items() } 
-
-    for letter, proportion in sorted(proportion_of_swapped_letter.items(), key=lambda item: -item[1]):
-        print(letter, proportion)
+    print_most_swapped_letters(proportion_of_swapped_letter)
 
 
 def print_most_common_letter_to_swap_with_letter(letter_swaps, letter_counts):
@@ -317,8 +320,10 @@ if __name__ == '__main__':
     # Get letter swaps
     letter_swaps = get_letter_to_letter_swaps(words)
     letter_swap_proportions = get_letter_swap_proportions(letter_swaps)
-    # print_proportion_of_words_with_swaps(letter_swap_proportions, words)
-    print_most_common_letter_to_swap_with_letter(letter_swap_proportions, letter_counts)
+    print_most_swapped_letters(letter_swap_proportions)
+
+    # print_proportion_of_words_with_swaps(letter_swap_proportions, letter_counts)
+    # print_most_common_letter_to_swap_with_letter(letter_swap_proportions, letter_counts)
 
     # print(letter_swap_proportions['j'])
     # print(letter_swaps['j']['t'])
