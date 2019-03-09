@@ -87,6 +87,15 @@ def get_letter_to_letter_swaps(words):
     return letter_swaps
 
 
+def get_letter_to_letter_percentages(letter_swaps):
+    letter_swap_percentages = dict()
+
+    for letter, swap_letters in letter_swaps.items():
+        total = sum(len(words) for words in swap_letters.values())
+        letter_swap_percentages[letter] = { swap_letter: len(words) / total for swap_letter, words in swap_letters.items() }
+
+    return letter_swap_percentages
+
 
 def get_all_variants_at_each_postion(words):
     variants = dict()
@@ -146,18 +155,19 @@ def print_longest_word_with_variants_at_all_positions(variants, word_counts):
             # Sort variants
             word_list = [sorted(word_list, key=lambda word: -word_counts[word])[0] for word_list in word_lists]
             score = sum(word_counts[word] for word in word_list)
-            word_list_str = ", ".join(word_list)
+            word_list_str = "".join(f"<td>{ word }</td>" for word in word_list)
 
             word_scores.append((word, score))
 
             # Print table
             # print("<tr>")
             # print(f"  <td>{ word }</td>")
-            # print(f"  <td>{ word_list_str }</td>")
+            # print(word_list_str)
             # print("</tr>")
             
     for word in sorted(word_scores, key=lambda score: -score[1]):
         print(word)
+
 
 def get_all_variants(words):
     variants = dict()
@@ -274,8 +284,8 @@ if __name__ == '__main__':
 
     # Get letter swaps
     letter_swaps = get_letter_to_letter_swaps(words)
-    
-    print(letter_swaps['a']['b'])
+    letter_swap_percentages = get_letter_to_letter_percentages(letter_swaps)
+    print(letter_swap_percentages['a'])
 
     # print_most_variants(variants, 12)
     # find_most_common_word_without_variants(word_counts, variants)
