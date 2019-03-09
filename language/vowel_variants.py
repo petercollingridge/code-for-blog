@@ -1,7 +1,7 @@
 import os
 import subprocess
 from math import log, sqrt
-from collections import defaultdict
+from collections import defaultdict, Counter
 from string import ascii_lowercase
 
 
@@ -34,6 +34,13 @@ def get_vowel_variants(words):
                 variants.append(word)
 
     return variants
+
+
+def get_letter_counts(words):
+    letter_counts = Counter()
+    for word in words:
+        letter_counts.update(word)
+    return letter_counts
 
 
 def print_longest_variants(variants, offset=0):
@@ -95,6 +102,43 @@ def get_letter_to_letter_percentages(letter_swaps):
         letter_swap_percentages[letter] = { swap_letter: len(words) / total for swap_letter, words in swap_letters.items() }
 
     return letter_swap_percentages
+
+    
+def get_letter_swap_proportions(letter_swaps):
+    letter_swap_proportions = dict()
+
+    for letter, swaps in letter_swaps.items():
+        counts = { 'total': 0 }
+
+        for swap_letter, words in swaps.items():
+            counts['total'] += len(words)
+            counts[swap_letter] = len(words)
+
+        letter_swap_proportions[letter] = counts
+
+    return letter_swap_proportions
+
+
+def print_most_swapped_letters(letter_swaps):
+    for letter, count in sorted(letter_swaps.items(), key=lambda item: -item[1]['total']):
+        print(letter, count['total'])
+
+
+def print_proportion_of_words_with_swaps(letter_swaps, letter_counts):
+    proportion_of_swapped_letter = { letter: counts['total'] / letter_counts[letter] for letter, counts in letter_swaps.items() } 
+    print_most_swapped_letters(proportion_of_swapped_letter)
+
+
+def print_most_common_letter_to_swap_with_letter(letter_swaps, letter_counts):
+    for letter, swaps in sorted(letter_swaps.items(), key=lambda item: item[0]):
+        # Sort swaps by amount
+        items = (item for item in swaps.items() if item[0] != 'total')
+
+        # Normalised by frequency of letters
+        items = ((item[0], item[1] / letter_counts[letter]) for item in items)
+
+        sorted_swaps = sorted(items, key=lambda item: -item[1])
+        print(letter, sorted_swaps[0])
 
 
 def get_all_variants_at_each_postion(words):
@@ -263,6 +307,7 @@ if __name__ == '__main__':
     word_counts = get_word_counts(os.path.join('word_lists', 'filtered_word_counts.txt'))
     words = set(word_counts.keys())
     total_words = sum(word_counts.values())
+    letter_counts = get_letter_counts(words)
 
     print(len(words))
 
@@ -284,8 +329,14 @@ if __name__ == '__main__':
 
     # Get letter swaps
     letter_swaps = get_letter_to_letter_swaps(words)
-    letter_swap_percentages = get_letter_to_letter_percentages(letter_swaps)
-    print(letter_swap_percentages['a'])
+    letter_swap_proportions = get_letter_swap_proportions(letter_swaps)
+    print_most_swapped_letters(letter_swap_proportions)
+
+    # print_proportion_of_words_with_swaps(letter_swap_proportions, letter_counts)
+    # print_most_common_letter_to_swap_with_letter(letter_swap_proportions, letter_counts)
+
+    # print(letter_swap_proportions['j'])
+    # print(letter_swaps['j']['t'])
 
     # print_most_variants(variants, 12)
     # find_most_common_word_without_variants(word_counts, variants)
