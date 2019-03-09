@@ -87,5 +87,5 @@ if __name__ == '__main__':
         raw_html = search_the_x_word(letter)
         results = parse_search_results(raw_html)
 
-        print("{}: {}".format(letter, results['count']))
-        write_page_results('the-x-word-results.txt', letter, results)
+        print("{}: {}".format(letter, "{0:.2f}".format(results['count'] * 1e-6)))
+        # write_page_results('the-x-word-results.txt', letter, results)
