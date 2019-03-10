@@ -313,7 +313,7 @@ if __name__ == '__main__':
 
     # Get vowel variants
     # variants = get_vowel_variants(words)
-    # # print(variants)
+    # print(variants)
     # print(len(variants))
     # print_longest_variants(variants)
 
@@ -328,9 +328,9 @@ if __name__ == '__main__':
     # variants = get_all_variants(words)
 
     # Get letter swaps
-    letter_swaps = get_letter_to_letter_swaps(words)
-    letter_swap_proportions = get_letter_swap_proportions(letter_swaps)
-    print_most_swapped_letters(letter_swap_proportions)
+    # letter_swaps = get_letter_to_letter_swaps(words)
+    # letter_swap_proportions = get_letter_swap_proportions(letter_swaps)
+    # print_most_swapped_letters(letter_swap_proportions)
 
     # print_proportion_of_words_with_swaps(letter_swap_proportions, letter_counts)
     # print_most_common_letter_to_swap_with_letter(letter_swap_proportions, letter_counts)
