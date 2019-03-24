@@ -247,10 +247,28 @@ def find_most_common_word_without_variants(word_counts, variants):
 
 def print_most_variants(variants, max_count=-1):
     for index, item in enumerate(sorted(variants.items(), key=lambda item: -len(item[1]))):
-        print("{} ({}): {}".format(item[0], len(item[1]), ', '.join(item[1])))
-        # print("{} ({}): {}".format(item[0], len(item[1]), ', '.join(word[0] for word in item[1])))
+        # print('<tr>')
+        # print('  <td style="border-right: 1px solid #aaa">{}</td>'.format(item[0]))
+        # print('  <td>{}</td>'.format(', '.join(item[1])))
+        # print('  <td>{}</td>'.format(len(item[1])))
+        # print('</tr>')
+        print("{} ({}): {}".format(item[0], len(item[1]), ', '.join(word[0] for word in item[1])))
         if index == max_count:
             break
+
+
+def print_most_variants_for_word_length(variants, word_counts):
+    for word_length in range(1, 21):
+        filtered_variants = [(word, variant_list) for word, variant_list in variants.items() if len(word) == word_length]
+        max_variants = max(filtered_variants, key=lambda word: len(word[1]))
+        max_num_variants = len(max_variants[1])
+
+        # print(word_length, max_variants[0], len(max_variants[1]))
+        if max_num_variants > 0:
+            print(word_length)
+            for word, variant_list in filtered_variants:
+                if len(variant_list) == max_num_variants:
+                    print(word, variant_list)
 
 
 def find_most_swappable_letter(letter_swaps):
@@ -325,7 +343,11 @@ if __name__ == '__main__':
     # word_log_frequencies = { word: log(count / total_words) for word, count in word_counts.items() }
 
     # Get all variants
-    # variants = get_all_variants(words)
+    j_words = [word for word in words if 'j' in word]
+    variants = get_all_variants(j_words)
+
+    print(variants)
+    print(len(j_words))
 
     # Get letter swaps
     # letter_swaps = get_letter_to_letter_swaps(words)
@@ -335,10 +357,8 @@ if __name__ == '__main__':
     # print_proportion_of_words_with_swaps(letter_swap_proportions, letter_counts)
     # print_most_common_letter_to_swap_with_letter(letter_swap_proportions, letter_counts)
 
-    # print(letter_swap_proportions['j'])
-    # print(letter_swaps['j']['t'])
-
-    # print_most_variants(variants, 12)
+    # print_most_variants(variants, 30)
+    # print_most_variants_for_word_length(variants, word_counts)
     # find_most_common_word_without_variants(word_counts, variants)
     # find_longest_word_without_variants(word_counts, variants)
 
