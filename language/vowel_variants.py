@@ -231,6 +231,32 @@ def get_all_variants(words):
     return variants
 
 
+def get_variants_for_letter(words, target_letter):
+    variants = dict()
+
+    for word in words:
+        if target_letter not in word:
+            continue
+        
+        word_list = []
+
+        for index, letter in enumerate(word):
+            if letter == target_letter:
+                for new_letter in ascii_lowercase:
+                    if new_letter != letter:
+                        new_word = word[:index] + new_letter + word[index + 1:]
+                        if new_word in words:
+                            word_list.append(new_word)
+
+        variants[word] = word_list
+
+    return variants
+
+
+def get_distribution_of_variant_numbers(variants):
+    return Counter(len(variant_list) for variant_list in variants.values())
+
+
 def find_longest_word_without_variants(word_counts, variants):
     for word in sorted(word_counts.keys(), key=lambda word: -len(word)):
         if not variants.get(word):
@@ -343,11 +369,12 @@ if __name__ == '__main__':
     # word_log_frequencies = { word: log(count / total_words) for word, count in word_counts.items() }
 
     # Get all variants
-    j_words = [word for word in words if 'j' in word]
-    variants = get_all_variants(j_words)
+    # variants = get_all_variants(words)
 
-    print(variants)
-    print(len(j_words))
+    j_variants = get_variants_for_letter(words, 'j')
+
+    variant_distribution = get_distribution_of_variant_numbers(j_variants)
+    print(variant_distribution)
 
     # Get letter swaps
     # letter_swaps = get_letter_to_letter_swaps(words)
