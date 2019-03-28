@@ -372,12 +372,18 @@ if __name__ == '__main__':
     # variants = get_all_variants(words)
 
     j_variants = get_variants_for_letter(words, 'j')
+    q_variants = get_variants_for_letter(words, 'q')
+    for word, variants in q_variants.items():
+        if len(variants):
+            print(word, variants)
 
-    variant_distribution = get_distribution_of_variant_numbers(j_variants)
-    print(variant_distribution)
+    # variant_distribution = get_distribution_of_variant_numbers(variants)
+    # sum_of_variants = sum(number * count for number, count in variant_distribution.items())
+    # print(variant_distribution)
+    # print(sum_of_variants / len(words))
 
     # Get letter swaps
-    # letter_swaps = get_letter_to_letter_swaps(words)
+    letter_swaps = get_letter_to_letter_swaps(words)
     # letter_swap_proportions = get_letter_swap_proportions(letter_swaps)
     # print_most_swapped_letters(letter_swap_proportions)
 
@@ -394,14 +400,13 @@ if __name__ == '__main__':
     # print(variants['nationalizations'])
 
     #  TODO 
-    #   show words with the most variants
     #   for each letter, show which letter can most often replace it
 
     # Number of letter pairs that can be swapped (out of a possible 325 (25 * 26  /2))
     # print(len(list(letter_swaps.keys())))
 
     # get_unswappable_pairs(letter_swaps.keys())
-    # print_q_swap_words(letter_swaps)
+    print_q_swap_words(letter_swaps)
 
     # Find letters that can be swapped most
     # letter_swap_counts = find_most_swappable_letter(letter_swaps)
