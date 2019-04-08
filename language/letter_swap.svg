@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+
+<style>
+    .node circle {
+        fill: #888;
+        opacity: 0.75;
+    }
+
+    .node text {
+        text-anchor: middle;
+        alignment-baseline: middle;
+    }
+</style>
+
+<g id="edges">
+</g>
+
+<g id="nodes">
+</g>
+
+<script><![CDATA[
+var width = 300;
+var height = 300;
+var ns = 'http://www.w3.org/2000/svg';
+
+var data = [
+    ['a', 'o', 1351],
+    ['b', 'p', 576],
+    ['c', 't', 592],
+    ['d', 's', 2951],
+    ['e', 'a', 1208],
+    ['f', 'b', 425],
+    ['g', 't', 504],
+    ['h', 't', 493],
+    ['i', 'a', 1212],
+    ['j', 'b', 147],
+    ['k', 't', 379],
+    ['l', 'r', 1037],
+    ['m', 't', 665],
+    ['n', 'r', 774],
+    ['o', 'a', 1351],
+    ['p', 't', 704],
+    ['q', 'g', 12],
+    ['r', 'd', 2381],
+    ['s', 'd', 2951],
+    ['t', 's', 943],
+    ['u', 'a', 928],
+    ['v', 't', 236],
+    ['w', 't', 430],
+    ['x', 't', 75],
+    ['y', 's', 776],
+    ['z', 's', 117],
+];
+
+// Create node objects
+var nodes = {};
+
+function addNode(letter) {
+    nodes[letter] = { name: letter, edges: [], size: 1 };
+    return nodes[letter];
+}
+
+for (var i = 0; i < data.length; i++) {
+    var item = data[i];
+    var letter1 = item[0];
+    var letter2 = item[1];
+    var strength = item[2];
+
+    var node1 = addNode(letter1);
+    var node2 = nodes[letter2] || addNode(letter2);
+
+    node1.edges.push([node2, strength]);
+    node2.edges.push([node1, strength]);
+    node2.size++;
+}
+
+// Add node elements
+
+var nodeGroup = document.getElementById('nodes');
+
+for (var node in nodes) {
+    var nodeObj = nodes[node];
+    var x = Math.random() * 300;
+    var y = Math.random() * 300;
+
+    var nodeElement = document.createElementNS(ns, 'g');
+    nodeElement.setAttributeNS(null, 'class', 'node');
+    nodeElement.setAttributeNS(null, 'transform', 'translate(' + x + " " + y + ')');
+
+    var circle = document.createElementNS(ns, 'circle');
+    circle.setAttributeNS(null, 'r', Math.sqrt(nodeObj.size) * 10);
+
+    var text = document.createElementNS(ns, 'text');
+    var textNode = document.createTextNode(nodeObj.name);
+
+    nodeGroup.appendChild(nodeElement);
+    nodeElement.appendChild(circle);
+    nodeElement.appendChild(text);
+    text.appendChild(textNode);
+}
+
+]]></script>
+
+</svg>
