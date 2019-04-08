@@ -53,11 +53,13 @@ var data = [
 ];
 
 // Create node objects
-var nodes = {};
+var nodesMap = {};
+var nodes = [];
 
 function addNode(letter) {
-    nodes[letter] = { name: letter, edges: [], size: 1 };
-    return nodes[letter];
+    nodesMap[letter] = { name: letter, edges: [], size: 1 };
+    nodes.push(nodesMap[letter]);
+    return nodesMap[letter];
 }
 
 for (var i = 0; i < data.length; i++) {
@@ -67,7 +69,7 @@ for (var i = 0; i < data.length; i++) {
     var strength = item[2];
 
     var node1 = addNode(letter1);
-    var node2 = nodes[letter2] || addNode(letter2);
+    var node2 = nodesMap[letter2] || addNode(letter2);
 
     node1.edges.push([node2, strength]);
     node2.edges.push([node1, strength]);
@@ -78,26 +80,98 @@ for (var i = 0; i < data.length; i++) {
 
 var nodeGroup = document.getElementById('nodes');
 
-for (var node in nodes) {
-    var nodeObj = nodes[node];
-    var x = Math.random() * 300;
-    var y = Math.random() * 300;
+function setTransform(node) {
+    node.element.setAttributeNS(null, 'transform', 'translate(' + node.x + " " + node.y + ')');
+}
+
+for (var i = 0; i < nodes.length; i++) {
+    var node = nodes[i];
+    node.x = Math.random() * 300;
+    node.y = Math.random() * 300;
+    node.dx = Math.random() - 0.5;
+    node.dy = Math.random() - 0.5;
 
     var nodeElement = document.createElementNS(ns, 'g');
     nodeElement.setAttributeNS(null, 'class', 'node');
-    nodeElement.setAttributeNS(null, 'transform', 'translate(' + x + " " + y + ')');
+    node.element = nodeElement;
+    setTransform(node);
 
     var circle = document.createElementNS(ns, 'circle');
-    circle.setAttributeNS(null, 'r', Math.sqrt(nodeObj.size) * 10);
+    circle.setAttributeNS(null, 'r', Math.sqrt(node.size) * 10);
 
     var text = document.createElementNS(ns, 'text');
-    var textNode = document.createTextNode(nodeObj.name);
+    var textNode = document.createTextNode(node.name);
 
     nodeGroup.appendChild(nodeElement);
     nodeElement.appendChild(circle);
     nodeElement.appendChild(text);
     text.appendChild(textNode);
 }
+
+// Animation
+
+function update() {
+    for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+
+        // Move
+        node.x += node.dx;
+        node.y += node.dy;
+
+        // Friction
+        node.dx *= 0.99;
+        node.dy *= 0.99;
+
+        // Bounce off edges
+        if (node.x < 0) {
+            node.x *= -1;
+            node.dx *= -1;
+        } else if (node.x > width) {
+            node.x = 2 * width - node.x;
+            node.dx *= -1;
+        }
+
+        if (node.y < 0) {
+            node.y *= -1;
+            node.dy *= -1;
+        } else if (node.y > height) {
+            node.y = 2 * height - node.y;
+            node.dy *= -1;
+        }
+
+        setTransform(node);
+    }
+
+    // Nodes repel based on distance
+    for (var i = 0; i < nodes.length - 1; i++) {
+        var node1 = nodes[i];
+        var x1 = node1.x;
+        var y1 = node1.y;
+
+        for (var j = i + 1; j < nodes.length; j++) {
+            var node2 = nodes[j];
+            var x2 = node2.x;
+            var y2 = node2.y;
+
+            var dx = x2 - x1;
+            var dy = y2 - y1;
+            var d2 = dx * dx + dy * dy;
+            dx /= d2
+            dy /= d2
+
+            node1.dx -= dx;
+            node1.dy -= dy;
+            node2.dx += dx;
+            node2.dy += dy;
+        }
+    }
+
+
+    // Loop
+    setTimeout(update, 20);
+} 
+
+update();
 
 ]]></script>
 
