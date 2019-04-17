@@ -13,7 +13,8 @@
 
     #edges line {
         stroke: #0056b3;
-        stroke-width: 1;
+        stroke-width: 2;
+        stroke-opacity: 0.7;
     }
 </style>
 
@@ -96,10 +97,20 @@ function transformNode(node) {
 }
 
 function updateEdgePosition(edge) {
-    edge.element.setAttributeNS(null, 'x1', edge.node1.x);
-    edge.element.setAttributeNS(null, 'y1', edge.node1.y);
-    edge.element.setAttributeNS(null, 'x2', edge.node2.x);
-    edge.element.setAttributeNS(null, 'y2', edge.node2.y);
+    var x1 = edge.node1.x;
+    var y1 = edge.node1.y;
+    var x2 = edge.node2.x;
+    var y2 = edge.node2.y;
+    var dx = x2 - x1;
+    var dy = y2 - y1;
+    var d = Math.sqrt(dx * dx + dy * dy);
+    var d1 = edge.node1.r / d;
+    var d2 = edge.node2.r / d;
+
+    edge.element.setAttributeNS(null, 'x1', x1 + d1 * dx);
+    edge.element.setAttributeNS(null, 'y1', y1 + d1 * dy);
+    edge.element.setAttributeNS(null, 'x2', x2 - d2 * dx);
+    edge.element.setAttributeNS(null, 'y2', y2 - d2 * dy);
 }
 
 for (var i = 0; i < nodes.length; i++) {
@@ -154,7 +165,7 @@ function update() {
             var dx = x2 - x1;
             var dy = y2 - y1;
             var d2 = dx * dx + dy * dy;
-            d2 = REPULSION / (d2 * d2) ;
+            d2 = REPULSION / (d2 * d2);
             dx *= d2;
             dy *= d2;
 
