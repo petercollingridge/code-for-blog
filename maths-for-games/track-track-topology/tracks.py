@@ -4,6 +4,9 @@ from enum import IntEnum
 
 Connection = namedtuple('Connection', ['point', 'position'])
 
+def write_connection(connection):
+    return "{0}: {1}".format(connection.point, str(connection.position))
+
 class Position(IntEnum):
     ARM1 = 0
     ARM2 = 1
@@ -31,14 +34,15 @@ class System:
         point = self.points[index]
         return Connection(point, position)
 
+    def describe(self):
+        for point in self.points:
+            point.describe()
+
     def run(self, point_index, position, n):
         connection = self._get_connection(point_index, position)
         
         for _ in range(n):
-            print("{0}: {1}".format(
-                connection.point,
-                str(connection.position)
-            ))
+            # print(write_connection(connection))
             connection = connection.point.next(connection.position)
 
 
@@ -56,12 +60,28 @@ class Point:
         if position == Position.BASE:
             # Entering the point at the base, so leave via an arm
             # determined by the switch
-            return self.connections[self.switch]
+            connection_index = self.switch
         else:
             # Entering the point at an arm, so leave via the base
             # The switch changes the point to this arm
             self.switch = position
-            return self.connections[Position.BASE]
+            connection_index = Position.BASE
+        
+        next_connection = self.connections[connection_index]
+        print("Point {0}: In {1}, out {2}".format(
+            self.index,
+            str(position),
+            str(Position(connection_index))
+        ))
+        return next_connection
+
+    def describe(self):
+        print(self)
+        for i, connection in enumerate(self.connections):
+            print("  {0} -> {1}".format(
+                str(Position(i)),
+                write_connection(connection)
+            ))
 
     def __repr__(self):
         return "Point {}".format(self.index)
@@ -71,5 +91,7 @@ if __name__ == '__main__':
     system.add_track(0, Position.BASE, 1, Position.BASE)
     system.add_track(0, Position.ARM1, 0, Position.ARM2)
     system.add_track(1, Position.ARM1, 1, Position.ARM2)
-    system.run(0, Position.BASE, 10)
+
+    # system.describe()
+    system.run(0, Position.BASE, 2)
 
