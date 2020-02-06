@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -30 20 32">
+
+    <defs>
+        <g id="point" fill="none" stroke="#aaa" stroke-width="10">
+            <path class="track" d="M0 0A50 50 0 0 0 -6.7 -25" />
+            <path class="track" d="M0 0A50 50 0 0 1 6.7 -25" />
+        </g>
+    </defs>
+
+
+    <use href="#point" x="0" y="0" />
+
+</svg>
