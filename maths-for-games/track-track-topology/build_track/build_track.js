@@ -5,6 +5,11 @@ var vm = new Vue({
             { x: 100, y: 100, angle: 270 },
             { x: 300, y: 100, angle: 90 },
         ],
-        selectedPoint: 0
+        selectedPoint: false
+    },
+    methods: {
+        selectPoint: function(i) {
+            this.selectedPoint = i;
+        }
     }
 });

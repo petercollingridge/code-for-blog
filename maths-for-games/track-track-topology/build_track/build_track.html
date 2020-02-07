@@ -13,13 +13,15 @@
     <body>
         <div id="track-builder">
             <main>
-                <svg id="track-diagram">
+                <svg id="track-diagram" viewBox="0 0 400 300">
                     <defs>
                         <g id="point">
                             <path d="M0 0A50 50 0 0 0 -6.7 -25" />
                             <path d="M0 0A50 50 0 0 1 6.7 -25" />
                         </g>
                     </defs>
+
+                    <rect class="background" width="600" height="600" v-on:click="selectPoint(false)"/>
 
                     <circle
                         v-if="selectedPoint !== false"
@@ -29,28 +31,30 @@
                         class="highlight"
                     />
 
-                    <g v-for="point in points">
+                    <g v-for="(point, index) in points" v-on:click="selectPoint(index)">
                         <use href="#point" :transform="`translate(${point.x} ${point.y}) rotate(${point.angle})`"/>
                         <circle fill="blue" :cx="point.x" :cy="point.y" r="3" />
                     </g>
                 </svg>
 
                 <div id="controls">
-                    <h2>Point {{ selectedPoint + 1 }}</h2>
-                    <label>
-                        x-coordinate: {{ points[selectedPoint].x }}
-                        <input v-model="points[selectedPoint].x" type="range" min="10" max="600"/>
-                    </label>
-                    <br>
-                    <label>
-                        y-coordinate: {{ points[selectedPoint].y }}
-                        <input v-model="points[selectedPoint].y" type="range" min="10" max="600"/>
-                    </label>                    
-                    <br>
-                    <label>
-                        y-coordinate: {{ points[selectedPoint].angle }}
-                        <input v-model="points[selectedPoint].angle" type="range" min="0" max="359"/>
-                    </label>
+                    <div v-if="selectedPoint !== false">
+                        <h2>Point {{ selectedPoint + 1 }}</h2>
+                        <label>
+                            x-coordinate: {{ points[selectedPoint].x }}
+                            <input v-model="points[selectedPoint].x" type="range" min="10" max="600"/>
+                        </label>
+                        <br>
+                        <label>
+                            y-coordinate: {{ points[selectedPoint].y }}
+                            <input v-model="points[selectedPoint].y" type="range" min="10" max="600"/>
+                        </label>                    
+                        <br>
+                        <label>
+                            y-coordinate: {{ points[selectedPoint].angle }}
+                            <input v-model="points[selectedPoint].angle" type="range" min="0" max="359"/>
+                        </label>
+                    </div>
                 </div>
             </main>
         </div>

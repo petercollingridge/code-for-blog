@@ -32,6 +32,10 @@ main {
     stroke-width: 10;
 }
 
+svg .background {
+    fill: white;
+}
+
 svg .highlight {
     fill: rgb(255, 0, 175);
     opacity: 0.25;
