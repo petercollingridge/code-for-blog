@@ -3,6 +3,7 @@ var vm = new Vue({
     data: {
         points: [
             { x: 100, y: 100, angle: 40 }
-        ]
+        ],
+        selectedPoint: 0
     }
 });
