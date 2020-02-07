@@ -55,6 +55,42 @@
                             <input v-model="points[selectedPoint].angle" type="range" min="0" max="359"/>
                         </label>
                     </div>
+
+                    <div>
+                        <h2>Add connection</h2>
+                        <select v-model="connectionPoint1">
+                            <option disabled value="">Select a point</option>
+                            <option v-for="(point, index) in points">
+                                Point {{ index + 1}}
+                            </option>
+                        </select>
+                        <select v-model="connectionPosition1">
+                            <option disabled value="">Select a position</option>
+                            <option value="arm1">Arm 1</option>
+                            <option value="arm2">Arm 2</option>
+                            <option value="base">Base</option>
+                        </select>
+                        
+                        <br>
+
+                        <select v-model="connectionPoint2">
+                            <option disabled value="">Select a point</option>
+                            <option v-for="(point, index) in points">
+                                Point {{ index + 1}}
+                            </option>
+                        </select>
+                        <select v-model="connectionPosition2">
+                            <option disabled value="">Select a position</option>
+                            <option value="arm1">Arm 1</option>
+                            <option value="arm2">Arm 2</option>
+                            <option value="base">Base</option>
+                        </select>
+
+                        <br>
+                        <button :disabled="!canAddConnections" v-on:click="addConnection">
+                            Add Connection
+                        </button>
+                    </div>
                 </div>
             </main>
         </div>

@@ -4,6 +4,7 @@
 
 body {
     margin: 0;
+    font-size: 18px;
 }
 
 main {
@@ -12,6 +13,15 @@ main {
     grid-template-rows: 100%;
     width: 100vw;
     height: 100vh;
+}
+
+select {
+    height: 1.8rem;
+    font-size: 1rem;
+    margin: 0.25rem;
+    color: #444;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
 }
 
 #track-diagram {
