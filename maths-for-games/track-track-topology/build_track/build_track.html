@@ -21,6 +21,14 @@
                         </g>
                     </defs>
 
+                    <circle
+                        v-if="selectedPoint !== false"
+                        :cx="points[selectedPoint].x"
+                        :cy="points[selectedPoint].y"
+                        r="30"
+                        class="highlight"
+                    />
+
                     <g v-for="point in points">
                         <use href="#point" :transform="`translate(${point.x} ${point.y}) rotate(${point.angle})`"/>
                         <circle fill="blue" :cx="point.x" :cy="point.y" r="3" />
@@ -28,7 +36,7 @@
                 </svg>
 
                 <div id="controls">
-                    <h2>Point position</h2>
+                    <h2>Point {{ selectedPoint + 1 }}</h2>
                     <label>
                         x-coordinate: {{ points[selectedPoint].x }}
                         <input v-model="points[selectedPoint].x" type="range" min="10" max="600"/>

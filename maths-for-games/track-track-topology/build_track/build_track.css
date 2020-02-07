@@ -22,7 +22,6 @@ main {
 
 #controls {
     padding: 1rem;
-
     border-left: 1px solid #ddd;
     background-color: #f8f8ff;
 }
@@ -31,4 +30,9 @@ main {
     fill: none;
     stroke: #aaa;
     stroke-width: 10;
+}
+
+svg .highlight {
+    fill: rgb(255, 0, 175);
+    opacity: 0.25;
 }
