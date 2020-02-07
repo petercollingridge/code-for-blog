@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Build track</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <link rel="stylesheet" href="build_track.css">
+    </head>
+
+    <body>
+        <div id="track-builder">
+            <svg width="600" height="400">
+                <defs>
+                    <g id="point">
+                        <path d="M0 0A50 50 0 0 0 -6.7 -25" />
+                        <path d="M0 0A50 50 0 0 1 6.7 -25" />
+                    </g>
+                </defs>
+
+                <g v-for="point in points">
+                    <use href="#point" :transform="`translate(${point.x} ${point.y}) rotate(${point.angle})`"/>
+                    <circle fill="blue" :cx="point.x" :cy="point.y" r="3" />
+                </g>
+
+            </svg>
+        </div>
+
+        <script src="build_track.js"></script>
+    </body>
+</html>
