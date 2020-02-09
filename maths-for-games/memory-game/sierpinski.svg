@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-240 -1 240 340">
+  <style>
+    rect {
+      stroke: #666;
+      stroke-width: 2;
+    }
+    text {
+      text-anchor: middle;
+      alignment-baseline: central;
+    }
+    .filled {
+      fill: rgb(140, 180, 80);
+    }
+    .empty {
+      fill: none;
+    }
+  </style>
+
+  <rect class="filled" x="0" width="32" height="32"/>
+  <text x="16" y="16">1</text>
+
+  <g transform="translate(-16 32)">
+    <rect class="filled" x="0" width="32" height="32"/>
+    <text x="16" y="16">1</text>
+    <rect class="filled" x="32" width="32" height="32"/>
+    <text x="48" y="16">1</text>
+  </g>
+
+  <g transform="translate(-32 64)">
+    <rect class="filled" x="0" width="32" height="32"/>
+    <text x="16" y="16">1</text>
+    <rect class="empty" x="32" width="32" height="32"/>
+    <text x="48" y="16">2</text>
+    <rect class="filled" x="64" width="32" height="32"/>
+    <text x="80" y="16">1</text>
+  </g>
+
+  <g transform="translate(-48 96)">
+    <rect class="filled" x="0" width="32" height="32"/>
+    <text x="16" y="16">1</text>
+    <rect class="filled" x="32" width="32" height="32"/>
+    <text x="48" y="16">3</text>
+    <rect class="filled" x="64" width="32" height="32"/>
+    <text x="80" y="16">3</text>
+    <rect class="filled" x="96" width="32" height="32"/>
+    <text x="112" y="16">1</text>
+  </g>
+
+  <g transform="translate(-60 128)">
+    <rect class="filled" x="0" width="32" height="32"/>
+    <text x="16" y="16">1</text>
+    <rect class="empty" x="32" width="32" height="32"/>
+    <text x="48" y="16">4</text>
+    <rect class="empty" x="64" width="32" height="32"/>
+    <text x="80" y="16">6</text>
+    <rect class="empty" x="96" width="32" height="32"/>
+    <text x="112" y="16">4</text>
+    <rect class="filled" x="128" width="32" height="32"/>
+    <text x="144" y="16">1</text>
+  </g>
+
+  <g transform="translate(-76 160)">
+    <rect class="filled" x="0" width="32" height="32"/>
+    <text x="16" y="16">1</text>
+    <rect class="filled" x="32" width="32" height="32"/>
+    <text x="48" y="16">5</text>
+    <rect class="empty" x="64" width="32" height="32"/>
+    <text x="80" y="16">10</text>
+    <rect class="empty" x="96" width="32" height="32"/>
+    <text x="112" y="16">10</text>
+    <rect class="filled" x="128" width="32" height="32"/>
+    <text x="144" y="16">5</text>
+    <rect class="filled" x="160" width="32" height="32"/>
+    <text x="176" y="16">1</text>
+  </g>
+
+</svg>
