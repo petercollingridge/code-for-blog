@@ -1,3 +1,7 @@
+const DEGREES_30 = Math.PI * 30 / 180;
+const POINT_SIZE = 20;
+
+
 var vm = new Vue({
     el: '#track-builder',
     data: {
@@ -14,8 +18,10 @@ var vm = new Vue({
     },
     computed: {
         canAddConnections: function() {
-            return this.connectionPoint1 && this.connectionPoint2 &&
-                this.connectionPoint1 && this.connectionPoint2;
+            return this.connectionPoint1 !== '' &&
+                this.connectionPoint2 !== '' &&
+                this.connectionPosition1 &&
+                this.connectionPosition2;
         }
     },
     methods: {
@@ -23,7 +29,7 @@ var vm = new Vue({
             this.selectedPoint = i;
         },
         addConnection() {
-            // Check is connection is valid
+            // TODO: Check is connection is valid
 
             this.connections.push({
                 point1: this.connectionPoint1,
@@ -32,8 +38,25 @@ var vm = new Vue({
                 position2: this.connectionPosition2,
             })
         },
-        getConnectionPath(connection) {
-            co
+        getConnectionPath({point1, point2, position1, position2,}) {
+            const coord1 = this.getCoordinates(position1, this.points[point1]);
+            const coord2 = this.getCoordinates(position2, this.points[point2]);
+            return `M${ coord1.x } ${ coord1.y }L${ coord2.x } ${ coord2.y }`;
+        },
+        getCoordinates(position, point) {
+            const { x, y, angle } = point;
+            const angleRadians = -angle * Math.PI / 180;
+
+            if (position === 'base') {
+                return { x, y, angle };
+            } else {
+                const turnAngle = angleRadians + position === 'arm1' ? -DEGREES_30 : DEGREES_30;
+                return {
+                    x: x + POINT_SIZE * Math.cos(turnAngle),
+                    y: y + POINT_SIZE * Math.sin(turnAngle),
+                    angle: turnAngle
+                };
+            }
         }
     }
 });

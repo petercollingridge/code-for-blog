@@ -31,6 +31,8 @@
                         class="highlight"
                     />
 
+                    <path class="track" v-for="connection in connections" :d="getConnectionPath(connection)" />
+
                     <g v-for="(point, index) in points" v-on:click="selectPoint(index)">
                         <use href="#point" :transform="`translate(${point.x} ${point.y}) rotate(${point.angle})`"/>
                         <circle fill="blue" :cx="point.x" :cy="point.y" r="3" />
@@ -60,7 +62,7 @@
                         <h2>Add connection</h2>
                         <select v-model="connectionPoint1">
                             <option disabled value="">Select a point</option>
-                            <option v-for="(point, index) in points">
+                            <option v-for="(point, index) in points" :value="index">
                                 Point {{ index + 1}}
                             </option>
                         </select>
@@ -75,7 +77,7 @@
 
                         <select v-model="connectionPoint2">
                             <option disabled value="">Select a point</option>
-                            <option v-for="(point, index) in points">
+                            <option v-for="(point, index) in points" :value="index">
                                 Point {{ index + 1}}
                             </option>
                         </select>

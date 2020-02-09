@@ -42,6 +42,11 @@ select {
     stroke-width: 10;
 }
 
+svg .track {
+    stroke: #888;
+    stroke-width: 10;
+}
+
 svg .background {
     fill: white;
 }
