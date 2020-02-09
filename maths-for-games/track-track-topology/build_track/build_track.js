@@ -45,12 +45,12 @@ var vm = new Vue({
         },
         getCoordinates(position, point) {
             const { x, y, angle } = point;
-            const angleRadians = -angle * Math.PI / 180;
+            const angleRadians = (angle - 90) * Math.PI / 180;
 
             if (position === 'base') {
                 return { x, y, angle };
             } else {
-                const turnAngle = angleRadians + position === 'arm1' ? -DEGREES_30 : DEGREES_30;
+                const turnAngle = angleRadians + (position === 'arm1' ? -DEGREES_30 : DEGREES_30);
                 return {
                     x: x + POINT_SIZE * Math.cos(turnAngle),
                     y: y + POINT_SIZE * Math.sin(turnAngle),
