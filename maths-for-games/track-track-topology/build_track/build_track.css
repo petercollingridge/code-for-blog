@@ -38,12 +38,12 @@ select {
 
 #point path { 
     fill: none;
-    stroke: #aaa;
+    stroke: #888;
     stroke-width: 10;
 }
 
 svg .track {
-    stroke: #888;
+    stroke: #aaa;
     stroke-width: 10;
 }
 
