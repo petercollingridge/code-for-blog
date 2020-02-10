@@ -42,20 +42,20 @@
                 <div id="controls">
                     <div v-if="selectedPoint !== false">
                         <h2>Point {{ selectedPoint + 1 }}</h2>
-                        <label>
+                        <label class="control-label">
                             x-coordinate: {{ points[selectedPoint].x }}
-                            <input v-model="points[selectedPoint].x" type="range" min="10" max="600"/>
                         </label>
+                        <input v-model="points[selectedPoint].x" type="range" min="10" max="600"/>
                         <br>
-                        <label>
+                        <label class="control-label">
                             y-coordinate: {{ points[selectedPoint].y }}
-                            <input v-model="points[selectedPoint].y" type="range" min="10" max="600"/>
-                        </label>                    
-                        <br>
-                        <label>
-                            direction: {{ points[selectedPoint].angle }}
-                            <input v-model="points[selectedPoint].angle" type="range" min="0" max="359"/>
                         </label>
+                        <input v-model="points[selectedPoint].y" type="range" min="10" max="600"/>
+                        <br>
+                        <label class="control-label">
+                            direction: {{ points[selectedPoint].angle }}
+                        </label>
+                        <input v-model="points[selectedPoint].angle" type="range" min="0" max="359"/>
                     </div>
 
                     <div>
