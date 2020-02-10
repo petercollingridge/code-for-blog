@@ -1,5 +1,6 @@
 const DEGREES_30 = Math.PI * 30 / 180;
-const POINT_SIZE = 20;
+const POINT_ARC_LENGTH = 50;
+const POINT_SIZE = 2 * POINT_ARC_LENGTH * Math.sin(DEGREES_30 / 2);
 
 
 var vm = new Vue({
