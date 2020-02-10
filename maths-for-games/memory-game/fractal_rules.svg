@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 340">
+  <style>
+    rect {
+      stroke: #666;
+      stroke-width: 2;
+    }
+    text {
+      text-anchor: middle;
+    }
+    .filled {
+      fill: rgb(140, 180, 80);
+    }
+    .empty {
+      fill: none;
+    }
+    line {
+      stroke: rgb(64, 95, 245);
+      stroke-width: 2;
+    }
+  </style>
+
+  <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" orient="auto-start-reverse">
+          <path d="M0 0L10 5L0 10z" fill="rgb(64, 95, 237)"></path>
+      </marker>
+  </defs>
+
+  <g transform="translate(1 1)">
+    <rect class="empty" x="0" y="0" width="32" height="32"/>
+    <rect class="empty" x="32" y="0" width="32" height="32"/>
+    <rect class="empty" x="16" y="32" width="32" height="32"/>
+
+    <line x1="16" y1="17" x2="24" y2="39" marker-end="url(#arrow)"/>
+    <line x1="48" y1="17" x2="40" y2="39" marker-end="url(#arrow)"/>
+
+    <rect class="empty" x="100" y="16" width="32" height="32"/>
+    <rect class="empty" x="152" y="16" width="32" height="32"/>
+    <rect class="empty" x="204" y="16" width="32" height="32"/>
+    <text x="142" y="35">+</text>
+    <text x="194" y="35">=</text>
+  </g>
+
+  <g transform="translate(1 91)">
+    <rect class="filled" x="0" y="0" width="32" height="32"/>
+    <rect class="empty" x="32" y="0" width="32" height="32"/>
+    <rect class="filled" x="16" y="32" width="32" height="32"/>
+
+    <line x1="16" y1="17" x2="24" y2="39" marker-end="url(#arrow)"/>
+    <line x1="48" y1="17" x2="40" y2="39" marker-end="url(#arrow)"/>
+
+    <rect class="filled" x="100" y="16" width="32" height="32"/>
+    <rect class="empty" x="152" y="16" width="32" height="32"/>
+    <rect class="filled" x="204" y="16" width="32" height="32"/>
+    <text x="142" y="35">+</text>
+    <text x="194" y="35">=</text>
+  </g>
+
+    <g transform="translate(1 181)">
+    <rect class="empty" x="0" y="0" width="32" height="32"/>
+    <rect class="filled" x="32" y="0" width="32" height="32"/>
+    <rect class="filled" x="16" y="32" width="32" height="32"/>
+
+    <line x1="16" y1="17" x2="24" y2="39" marker-end="url(#arrow)"/>
+    <line x1="48" y1="17" x2="40" y2="39" marker-end="url(#arrow)"/>
+
+    <rect class="empty" x="100" y="16" width="32" height="32"/>
+    <rect class="filled" x="152" y="16" width="32" height="32"/>
+    <rect class="filled" x="204" y="16" width="32" height="32"/>
+    <text x="142" y="35">+</text>
+    <text x="194" y="35">=</text>
+  </g>
+
+    <g transform="translate(1 271)">
+    <rect class="filled" x="0" y="0" width="32" height="32"/>
+    <rect class="filled" x="32" y="0" width="32" height="32"/>
+    <rect class="empty" x="16" y="32" width="32" height="32"/>
+
+    <line x1="16" y1="17" x2="24" y2="39" marker-end="url(#arrow)"/>
+    <line x1="48" y1="17" x2="40" y2="39" marker-end="url(#arrow)"/>
+
+    <rect class="filled" x="100" y="16" width="32" height="32"/>
+    <rect class="filled" x="152" y="16" width="32" height="32"/>
+    <rect class="empty" x="204" y="16" width="32" height="32"/>
+    <text x="142" y="35">+</text>
+    <text x="194" y="35">=</text>
+  </g>
+</svg>

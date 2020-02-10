@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 160" width="300" height="160" style="border:1px solid black">
+    <style>
+        .room {
+            fill: #eee;
+            stroke: #a9a9a9;
+        }
+        .room:hover {
+            fill: #ff00af;
+        }
+    </style>
+
+    <g transform="translate(150, 80) rotate(-45) scale(1 1.73) translate(-150, -80)">
+        <g transform="translate(150, 80) matrix(0.707 0.409 -0.707 0.409 0 -0.816) translate(-150, -80)">
+            <rect class="room" x="20" y="1" width="80" height="140"/>
+            <rect class="room" x="160" y="1" width="100" height="60"/>
+            <path class="room" d="M20 159 l0 -20 l240 0 l0 -138 l20 0 l0 158z"/>
+            <path class="room" d="M100 139 l0 -138 l60 0 l0 60 l100 0 l0 78z"/>
+            <circle cx="150" cy="80" r="2" />
+        </g>
+    </g>
+    <circle cx="150" cy="80" r="3" fill="none" stroke="black"/>
+</svg>
