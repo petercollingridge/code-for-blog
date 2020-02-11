@@ -1,15 +1,14 @@
 const DEGREES_30 = Math.PI * 30 / 180;
 const POINT_ARC_LENGTH = 50;
 const POINT_SIZE = 2 * POINT_ARC_LENGTH * Math.sin(DEGREES_30 / 2);
-// const POINT_SIZE = POINT_ARC_LENGTH;
 
 
 var vm = new Vue({
     el: '#track-builder',
     data: {
         points: [
-            { x: 100, y: 100, angle: 0 },
-            { x: 300, y: 100, angle: 180 },
+            { x: 100, y: 100, angle: 90 },
+            { x: 150, y: 100, angle: 90 },
         ],
         connections: [
             {
@@ -62,39 +61,51 @@ var vm = new Vue({
             const coord2 = this.getCoordinates(position2, this.points[point2]);
 
             const dist = this.getDistance(coord1, coord2);
-            // const LENGTH = 10000 / (dist + 20);
-            const LENGTH = 50;
 
             const c1 = Math.cos(coord1.angle);
             const s1 = Math.sin(coord1.angle);
             const c2 = Math.cos(coord2.angle);
             const s2 = Math.sin(coord2.angle);
 
-            const x1 = coord1.x + LENGTH * c1;
-            const y1 = coord1.y + LENGTH * s1;
-            const x2 = coord2.x + LENGTH * c2;
-            const y2 = coord2.y + LENGTH * s2;
+            let armLength = 50;
 
-            if (dist < 50) { 
-                // When points are close create a mid point to loop around
-                const x3 = (coord1.x + coord2.x + LENGTH * 5 * (c1 + c2)) / 2;
-                const y3 = (coord1.y + coord2.y + LENGTH * 5 * (s1 + s2)) / 2;
-                const midAngle = (coord1.angle + coord2.angle) / 2;
-                const dx = LENGTH * Math.cos(midAngle + Math.PI / 2);
-                const dy = LENGTH * Math.sin(midAngle + Math.PI / 2);
+            // To what extent to the tracks point in the same direction
+            let dot = c1 * c2 + s1 * s2;
+            console.log(dot)
+            if (dist < 50) {
+                if (dot > 0.5) {
+                    armLength = armLength * (1 - dot);
+                } else {
+                    const x1 = coord1.x + armLength * c1;
+                    const y1 = coord1.y + armLength * s1;
+                    const x2 = coord2.x + armLength * c2;
+                    const y2 = coord2.y + armLength * s2;
 
-                // Determine which way vector should point
-                const dot = c1 * dx + s1 * dy;
-                const x4 = x3 + Math.sign(dot) * dx
-                const y4 = y3 + Math.sign(dot) * dy;
+                    // When points are close create a mid point to loop around
+                    const x3 = (coord1.x + coord2.x + armLength * 5 * (c1 + c2)) / 2;
+                    const y3 = (coord1.y + coord2.y + armLength * 5 * (s1 + s2)) / 2;
+                    const midAngle = (coord1.angle + coord2.angle) / 2;
+                    const dx = armLength * Math.cos(midAngle + Math.PI / 2);
+                    const dy = armLength * Math.sin(midAngle + Math.PI / 2);
 
-                let d = `M${ coord1.x } ${ coord1.y }`;
-                d += `C${x1} ${y1} ${x4} ${y4} ${x3} ${y3}`;
-                d += `S${x2} ${y2} ${ coord2.x } ${ coord2.y }`;
-                return d;
-            } else {
-                return `M${ coord1.x } ${ coord1.y }C${x1} ${y1} ${x2} ${y2} ${ coord2.x } ${ coord2.y }`;
+                    // Determine which way vector should point
+                    dot = c1 * dx + s1 * dy;
+                    const x4 = x3 + Math.sign(dot) * dx
+                    const y4 = y3 + Math.sign(dot) * dy;
+
+                    let d = `M${ coord1.x } ${ coord1.y }`;
+                    d += `C${x1} ${y1} ${x4} ${y4} ${x3} ${y3}`;
+                    d += `S${x2} ${y2} ${ coord2.x } ${ coord2.y }`;
+                    return d;
+                }
             }
+
+            const x1 = coord1.x + armLength * c1;
+            const y1 = coord1.y + armLength * s1;
+            const x2 = coord2.x + armLength * c2;
+            const y2 = coord2.y + armLength * s2;
+
+            return `M${ coord1.x } ${ coord1.y }C${x1} ${y1} ${x2} ${y2} ${ coord2.x } ${ coord2.y }`;
         },
         getCoordinates(position, point) {
             let { x, y, angle } = point;
