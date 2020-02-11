@@ -35,7 +35,6 @@
 
                     <g v-for="(point, index) in points" v-on:click="selectPoint(index)">
                         <use href="#point" :transform="`translate(${point.x} ${point.y}) rotate(${point.angle})`"/>
-                        <circle fill="blue" :cx="point.x" :cy="point.y" r="3" />
                     </g>
                 </svg>
 
