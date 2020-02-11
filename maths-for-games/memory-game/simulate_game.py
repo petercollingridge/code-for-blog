@@ -1,5 +1,5 @@
 from fractions import Fraction
-from collections import Counter
+from collections import Counter, defaultdict
 from itertools import permutations
 from string import ascii_uppercase
 
@@ -95,12 +95,77 @@ def play_game(deck):
     return turns
 
 
+def get_game_states(deck):
+    """
+    Given a deck, return a list of game states, where a state is a tuple
+    in the form (pairs to find, cards revealed)
+    """
+
+    pairs_to_find = len(deck) // 2
+    states = []
+    position = 0
+    cards_seen = set()
+
+    while pairs_to_find > 0:
+        card = deck[position]
+        position += 1
+        states.append((pairs_to_find, len(cards_seen)))
+
+        if card in cards_seen:
+            # We know how to make a pair, so make one
+            pairs_to_find -= 1
+            cards_seen.remove(card)
+        else:
+            # Find a card we can't pair, so look at the next card
+            next_card = deck[position]
+            position += 1
+            if next_card == card:
+                # Got a pair
+                pairs_to_find -= 1
+            elif next_card in cards_seen:
+                # We can make a pair on the next turn
+                # Add dummy state
+                states.append('-')
+                pairs_to_find -= 1
+                cards_seen.add(card)
+                cards_seen.remove(next_card)
+            else:
+                # We did't make a pair, so remember what we have
+                cards_seen.add(card)
+                cards_seen.add(next_card)
+
+    return states
+
+
+def get_state_turn_counts(decks):
+    turns = defaultdict(list)
+
+    for deck in decks:
+        turn = 1
+        for state in deck[::-1]:
+            turns[state].append(turn)
+            turn += 1
+
+    return turns
+
+
 def main():
-    # decks = get_all_decks(4)
+    # decks = get_all_decks(3)
     decks = get_limited_decks(8)
-    turns = [play_game(deck) for deck in decks]
-    print(Counter(turns))
-    print(Fraction(sum(turns) / len(decks)).limit_denominator())
+    # turns = [play_game(deck) for deck in decks]
+    # print(Counter(turns))
+    # print(Fraction(sum(turns) / len(decks)).limit_denominator())
+
+    # states = get_game_states('ABCDEFABCDEF')
+    # print(states)
+
+    print(len(decks))
+    states = [get_game_states(deck) for deck in decks]
+    turns = get_state_turn_counts(states)
+
+    for state, turn_counts in turns.items():
+        print(state, sum(turn_counts) / len(turn_counts))
+        # print(state, Counter(turn_counts))
 
 
 if __name__ == '__main__':
