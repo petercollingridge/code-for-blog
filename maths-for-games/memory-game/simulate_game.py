@@ -175,21 +175,23 @@ def get_distribution_of_turns(n):
     print("Total decks = n!! = {}".format(len(decks)))
 
 
-def main():
-    get_expected_numbers_of_turns(4)
-    # get_distribution_of_turns(4)
+def get_expected_numbers_of_turns_for_game_states(n):
+    """
+    Given n pairs, find all the game states in terms of
+    (pairs to find, cards revealed) and find the expected number of turns
+    to win the game from that state
+    """
+    decks = get_limited_decks(n)
+    states = [get_game_states(deck) for deck in decks]
+    turns = get_state_turn_counts(states)
 
-    # # states = get_game_states('ABCDEFABCDEF')
-    # # print(states)
-
-    # print(len(decks))
-    # states = [get_game_states(deck) for deck in decks]
-    # turns = get_state_turn_counts(states)
-
-    # for state, turn_counts in turns.items():
-    #     print(state, sum(turn_counts) / len(turn_counts))
-    #     # print(state, Counter(turn_counts))
+    for state, turn_counts in turns.items():
+        if state != '-':
+            print(state, Fraction(sum(turn_counts) / len(turn_counts)).limit_denominator())
 
 
 if __name__ == '__main__':
-    main()
+    n = 4
+    # get_expected_numbers_of_turns(n)
+    # get_distribution_of_turns(n)
+    get_expected_numbers_of_turns_for_game_states(n)
