@@ -149,23 +149,46 @@ def get_state_turn_counts(decks):
     return turns
 
 
+def get_expected_numbers_of_turns(n):
+    """
+    Given n pairs, print the expected number of turns to finish the game as a nice fraction.
+    """
+    decks = get_limited_decks(n)
+    turns = [play_game(deck) for deck in decks]
+    print(Fraction(sum(turns) / len(decks)).limit_denominator())
+
+
+def get_distribution_of_turns(n):
+    """
+    Given n pairs, show the distibution of turns.
+    e.g. with 3 pairs, 1 game will take 3 turns,
+    8 games will take 4 turns and 6 games will take 5 turns.
+    """
+
+    decks = get_limited_decks(n)
+    turns = [play_game(deck) for deck in decks]
+    turn_distribution = Counter(turns)
+    
+    for n_turns in turn_distribution.keys():
+        print("{} turns: {} games".format(n_turns, turn_distribution[n_turns]))
+    
+    print("Total decks = n!! = {}".format(len(decks)))
+
+
 def main():
-    # decks = get_all_decks(3)
-    decks = get_limited_decks(8)
-    # turns = [play_game(deck) for deck in decks]
-    # print(Counter(turns))
-    # print(Fraction(sum(turns) / len(decks)).limit_denominator())
+    get_expected_numbers_of_turns(4)
+    # get_distribution_of_turns(4)
 
-    # states = get_game_states('ABCDEFABCDEF')
-    # print(states)
+    # # states = get_game_states('ABCDEFABCDEF')
+    # # print(states)
 
-    print(len(decks))
-    states = [get_game_states(deck) for deck in decks]
-    turns = get_state_turn_counts(states)
+    # print(len(decks))
+    # states = [get_game_states(deck) for deck in decks]
+    # turns = get_state_turn_counts(states)
 
-    for state, turn_counts in turns.items():
-        print(state, sum(turn_counts) / len(turn_counts))
-        # print(state, Counter(turn_counts))
+    # for state, turn_counts in turns.items():
+    #     print(state, sum(turn_counts) / len(turn_counts))
+    #     # print(state, Counter(turn_counts))
 
 
 if __name__ == '__main__':
