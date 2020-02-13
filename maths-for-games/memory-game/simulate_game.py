@@ -190,8 +190,32 @@ def get_expected_numbers_of_turns_for_game_states(n):
             print(state, Fraction(sum(turn_counts) / len(turn_counts)).limit_denominator())
 
 
+def get_distribution_of_turns_for_game_states(n):
+    """
+    Given n pairs, find all the game states in terms of
+    (pairs to find, cards revealed) and find the expected number of turns
+    to win the game from that state
+    """
+    decks = get_limited_decks(n)
+    states = [get_game_states(deck) for deck in decks]
+    turns_for_state = get_state_turn_counts(states)
+
+    for delta in range(0, n):
+        for pairs_to_go in range(0, n + 1):
+            state = (pairs_to_go, pairs_to_go - delta)
+            turn_counts = turns_for_state.get(state)
+
+            if turn_counts:
+                print(state)
+                distribution = Counter(turn_counts)
+                total = len(turn_counts)
+                for turns, count in distribution.items():
+                    print('  t = {}, p = {}'.format(turns, Fraction(count / total).limit_denominator()))
+
+
 if __name__ == '__main__':
-    n = 4
+    n = 8
     # get_expected_numbers_of_turns(n)
     # get_distribution_of_turns(n)
-    get_expected_numbers_of_turns_for_game_states(n)
+    # get_expected_numbers_of_turns_for_game_states(n)
+    get_distribution_of_turns_for_game_states(n)
