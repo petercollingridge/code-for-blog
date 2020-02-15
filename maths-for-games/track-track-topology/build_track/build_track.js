@@ -24,6 +24,7 @@ var vm = new Vue({
             }
         ],
         selectedPoint: false,
+        dragging: false,
         connectionPoint1: '',
         connectionPoint2: '',
         connectionPosition1: '',
@@ -38,8 +39,24 @@ var vm = new Vue({
         }
     },
     methods: {
-        selectPoint: function(i) {
+        selectPoint(i, evt) {
             this.selectedPoint = i;
+            if (i !== false) {
+                this.dragging = true;
+                const point = this.points[i];
+                this.startX = point.x - evt.clientX;
+                this.startY = point.y - evt.clientY;
+            }
+        },
+        drag(evt) {
+            if (this.dragging) {
+                const point = this.points[this.selectedPoint];
+                point.x = this.startX + evt.clientX;
+                point.y = this.startY + evt.clientY;
+            }
+        },
+        endDrag() {
+            this.dragging = false;
         },
         addConnection() {
             // TODO: Check is connection is valid
