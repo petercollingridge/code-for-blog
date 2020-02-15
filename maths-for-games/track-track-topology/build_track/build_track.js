@@ -71,7 +71,7 @@ var vm = new Vue({
 
             // To what extent to the tracks point in the same direction
             let dot = c1 * c2 + s1 * s2;
-            console.log(dot)
+
             if (dist < 50) {
                 if (dot > 0.5) {
                     armLength = armLength * (1 - dot);

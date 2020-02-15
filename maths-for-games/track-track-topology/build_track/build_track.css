@@ -41,23 +41,22 @@ select {
     width: 8rem;
 }
 
-#point path { 
+svg .background {
+    fill: white;
+}
+
+.point { 
     fill: none;
     stroke: #686868;
     stroke-width: 10;
+}
+
+.selected.point {
+    stroke: rgb(255, 0, 175);
 }
 
 svg .track {
     fill: none;
     stroke: #aaa;
     stroke-width: 10;
-}
-
-svg .background {
-    fill: white;
-}
-
-svg .highlight {
-    fill: rgb(255, 0, 175);
-    opacity: 0.25;
 }

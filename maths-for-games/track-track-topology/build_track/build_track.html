@@ -23,18 +23,15 @@
 
                     <rect class="background" width="600" height="600" v-on:click="selectPoint(false)"/>
 
-                    <circle
-                        v-if="selectedPoint !== false"
-                        :cx="points[selectedPoint].x"
-                        :cy="points[selectedPoint].y"
-                        r="30"
-                        class="highlight"
-                    />
-
                     <path class="track" v-for="connection in connections" :d="getConnectionPath(connection)" />
 
                     <g v-for="(point, index) in points" v-on:click="selectPoint(index)">
-                        <use href="#point" :transform="`translate(${point.x} ${point.y}) rotate(${point.angle})`"/>
+                        <use
+                            href="#point"
+                            class="point"
+                            v-bind:class="{ selected: selectedPoint === index }"
+                            :transform="`translate(${point.x} ${point.y}) rotate(${point.angle})`"
+                        />
                     </g>
                 </svg>
 
