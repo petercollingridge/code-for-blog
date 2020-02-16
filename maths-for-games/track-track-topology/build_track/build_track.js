@@ -3,6 +3,14 @@ const POINT_ARC_LENGTH = 50;
 const POINT_SIZE = 2 * POINT_ARC_LENGTH * Math.sin(DEGREES_30 / 2);
 
 
+function getMousePosition(evt) {
+    const CTM = svg.getScreenCTM();
+    return {
+        x: (evt.clientX - CTM.e) / CTM.a,
+        y: (evt.clientY - CTM.f) / CTM.d
+    };
+}
+
 var vm = new Vue({
     el: '#track-builder',
     data: {
@@ -44,15 +52,17 @@ var vm = new Vue({
             if (i !== false) {
                 this.dragging = true;
                 const point = this.points[i];
-                this.startX = point.x - evt.clientX;
-                this.startY = point.y - evt.clientY;
+                const offset = getMousePosition(evt);
+                this.offsetX = offset.x - point.x;
+                this.offsetY = offset.y - point.y;
             }
         },
         drag(evt) {
             if (this.dragging) {
                 const point = this.points[this.selectedPoint];
-                point.x = this.startX + evt.clientX;
-                point.y = this.startY + evt.clientY;
+                const coord = getMousePosition(evt);
+                point.x = coord.x - this.offsetX;
+                point.y = coord.y - this.offsetY;
             }
         },
         endDrag() {
