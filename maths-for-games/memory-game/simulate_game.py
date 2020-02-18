@@ -213,9 +213,33 @@ def get_distribution_of_turns_for_game_states(n):
                     print('  t = {}, p = {}'.format(turns, Fraction(count / total).limit_denominator()))
 
 
+def get_state_transitions(states):
+    """
+    Given a list of game, where each game is a list of states,
+    return a dict that maps a state to a Counter of the states that follow it.
+    """
+
+    transitions = defaultdict(Counter)
+
+    for game in states:
+        current_state = game[0]
+        for next_state in game[1:]:
+            transitions[current_state][next_state] += 1
+            current_state = next_state
+
+    return transitions
+
+
+def get_game_state_tree(n):
+    decks = get_limited_decks(n)
+    states = [get_game_states(deck) for deck in decks]
+    transitions = get_state_transitions(states)
+
+
 if __name__ == '__main__':
-    n = 8
+    n = 3
     # get_expected_numbers_of_turns(n)
     # get_distribution_of_turns(n)
     # get_expected_numbers_of_turns_for_game_states(n)
-    get_distribution_of_turns_for_game_states(n)
+    # get_distribution_of_turns_for_game_states(n)
+    get_game_state_tree(n)
