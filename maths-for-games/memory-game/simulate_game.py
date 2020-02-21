@@ -226,8 +226,17 @@ def get_state_transitions(states):
         for next_state in game[1:]:
             transitions[current_state][next_state] += 1
             current_state = next_state
+        transitions[current_state][(0, 0)] += 1
 
     return transitions
+
+
+def get_new_states(n):
+    previous_decks = get_limited_decks(n - 1)
+    previous_states = {state for deck in previous_decks for state in get_game_states(deck)}
+    new_decks = get_limited_decks(n)
+    new_states = {state for deck in new_decks for state in get_game_states(deck) if state not in previous_states}
+    print(new_states)
 
 
 def get_game_state_tree(n):
@@ -235,11 +244,99 @@ def get_game_state_tree(n):
     states = [get_game_states(deck) for deck in decks]
     transitions = get_state_transitions(states)
 
+    for state, transition in transitions.items():
+        print(state)
+        for next_state, count in transition.items():
+            print("  => {}: {}".format(next_state, count))
+
+
+def print_markov_chain(transitions):
+    states = list(state for state in transitions.keys() if state != '-') + [(0, 0)]
+    print("nodes = [{}]".format(', '.join("'{}'".format(state) for state in states if state != '-')))
+    edges = "edges = ["
+
+    for state_1, transition in transitions.items():
+        if state_1 == '-':
+            continue
+        state_index_1 = states.index(state_1)
+        for state_2, count in transition.items():
+            if state_2 == '-':
+                continue
+            else:
+                state_index_2 = states.index(state_2)
+                edges += "({}, {}, {}), ".format(state_index_1, state_index_2, count)
+        
+    edges += "]"
+    print(edges)
+
+
+def get_expected_turns(n):
+    """
+    Get the expected number of turns for a game of n pair by calculating
+    the expected nnumber of turns for every intermediate state.
+    """
+
+    expected_turns = dict()
+
+    def get_expected_turns_for_state(n, k):
+        state = (n, k)
+
+        # If we have already calculated it, use that value
+        if expected_turns.get(state) is not None:
+            return expected_turns[state]
+
+        # w(n, n) = n
+        if n == k:
+            return n
+
+        u = n * 2 - k   # Number of uncover cards
+
+        # No known cards, so no chance of a match unless both cards are the same
+        if k == 0:
+            p1 = Fraction(1, u - 1)
+            w = p1 * (1 + get_expected_turns_for_state(n - 1, k))
+            p2 = Fraction(u - 2, u - 1)
+            if p2 > 0:
+                w += p2 * (1 + get_expected_turns_for_state(n, 2))
+        else:
+            # First turn match
+            p1 = Fraction(k, u)
+            w = p1 * (1 + get_expected_turns_for_state(n - 1, k - 1))
+
+            d = u * (u - 1)
+            if u - k > 0 and d > 0:
+                # Novel match
+                p2 = Fraction(u - k, d)
+                if p2 > 0:
+                    w += p2 * (1 + get_expected_turns_for_state(n - 1, k))
+                
+                # No match
+                p3 = Fraction((u - k) * (u - k - 2), d)
+                if p3 > 0:
+                    w += p3 * (1 + get_expected_turns_for_state(n, k + 2))
+
+                # Second turn match
+                p4 = Fraction((u - k) * k, d)
+                if p4 > 0:
+                    w += p4 * (2 + get_expected_turns_for_state(n - 1, k))
+
+        expected_turns[state] = w
+        return w
+
+    w = get_expected_turns_for_state(n, 0)
+    # print(expected_turns)
+
+    return w
+
 
 if __name__ == '__main__':
-    n = 3
+    n = 100
+
     # get_expected_numbers_of_turns(n)
     # get_distribution_of_turns(n)
     # get_expected_numbers_of_turns_for_game_states(n)
     # get_distribution_of_turns_for_game_states(n)
-    get_game_state_tree(n)
+    # get_game_state_tree(n)
+    # get_new_states(n)
+
+    print(get_expected_turns(n))
