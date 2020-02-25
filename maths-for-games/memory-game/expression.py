@@ -35,30 +35,37 @@ class Expression:
 
         # No match
         if k + 2 <= n:
-            new_term = (n, k + 2)
             p = coefficient * Fraction(v * (v - 2), d)
-            self.add_term(new_term, p)
-            self.constant += p
+
+            if k + 2 == n:
+                self.constant += p * (n + 1)
+            else:
+                new_term = (n, k + 2)
+                self.add_term(new_term, p)
+                self.constant += p
         
         # First turn match
         if k > 0:
-            new_term = (n - 1, k - 1)
             p = coefficient * Fraction(k, u)
+            new_term = (n - 1, k - 1)
             self.add_term(new_term, p)
             self.constant += p
 
         # Novel match
         if k < n:
-            new_term = (n - 1, k)
             p = coefficient * Fraction(v, d)
-            self.add_term(new_term, p)
-            self.constant += p
-
-            # Second turn match
-            if k > 0:
-                p *= k
+            if k + 1 == n:
+                self.constant += p * n
+            else:    
+                new_term = (n - 1, k)
                 self.add_term(new_term, p)
-                self.constant += p * 2
+                self.constant += p
+
+                # Second turn match
+                if k > 0:
+                    p *= k
+                    self.add_term(new_term, p)
+                    self.constant += p * 2
 
     def add_term(self, term, coefficient):
         current_coefficient = self.terms.get(term, 0)
@@ -69,6 +76,12 @@ if __name__ == '__main__':
     exp = Expression(3, 0)
     exp.expand_term(3, 0)
     exp.expand_term(3, 2)
+    print(exp)
 
-    
+    exp = Expression(4, 0)
+    exp.expand_term(4, 0)
+    exp.expand_term(4, 2)
+    exp.expand_term(3, 1)
+    exp.expand_term(3, 2)
+
     print(exp)
