@@ -272,8 +272,8 @@ def print_markov_chain(transitions):
 
 def get_expected_turns(n):
     """
-    Get the expected number of turns for a game of n pair by calculating
-    the expected nnumber of turns for every intermediate state.
+    Get the expected number of turns for a game of n pairs by calculating
+    the expected number of turns for every intermediate state.
     """
 
     expected_turns = dict()
@@ -289,7 +289,7 @@ def get_expected_turns(n):
         if n == k:
             return n
 
-        u = n * 2 - k   # Number of uncover cards
+        u = n * 2 - k   # Number of uncovered cards
 
         # No known cards, so no chance of a match unless both cards are the same
         if k == 0:
@@ -329,8 +329,57 @@ def get_expected_turns(n):
     return w
 
 
+def get_expected_turns_non_recursively(N):
+    """
+    Get the expected number of turns for a game of N pairs by calculating
+    the expected number of turns for every intermediate state.
+    """
+
+    for n in range(N + 1):
+        print(n)
+        # w(n, k) = n
+        new_w = [None] * (n + 1)
+        new_w[n] = n
+
+        for k in range(n, -1, -1):
+            # Calculate w(n, k) in terms of w(n, k + 2), w(n - 1, k), w(n - 1, k - 1)
+            w = 0
+            u = n * 2 - k   # Number of uncovered cards
+            d = u * (u - 1) # Denominator for uncovered cards over two turns
+            v = u - k
+
+            # No match
+            if k + 2 <= n:
+                # p = Fraction(v * (v - 2), d)
+                p = v * (v - 2) / d
+                w += p * (1 + new_w[k + 2])
+
+            # Novel match
+            if k < n:
+                # p = Fraction(v, d)
+                p = v / d
+                w += p * (1 + old_w[k])
+
+                # Second turn match
+                if k:
+                    w += k * p * (2 + old_w[k])
+
+            # First turn match
+            if k:
+                # p = Fraction(k, u)
+                p = k / u
+                w += p * (1 + old_w[k - 1])
+
+            new_w[k] = w
+
+        old_w = new_w
+
+    return new_w[0]
+
+
 if __name__ == '__main__':
-    n = 100
+    n = 3
+
 
     # get_expected_numbers_of_turns(n)
     # get_distribution_of_turns(n)
@@ -339,4 +388,10 @@ if __name__ == '__main__':
     # get_game_state_tree(n)
     # get_new_states(n)
 
-    print(get_expected_turns(n))
+    # for n in range(1, 100):
+    # w = get_expected_turns(n)
+    n = 20000
+    w = get_expected_turns_non_recursively(n)
+    print(w)
+    # print(n, w.numerator / w.denominator / n)
+    print(n, w / n)
