@@ -2,9 +2,14 @@ from fractions import Fraction
 
 
 class Expression:
-    def __init__(self, n, k=0, coefficient=1):
-        self.terms = {(n, k): Fraction(coefficient)}
-        self.constant = 0
+    def __init__(self, terms=None, constant=0):
+        if terms is None:
+            self.terms = {}
+        elif isinstance(terms, tuple):
+            self.terms = {terms: 1}
+        else:
+            self.terms = terms
+        self.constant = constant
 
     def __str__(self):
         s = " + ".join("{} * w({}, {})".format(
@@ -17,6 +22,30 @@ class Expression:
             s += " + {}".format(self.constant)
 
         return s
+
+    def __add__(self, other):
+        total = Expression()
+        total.constant = self.constant + other.constant
+
+        for term, coefficient in self.terms.items():
+            total.add_term(term, coefficient)
+
+        for term, coefficient in other.terms.items():
+            total.add_term(term, coefficient)
+
+        return total
+
+    def __sub__(self, other):
+        total = Expression()
+        total.constant = self.constant - other.constant
+
+        for term, coefficient in self.terms.items():
+            total.add_term(term, coefficient)
+
+        for term, coefficient in other.terms.items():
+            total.add_term(term, -coefficient)
+
+        return total
 
     def expand_term(self, n, k):
         term = (n, k)
@@ -72,16 +101,33 @@ class Expression:
         self.terms[term] = current_coefficient + coefficient
 
 
+def get_state_in_lower_state(n, d=1):
+    """ Get an expression for w(n, 0) in terms if w(n - d, i) for i = 0 to n - d. """
+
+    exp = Expression((n, 0))
+    for i in range(0, n + 1, 2):
+        exp.expand_term(n, i)
+
+    return exp
+
 if __name__ == '__main__':
-    exp = Expression(3, 0)
-    exp.expand_term(3, 0)
-    exp.expand_term(3, 2)
-    print(exp)
+    x = Expression({ (3, 2): 2 })
+    y = Expression({ (3, 2): Fraction(1, 2), (5, 1): Fraction(1, 3) })
+    print(x + y)
+    print(y - x)
 
-    exp = Expression(4, 0)
-    exp.expand_term(4, 0)
-    exp.expand_term(4, 2)
-    exp.expand_term(3, 1)
-    exp.expand_term(3, 2)
+    w_3_0 = Expression((3, 0))
+    w_3_0.expand_term(3, 0)
+    w_3_0.expand_term(3, 2)
+    print(w_3_0)
 
-    print(exp)
+    w_4_0 = Expression((4, 0))
+    w_4_0.expand_term(4, 0)
+    w_4_0.expand_term(4, 2)
+    # w_4_0.expand_term(3, 1)
+    # w_4_0.expand_term(3, 2)
+    print(w_4_0)
+    print(w_4_0 - w_3_0)
+
+    w_5_0 = get_state_in_lower_state(5)
+    print(w_5_0)
