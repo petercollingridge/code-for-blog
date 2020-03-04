@@ -14,6 +14,8 @@ function getMousePosition(evt) {
 var vm = new Vue({
     el: '#track-builder',
     data: {
+        width: 400,
+        height: 300,
         points: [
             { x: 100, y: 100, angle: 90 },
             { x: 150, y: 100, angle: 90 },
@@ -39,6 +41,10 @@ var vm = new Vue({
         connectionPosition2: '',
     },
     computed: {
+        viewBox: function() { 
+            console.log(this.width);
+            return `0 0 ${ this.width } ${ this.height }`;
+        },
         canAddConnections: function() {
             return this.connectionPoint1 !== '' &&
                 this.connectionPoint2 !== '' &&
