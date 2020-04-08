@@ -111,15 +111,15 @@ def get_state_in_lower_state(n, d=1):
     return exp
 
 if __name__ == '__main__':
-    x = Expression({ (3, 2): 2 })
-    y = Expression({ (3, 2): Fraction(1, 2), (5, 1): Fraction(1, 3) })
-    print(x + y)
-    print(y - x)
+    # x = Expression({ (3, 2): 2 })
+    # y = Expression({ (3, 2): Fraction(1, 2), (5, 1): Fraction(1, 3) })
+    # print(x + y)
+    # print(y - x)
 
-    w_3_0 = Expression((3, 0))
-    w_3_0.expand_term(3, 0)
-    w_3_0.expand_term(3, 2)
-    print(w_3_0)
+    # w_3_0 = Expression((3, 0))
+    # w_3_0.expand_term(3, 0)
+    # w_3_0.expand_term(3, 2)
+    # print(w_3_0)
 
     w_4_0 = Expression((4, 0))
     w_4_0.expand_term(4, 0)
@@ -127,7 +127,11 @@ if __name__ == '__main__':
     # w_4_0.expand_term(3, 1)
     # w_4_0.expand_term(3, 2)
     print(w_4_0)
-    print(w_4_0 - w_3_0)
 
-    w_5_0 = get_state_in_lower_state(5)
-    print(w_5_0)
+    # w_4_2 = Expression((4, 2))
+    # w_4_2.expand_term(4, 2)
+    # print(w_4_2)
+    # print(w_4_0 - w_3_0)
+
+    # w_5_0 = get_state_in_lower_state(5)
+    # print(w_5_0)

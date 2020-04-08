@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Matrix deconstruction</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <link rel="stylesheet" href="matrix_deconstruction.css">
+    </head>
+
+    <body>
+        <div id="matrix-deconstruction">
+            <svg viewBox="0 0 400 300">
+                <path class="star-fill" :transform="transforms" d="M 238 162.4 247 214.7 200 190 153 214.7 162 162.4 123.9 125.3 176.5 117.6 200 70 223.5 117.6 276.1 125.3z"/>
+                <path class="star-outline" :transform="matrix" d="M 238 162.4 247 214.7 200 190 153 214.7 162 162.4 123.9 125.3 176.5 117.6 200 70 223.5 117.6 276.1 125.3z"/>
+            </svg>
+            <p>Matrix</p>
+            <form>
+                <label for="input-a">a</label>
+                <input id="input-a" type="text" v-model="a">
+                <label for="input-b">b</label>
+                <input id="input-b" type="text" v-model="b">
+                <label for="input-c">c</label>
+                <input id="input-c" type="text" v-model="c">
+                <label for="input-d">d</label>
+                <input id="input-d" type="text" v-model="d">
+                <label for="input-e">e</label>
+                <input id="input-e" type="text" v-model="e">
+                <label for="input-f">f</label>
+                <input id="input-f" type="text" v-model="f">
+            </form>
+        </div>
+
+        <script src="matrix_deconstruction.js"></script>
+    </body>
+</html>

@@ -1,0 +1,16 @@
+svg {
+    width: 400px;
+    height: 300px;
+    border: 1px solid #aaa;
+}
+
+.star-outline {
+    stroke: #334;
+    stroke-width: 2px;
+    fill: none;
+}
+
+.star-fill {
+    fill: blue;
+    opacity: 0.4;
+}
