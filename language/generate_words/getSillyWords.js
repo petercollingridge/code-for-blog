@@ -1,7 +1,9 @@
 var getSillyWord = (function() {
-    var prefixes = ["B", "Br", "Dw", "Fl", "Fw", "Thr", "Pr", "Tr", "L", "Y", "Scr", "Sm", "Sp", "Spl", "Squ", "M", "Wh"];
+    var start1 = ["Dr", "Dw", "L", "M", "Qu", "Thr", "Tr", "Tw", "Scr", "Sl", "Sm", "Sp", "Spl", "Squ", "Wh", "Y"];
+    var start2 = ["B", "F", "G", "P"]
+    var secondConsonant = ["l", "r", "w", ""]
     var vowels = ["a", "e", "ee", "o", "oo", "i", "u"];
-    var shortEndings = ["m", "rp", "rk", "rf", "nk", "mp", "b", "f", "zz", "x", "ng", "d", "p"];
+    var shortEndings = ["m", "rp", "rk", "rf", "nk", "mf", "mp", "b", "f", "zz", "x", "ng", "d", "p"];
     var longEndings = ["zz", "dd", "mp", "mpf", "pp", "ck", "bb", "gg", "nk", "rf", "rk", "rp", "ng"];
     var longEndings2 = ["o", "ok", "le", "le", "le", "et", "et", "aldo"];
 
@@ -17,13 +19,24 @@ var getSillyWord = (function() {
         return result;
     };
 
+    var getPrefix = function() {
+        if (Math.random() < 0.5) {
+            return randFromArray(start1);
+        } else {
+            return randFromArray(start2) + randFromArray(secondConsonant);
+        }
+    };
+
     var mickleMackleMoo = function(prefix, vowel, end) {
         var word = "-" + prefix + randFromArrayNotX(vowels, vowel) + end;
         return word + Math.random() < 0.25 ? "-" + prefix + "oo" : "";
     };
 
     var yungoSpungo = function(prefix, vowel, end) {
-        var newPrefix = randFromArrayNotX(prefixes, prefix);
+        var newPrefix = prefix;
+        while (newPrefix === prefix) {
+            newPrefix = getPrefix();
+        }
         return "-" + avoidUglyPatterns(newPrefix, vowel, end).join("");
     };
 
@@ -37,7 +50,7 @@ var getSillyWord = (function() {
             }
         }
         
-        // Avoid "Squu"
+        // Avoid having two 'u's
         if (start.charAt(start.length - 1) === 'u' && vowel === 'u') {
             vowel = randFromArrayNotX(vowels, 'u');
         }
@@ -46,7 +59,7 @@ var getSillyWord = (function() {
     };
 
     var getLongName = function() {
-        var start = randFromArray(prefixes);
+        var start = getPrefix();
         var vowel = randFromArray(vowels);
         var end = randFromArray(longEndings) + randFromArray(longEndings2);
         
@@ -54,7 +67,7 @@ var getSillyWord = (function() {
     };
 
     var getShortName = function() {
-        var start = randFromArray(prefixes);
+        var start = getPrefix();
         var vowel = randFromArray(vowels);
         var end = randFromArray(shortEndings);
         
@@ -70,10 +83,13 @@ var getSillyWord = (function() {
             word = parts.join("");
             r = Math.random();
 
-            if (r < 0.2) {
+            if (r < 0.1) {
                 word += mickleMackleMoo.apply(null, parts);
-            } else if (r < 0.4) {
+            } else if (r < 0.25) {
                 word += yungoSpungo.apply(null, parts);
+            } else if (r < 0.4) {
+
+                word = getPrefix() + randFromArray(['aa', 'ee', 'oo']) + '-' + word;
             }
         } else {
             // Short name
