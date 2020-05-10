@@ -1,0 +1,39 @@
+<svg viewBox="0 -3 300 206" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .main-circle {
+            fill: none;
+            stroke-width: 3;
+            stroke: rgb(64, 95, 237);
+        }
+        .center-point {
+            fill: rgb(64, 95, 237);
+            stroke-width: 1;
+            stroke: white;
+        }
+        .construction-line {
+            stroke: #222;
+            stroke-width="1";
+        }
+        .intersection-point {
+            fill: rgb(255, 0, 175);
+            stroke-width: 1;
+            stroke: white;
+        }
+        .pink { stroke: rgb(255, 0, 175); }
+        .green { stroke: rgb(28, 173, 123); }
+    </style>
+
+    <circle class="main-circle" cx="110" cy="100" r="100" />
+    <circle class="main-circle" cx="225" cy="100" r="65" />
+
+    <line class="construction-line" x1="110" y1="100" x2="225" y2="100" />
+    <line class="construction-line" x1="192.6" y1="43.65" x2="110" y2="100" />
+    <line class="construction-line" x1="192.6" y1="43.65" x2="225" y2="100" />
+
+    <circle class="center-point" cx="225" cy="100" r="3" />
+    <circle class="center-point" cx="110" cy="100" r="3" />
+
+    <line x1="192.6" y1="43.65" x2="192.6" y2="156.35" stroke-width="1" class="pink" />
+    <circle class="intersection-point" cx="192.6" cy="43.65" r="3" />
+    <circle class="intersection-point" cx="192.6" cy="156.35" r="3" />
+</svg>

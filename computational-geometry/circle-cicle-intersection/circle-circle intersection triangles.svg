@@ -1,0 +1,52 @@
+<svg viewBox="100 40 135 70" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .main-circle {
+            fill: none;
+            stroke-width: 3;
+            stroke: rgb(64, 95, 237);
+        }
+        .center-point {
+            fill: rgb(64, 95, 237);
+            stroke-width: 1;
+            stroke: white;
+        }
+        .construction-line {
+            stroke: #222;
+            stroke-width="1";
+        }
+        .intersection-point {
+            fill: rgb(255, 0, 175);
+            stroke-width: 1;
+            stroke: white;
+        }
+        text {
+            text-anchor: middle;
+            font-size: 60%;
+        }
+        .pink { stroke: rgb(255, 0, 175); }
+        .green { stroke: rgb(28, 173, 123); }
+    </style>
+
+    <line x1="192.6" y1="43.65" x2="192.6" y2="100" stroke-width="1" class="pink" />
+
+    <line class="construction-line" x1="110" y1="100" x2="225" y2="100" />
+    <line class="construction-line" x1="192.6" y1="43.65" x2="110" y2="100" />
+    <line class="construction-line" x1="192.6" y1="43.65" x2="225" y2="100" />
+
+    <circle class="center-point" cx="225" cy="100" r="3" />
+    <circle class="center-point" cx="110" cy="100" r="3" />
+
+    <circle class="intersection-point" cx="192.6" cy="43.65" r="3" />
+    <circle class="intersection-point" cx="192.6" cy="156.35" r="3" />
+
+    <text x="188" y="78">h</text>
+    <text x="151.3" y="98">a</text>
+    <text x="208" y="98">d-a</text>
+    <text x="167.5" y="103" alignment-baseline="hanging">d</text>
+    <text transform="translate(150 68) rotate(-34.3)">r
+        <tspan font-size="60%" dx="-2.5" dy="2.5">1</tspan>
+    </text>
+    <text transform="translate(211 68) rotate(60.1)">r
+        <tspan font-size="60%" dx="-2.5" dy="2.5">2</tspan>
+    </text>
+</svg>
