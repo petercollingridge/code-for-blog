@@ -17,10 +17,6 @@ function intersectionPoints(c1, c2) {
     let dx = c2.x - c1.x;
     let dy = c2.y - c1.y;
     const d = Math.sqrt(dx * dx + dy * dy);
-
-    // Get unit vector from one center to the other
-    dx /= d;
-    dy /= d;
     
     // Circles too far apart
     if (d > c1.r + c2.r) { return; }
@@ -28,11 +24,13 @@ function intersectionPoints(c1, c2) {
     // One circle completely inside the other
     if (d < Math.abs(c1.r - c2.r)) { return; }
     
-    // Calculate two distinct intersection points
-    const a = (c1.r * c1.r - c2.r * c2.r + d * d) / (2 * d);
-
+    // Get unit vector from one center to the other
+    dx /= d;
+    dy /= d;
+    
     // Center of intersection line is a units along the line
     // from circle 1 in the direction of circle 2
+    const a = (c1.r * c1.r - c2.r * c2.r + d * d) / (2 * d);
     const px = c1.x + a * dx;
     const py = c1.y + a * dy;
     
@@ -50,7 +48,7 @@ function intersectionPoints(c1, c2) {
             x: px - h * dy,
             y: py + h * dx
         }
-    }
+    };
 };
 
 const circle1 = { x: 100, y: 50, r: 40 };
