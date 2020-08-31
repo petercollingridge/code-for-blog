@@ -65,16 +65,17 @@ class Node:
             return "<Node>"
 
 
-def draw_svg(tree, dx=80, dy=80):
-    max_x = dx * (len(tree.get_all_leaves()) + 1)
+def get_svg(tree, dx=100, dy=50, include_styles=True):
+    max_x = dx * (len(tree.get_all_leaves()))
     max_y = dy * (tree.get_y_coord() + 1)
 
-    svg = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {max_x} {max_y + 20}">\n'
-    svg += """
+    svg = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {max_x} {max_y + 30}">\n'
+    if include_styles:
+        svg += """
     <style>
         .arm {
             stroke: #111;
-            stroke-weight: 1;
+            stroke-width: 2;
             stroke-linecap: round;
         }
         .leaf-label {
@@ -82,25 +83,36 @@ def draw_svg(tree, dx=80, dy=80):
             alignment-baseline: hanging;
         }
     </style>
-    """
-    svg += tree.write_as_svg(dx, dy, 0, max_y)
+"""
+
+    svg += tree.write_as_svg(dx, dy, 5, max_y)
     svg += "</svg>"
     
-    with open('tree.svg', 'w') as f:
+    return svg
+
+
+def write_svg(svg, filename):
+    if not filename[-4] == '.svg':
+        filename += '.svg'
+
+    with open(filename, 'w') as f:
         f.write(svg)
 
 
-example = ("A", ("B", "C"))
-example = ("A", (("B", "C"), "D"))
+def write_tree(nodes):
+    tree = Node(nodes)
+    svg = get_svg(tree, 80, 30, False)
+    filename = "-".join(node.name for node in tree.get_all_leaves())
+    write_svg(svg, filename )
 
-tree = Node(example)
-nodes = tree.get_all_leaves()
 
-draw_svg(tree, 100, 50)
-# print(tree.get_height())
-# print(tree.child_1.get_height())
-# print(tree.child_2.get_height())
+if __name__ == '__main__':
+    nodes = ("Human", "Chimp")
+    nodes = ("Dog", ("Human", "Chimp"))
+    nodes = (("Chimp", "Human"), "Dog")
+    nodes = ("Chicken", ("Dog", ("Human", "Chimp")))
+    nodes = ("Dog", (("Chimp", "Human"), "Monkey"))
+    nodes = ("Dog", ("Monkey", ("Human", "Chimp")))
+    nodes = (("Dog", "Wolf"), ("Human", "Chimp"))
 
-# print(tree.child_2.count_descendants())
-# print(tree.child_2.child_1)
-# print(tree.child_2.child_2)
+    write_tree(nodes)
