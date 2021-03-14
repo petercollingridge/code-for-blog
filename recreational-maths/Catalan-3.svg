@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 0 220 70">
+    <style>
+        .arm {
+            stroke: #111;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+        .leaf-label {
+            text-anchor: middle;
+            alignment-baseline: hanging;
+        }
+    </style>
+<line class="arm" x1="50.0" x2="50.0" y1="20" y2="5"/>
+<line class="arm" x1="20.0" x2="80.0" y1="20" y2="20"/>
+<line class="arm" x1="20.0" x2="20.0" y1="60" y2="20"/>
+<line class="arm" x1="80.0" x2="80.0" y1="40" y2="20"/>
+<line class="arm" x1="60.0" x2="100.0" y1="40" y2="40"/>
+<line class="arm" x1="60.0" x2="60.0" y1="60" y2="40"/>
+<line class="arm" x1="100.0" x2="100.0" y1="60" y2="40"/>
+
+<g transform="translate(120)">
+<line class="arm" x1="70.0" x2="70.0" y1="20" y2="5"/>
+<line class="arm" x1="40.0" x2="100.0" y1="20" y2="20"/>
+<line class="arm" x1="40.0" x2="40.0" y1="40" y2="20"/>
+<line class="arm" x1="20.0" x2="60.0" y1="40" y2="40"/>
+<line class="arm" x1="20.0" x2="20.0" y1="60" y2="40"/>
+<line class="arm" x1="60.0" x2="60.0" y1="60" y2="40"/>
+<line class="arm" x1="100.0" x2="100.0" y1="60" y2="20"/>
+</g>
+</svg>

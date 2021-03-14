@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 180">
+
+    <style>
+        .arm {
+            stroke: #111;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+        .leaf-label {
+            text-anchor: middle;
+            alignment-baseline: hanging;
+        }
+    </style>
+<line class="pink arm" x1="115.0" x2="115.0" y1="30" y2="5"/>
+<line class="pink arm" x1="40.0" x2="190.0" y1="30" y2="30"/>
+<line class="pink arm" x1="40.0" x2="40.0" y1="150" y2="30"/>
+<text class="leaf-label" x="40.0" y="155">Chicken</text>
+<line class="arm" x1="190.0" x2="190.0" y1="60" y2="30"/>
+<line class="arm" x1="120.0" x2="260.0" y1="60" y2="60"/>
+<line class="arm" x1="120.0" x2="120.0" y1="150" y2="60"/>
+<text class="leaf-label" x="120.0" y="155">Monkey</text>
+<line class="arm" x1="260.0" x2="260.0" y1="90" y2="60"/>
+<line class="arm" x1="200.0" x2="320.0" y1="90" y2="90"/>
+<line class="arm" x1="200.0" x2="200.0" y1="150" y2="90"/>
+<text class="leaf-label" x="200.0" y="155">Dog</text>
+<line class="arm" x1="320.0" x2="320.0" y1="120" y2="90"/>
+<line class="arm" x1="280.0" x2="360.0" y1="120" y2="120"/>
+<line class="arm" x1="280.0" x2="280.0" y1="150" y2="120"/>
+<text class="leaf-label" x="280.0" y="155">Human</text>
+<line class="arm" x1="360.0" x2="360.0" y1="150" y2="120"/>
+<text class="leaf-label" x="360.0" y="155">Chimp</text>
+</svg>

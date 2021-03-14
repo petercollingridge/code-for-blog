@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -25 340 210">
+    <style>
+        .set-label {
+            text-anchor: middle;
+            alignment-baseline: central;
+            font-size: 120%;
+            pointer-events: none;
+        }
+        .animal-set {
+            stroke: #111;
+            stroke-width: 2;
+            fill: rgba(0, 0, 0, 0);
+        }
+        .animal-set:hover {
+            fill: rgba(255, 0, 175, 0.5);
+        }
+    </style>
+
+    <ellipse class="animal-set" cx="170" cy="80" rx="168" ry="102" />
+    <ellipse class="animal-set" cx="208" cy="80" rx="118" ry="72" />
+    <ellipse class="animal-set" cx="237" cy="80" rx="80" ry="36" />
+
+    <text class="set-label" x="40" y="80">Chicken</text>
+    <text class="set-label" x="120" y="80">Dog</text>
+    <text class="set-label" x="200" y="80">Human</text>
+    <text class="set-label" x="280" y="80">Chimp</text>
+
+    <text class="set-label" x="170" y="-5">ANIMALS</text>
+    <text class="set-label" x="208" y="31">MAMMALS</text>
+    <text class="set-label" x="240" y="60">APES</text>
+</svg>

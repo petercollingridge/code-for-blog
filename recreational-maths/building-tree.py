@@ -95,24 +95,38 @@ def write_svg(svg, filename):
     if not filename[-4] == '.svg':
         filename += '.svg'
 
+    print(filename)
     with open(filename, 'w') as f:
         f.write(svg)
 
 
-def write_tree(nodes):
+def write_tree(nodes, dx, dy, include_styles=False):
     tree = Node(nodes)
-    svg = get_svg(tree, 80, 30, False)
+    svg = get_svg(tree, dx, dy, include_styles)
     filename = "-".join(node.name for node in tree.get_all_leaves())
-    write_svg(svg, filename )
+    write_svg(svg, filename)
 
 
 if __name__ == '__main__':
+    nodes = ("A", ("B", ("C", "D")))
+    nodes = ((("A", "B"), "C"), "D")
+    nodes = ("A", (("B", "C"), "D"))
+    nodes = (("A", ("B", "C")), "D")
+    nodes = (("A", "B"), ("C", "D"))
+
+    # nodes = ("A", ("B", "C"))
+    # nodes = (("B", "C"), "A")
+    # write_tree(nodes, 40, 20, True)
+
     nodes = ("Human", "Chimp")
     nodes = ("Dog", ("Human", "Chimp"))
     nodes = (("Chimp", "Human"), "Dog")
-    nodes = ("Chicken", ("Dog", ("Human", "Chimp")))
-    nodes = ("Dog", (("Chimp", "Human"), "Monkey"))
     nodes = ("Dog", ("Monkey", ("Human", "Chimp")))
     nodes = (("Dog", "Wolf"), ("Human", "Chimp"))
+    nodes = ("Dog", (("Chimp", "Human"), "Monkey"))
+    nodes = ("Chicken", ("Dog", ("Human", "Chimp")))
 
-    write_tree(nodes)
+    nodes = ("Chicken", ("Dog", ("Monkey", ("Human", "Chimp"))))
+    nodes = ("Chicken", (("Dog", "Wolf"), ("Human", "Chimp")))
+
+    write_tree(nodes, 80, 30, True)

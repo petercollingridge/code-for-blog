@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120">
+<line class="arm" x1="160.0" x2="160.0" y1="30" y2="5"/>
+<line class="arm" x1="80.0" x2="240.0" y1="30" y2="30"/>
+<line class="arm" x1="80.0" x2="80.0" y1="60" y2="30"/>
+<line class="arm" x1="40.0" x2="120.0" y1="60" y2="60"/>
+<line class="arm" x1="40.0" x2="40.0" y1="90" y2="60"/>
+<text class="leaf-label" x="40.0" y="95">Dog</text>
+<line class="arm" x1="120.0" x2="120.0" y1="90" y2="60"/>
+<text class="leaf-label" x="120.0" y="95">Wolf</text>
+<line class="arm" x1="240.0" x2="240.0" y1="60" y2="30"/>
+<line class="arm" x1="200.0" x2="280.0" y1="60" y2="60"/>
+<line class="arm" x1="200.0" x2="200.0" y1="90" y2="60"/>
+<text class="leaf-label" x="200.0" y="95">Human</text>
+<line class="arm" x1="280.0" x2="280.0" y1="90" y2="60"/>
+<text class="leaf-label" x="280.0" y="95">Chimp</text>
+</svg>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 0 300 265">
+
+    <style>
+        .arm {
+            stroke: #111;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+    </style>
+
+<line class="arm" x1="55.0" x2="55.0" y1="20" y2="5"/>
+<line class="arm" x1="20.0" x2="90.0" y1="20" y2="20"/>
+<line class="arm" x1="20.0" x2="20.0" y1="80" y2="20"/>
+<line class="arm" x1="90.0" x2="90.0" y1="40" y2="20"/>
+<line class="arm" x1="60.0" x2="120.0" y1="40" y2="40"/>
+<line class="arm" x1="60.0" x2="60.0" y1="80" y2="40"/>
+<line class="arm" x1="120.0" x2="120.0" y1="60" y2="40"/>
+<line class="arm" x1="100.0" x2="140.0" y1="60" y2="60"/>
+<line class="arm" x1="100.0" x2="100.0" y1="80" y2="60"/>
+<line class="arm" x1="140.0" x2="140.0" y1="80" y2="60"/>
+
+<g transform="translate(160)">
+    <line class="arm" x1="105.0" x2="105.0" y1="20" y2="5"/>
+    <line class="arm" x1="70.0" x2="140.0" y1="20" y2="20"/>
+    <line class="arm" x1="70.0" x2="70.0" y1="40" y2="20"/>
+    <line class="arm" x1="40.0" x2="100.0" y1="40" y2="40"/>
+    <line class="arm" x1="40.0" x2="40.0" y1="60" y2="40"/>
+    <line class="arm" x1="20.0" x2="60.0" y1="60" y2="60"/>
+    <line class="arm" x1="20.0" x2="20.0" y1="80" y2="60"/>
+    <line class="arm" x1="60.0" x2="60.0" y1="80" y2="60"/>
+    <line class="arm" x1="100.0" x2="100.0" y1="80" y2="40"/>
+    <line class="arm" x1="140.0" x2="140.0" y1="80" y2="20"/>
+</g>
+
+
+    <g transform="translate(0, 100)">
+        <line class="arm" x1="65.0" x2="65.0" y1="20" y2="5"/>
+        <line class="arm" x1="20.0" x2="110.0" y1="20" y2="20"/>
+        <line class="arm" x1="20.0" x2="20.0" y1="80" y2="20"/>
+        <line class="arm" x1="110.0" x2="110.0" y1="40" y2="20"/>
+        <line class="arm" x1="80.0" x2="140.0" y1="40" y2="40"/>
+        <line class="arm" x1="80.0" x2="80.0" y1="60" y2="40"/>
+        <line class="arm" x1="60.0" x2="100.0" y1="60" y2="60"/>
+        <line class="arm" x1="60.0" x2="60.0" y1="80" y2="60"/>
+        <line class="arm" x1="100.0" x2="100.0" y1="80" y2="60"/>
+        <line class="arm" x1="140.0" x2="140.0" y1="80" y2="40"/>
+
+    <g transform="translate(160)">
+        <line class="arm" x1="95.0" x2="95.0" y1="20" y2="5"/>
+        <line class="arm" x1="50.0" x2="140.0" y1="20" y2="20"/>
+        <line class="arm" x1="50.0" x2="50.0" y1="40" y2="20"/>
+        <line class="arm" x1="20.0" x2="80.0" y1="40" y2="40"/>
+        <line class="arm" x1="20.0" x2="20.0" y1="80" y2="40"/>
+        <line class="arm" x1="80.0" x2="80.0" y1="60" y2="40"/>
+        <line class="arm" x1="60.0" x2="100.0" y1="60" y2="60"/>
+        <line class="arm" x1="60.0" x2="60.0" y1="80" y2="60"/>
+        <line class="arm" x1="100.0" x2="100.0" y1="80" y2="60"/>
+        <line class="arm" x1="140.0" x2="140.0" y1="80" y2="20"/>
+    </g>
+</g>
+
+    <g transform="translate(80, 200)">
+        <line class="arm" x1="80.0" x2="80.0" y1="20" y2="5"/>
+        <line class="arm" x1="40.0" x2="120.0" y1="20" y2="20"/>
+        <line class="arm" x1="40.0" x2="40.0" y1="40" y2="20"/>
+        <line class="arm" x1="20.0" x2="60.0" y1="40" y2="40"/>
+        <line class="arm" x1="20.0" x2="20.0" y1="60" y2="40"/>
+        <line class="arm" x1="60.0" x2="60.0" y1="60" y2="40"/>
+        <line class="arm" x1="120.0" x2="120.0" y1="40" y2="20"/>
+        <line class="arm" x1="100.0" x2="140.0" y1="40" y2="40"/>
+        <line class="arm" x1="100.0" x2="100.0" y1="60" y2="40"/>
+        <line class="arm" x1="140.0" x2="140.0" y1="60" y2="40"/>
+    </g>
+</svg>

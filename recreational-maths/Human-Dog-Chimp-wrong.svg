@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 150">
+    <style>
+        .arm {
+            stroke: #111;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+        .outline-arm {
+            stroke: white;
+            stroke-width: 2.8;
+            stroke-linecap: round;
+        }
+        .leaf-label {
+            text-anchor: middle;
+            alignment-baseline: hanging;
+        }
+    </style>
+    <line class="arm" x1="80.0" x2="80.0" y1="80" y2="40"/>
+    <line class="arm" x1="40.0" x2="200" y1="80" y2="80"/>
+    <line class="arm" x1="40.0" x2="40.0" y1="120" y2="80"/>
+    <text class="leaf-label" x="40.0" y="125">Human</text>
+    <line class="outline-arm" x1="120" x2="120" y1="120" y2="40"/>
+    <line class="arm" x1="120" x2="120" y1="120" y2="40"/>
+    <text class="leaf-label" x="120.0" y="125">Dog</text>
+    <line class="arm" x1="200" x2="200" y1="120" y2="80"/>
+    <text class="leaf-label" x="200.0" y="125">Chimp</text>
+    <line class="arm" x1="80" x2="120" y1="40" y2="40"/>
+    <line class="arm" x1="100" x2="100" y1="40" y2="5"/>
+</svg>
