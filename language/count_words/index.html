@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Environment</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <textarea id="word-count-textarea" cols="60" rows="20"></textarea>
+    <div><button id="word-count-button">Count</button></div>
+    <div id="word-count-output" style="max-height:300px;overflow: scroll;"></div>
+    <script src="countWords.js"></script>
+    <script>
+        addCountWords(
+            'word-count-textarea',
+            'word-count-button',
+            'word-count-output',
+        );
+    </script>
+</body>
+</html>
