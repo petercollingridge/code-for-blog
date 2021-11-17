@@ -12,7 +12,7 @@ function addCountWords(textareaId, buttonId, outputId) {
 
 function countWords(text) {
     const counts = {};
-    const words = text.toLowerCase().split(/[\s\.,;:]/g);
+    const words = text.toLowerCase().split(/[\s\.,;:"=]/g);
     words.forEach((word) => {
         word = word.replace(/\W /g, '');
         if (word) {
@@ -50,7 +50,7 @@ function outputWordCounts(output, counts) {
         const row = document.createElement('tr');
         addElement('td', row, word);
         addElement('td', row, count);
-        tHead.appendChild(row);
+        tBody.appendChild(row);
     })
 
     tHead.appendChild(tHeadRow);
