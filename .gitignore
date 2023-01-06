@@ -1,7 +1,6 @@
 .DS_Store
 .vscode/
 the-x-word-results.txt
-
 language/wordle/*.txt
 
 # Byte-compiled / optimized / DLL files
