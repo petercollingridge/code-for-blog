@@ -494,8 +494,8 @@ def count_required_guess(all_words, answer_list, first_guess):
     def test_word_set(guess, possible_answers, count):
         word_sets = get_all_sets_of_words_for_guess(guess, possible_answers)
         
-        # if 'brown' in possible_answers:
-        #     print(count, guess)
+        if 'wound' in possible_answers:
+            print(count, guess)
 
         for colour_string, words in word_sets.items():
             if colour_string == 'GGGGG':
@@ -504,6 +504,11 @@ def count_required_guess(all_words, answer_list, first_guess):
             elif len(words) == 1:
                 # Only one possible answer remains, so we can get in the next guess
                 moves[words[0]] = count + 1
+            elif len(words) == 1:
+                # Two possible answers remain, so we can get one in the next guess,
+                # the other in the next
+                moves[words[0]] = count + 1
+                moves[words[1]] = count + 2
             else:
                 # Find the best word to use for the remaining set of words
                 # best_guess = get_most_informative_guess(all_words, words)
@@ -553,6 +558,11 @@ def find_least_failing_word(valid_answers, valid_words):
     print(min_fails, best_words)
 
 
+def suggest_guess(valid_answers, current_guesses):
+    words = get_possible_words_for_multiple_results(valid_answers, current_guesses)
+    return get_most_informative_guess(words, words)
+
+
 if __name__ == '__main__':
     # test_get_colours()
     # test_get_colour_string()
@@ -575,21 +585,20 @@ if __name__ == '__main__':
 
     # print(get_most_informative_guess(valid_words, valid_answers))
 
-    # find_best_second_word('nymph', valid_answers)
+    # find_best_second_word('slate', valid_answers)
 
     # option_split = get_all_sets_of_words_for_guess('nymph', valid_answers)
     # for result, words in option_split.items():
     #     print(result, len(words), words)
 
-    # words = get_possible_words_for_multiple_results(valid_answers, [
-    #     ('flame', '-----'),
-    #     ('hoist', '-G---'),
-    #     ('dowry', '-G--G'),
-    #     ('booby', '-G--G'),
-    # ])
-    # print(words)
-    # best_guess = get_most_informative_guess(words, words)
-    # print(best_guess)
+    guess = suggest_guess(valid_answers, [
+        ('least', 'Y-Y--'),
+        ('final', '---YY'),
+        ('valor', '-GY--'),
+        ('badly', '-G-G-'),
+        # ('booby', '-G--G'),
+    ])
+    print(guess)
 
     # print(is_word_consistent_with_colour_string('boxer', 'rover', '-G-GG'))
 
@@ -604,6 +613,25 @@ if __name__ == '__main__':
         'snare',
         'arose',
         'least',
+
+        'stand',
+        'flick',
+        'spend',
+        'belch',
+        'growl',
+        'smelt',
+        'nymph',
+        'bland',
+        'blast',
+        'final',
+        'bluer',
+        'jumbo',
+        'chalk',
+        'blend',
+        'flame',
+        'waver',
+        'munch',
+
         'soare',
         'roate',
         'raile',
@@ -614,27 +642,28 @@ if __name__ == '__main__':
         'raine',
         'caret',
         'ariel',
+
     ]
 
-    # guesses = count_required_guess(valid_answers, 'irate')
+    # guesses = count_required_guess(valid_answers, valid_answers, 'slate')
     # sorted_results = sorted(guesses.keys(), key=lambda word: guesses[word])
     # for word in sorted_results:
     #     print(word, guesses[word])
 
 
-    # for word in good_words[:1]:
+    # for word in good_words:
     #     guesses = count_required_guess(valid_answers, valid_answers, word)
     #     # guesses = count_required_guess(valid_words, valid_answers, word)
     #     mean_turns = sum(n for n in guesses.values()) / len(guesses.values())
     #     fail_words = sum(1 for turns in guesses.values() if turns > 6)
     #     print(word, mean_turns, fail_words)
 
-    find_least_failing_word(valid_answers, valid_answers)
+    # find_least_failing_word(valid_answers, valid_answers)
 
-    # word ='nymph'
-    # guesses = count_required_guess(valid_answers, valid_answers, word)
-    # mean_turns = sum(n for n in guesses.values()) / len(guesses.values())
-    # fail_words = [word for word, turns in guesses.items() if turns > 6]
+    word ='raise'
+    guesses = count_required_guess(valid_answers, valid_answers, word)
+    mean_turns = sum(n for n in guesses.values()) / len(guesses.values())
+    fail_words = [word for word, turns in guesses.items() if turns > 6]
     # print(word, mean_turns, fail_words)
 
     # find_best_word_for_winning_in_two(valid_words, valid_answers)
