@@ -3,6 +3,7 @@ import operator as op
 from collections import defaultdict
 from fractions import Fraction
 from functools import reduce
+from itertools import product
 
 
 def n_choose_r(n, r):
@@ -12,7 +13,8 @@ def n_choose_r(n, r):
 
 
 class Character():
-    def __init__(self, attack, defend, body):
+    def __init__(self, name, attack, defend, body):
+        self.name = name
         self.attack = attack
         self.defend = defend
         self.body = body
@@ -82,8 +84,8 @@ class Character():
 
 
 class Hero(Character):
-    def __init__(self, attack, defend, body):
-        Character.__init__(self, attack, defend, body)
+    def __init__(self, name, attack, defend, body):
+        Character.__init__(self, name, attack, defend, body)
         self.type = 'hero'
 
     def _get_defense_prob(self):
@@ -91,8 +93,8 @@ class Hero(Character):
 
 
 class Monster(Character):
-    def __init__(self, attack, defend, body):
-        Character.__init__(self, attack, defend, body)
+    def __init__(self, name, attack, defend, body):
+        Character.__init__(self, name, attack, defend, body)
         self.type = 'monster'
 
     def _get_defense_prob(self):
@@ -160,9 +162,15 @@ def get_probability_distribution_for_final_damage(character1, character2):
     # Except for when attacker has 0 bp and is dead
     p_final_damage[0] = p_combat[0]
     p_final_damage.reverse()
+    return p_final_damage
 
-    print(f"p(Monster wins) = {float(p_combat[0])}")
-    print(f"p(Monster wins) = 1 in {float(1 / p_combat[0])}")
+
+def get_attack_stats(character1, character2):
+    p_final_damage = get_probability_distribution_for_final_damage(character1, character2)
+    p_monster_win = float(p_final_damage[-1])
+
+    print(f"p(Monster wins) = {p_monster_win}")
+    print(f"p(Monster wins) = 1 in {1 / p_monster_win}")
     print(f"E(damage to hero) = {float(get_expected_value(p_final_damage))}")
 
     for i, damage in enumerate(p_final_damage):
@@ -170,23 +178,52 @@ def get_probability_distribution_for_final_damage(character1, character2):
 
 
 def get_expected_value(probabilities):
+    """
+    Given an array of probabilities, return the expected value,
+    where the value of associated with each probability is its index.
+    """
+
     expected_value = 0
     for i, p in enumerate(probabilities):
         expected_value += i * p
     return expected_value
 
-barbarian = Hero(3, 2, 8)
-dwarf = Hero(2, 2, 7)
-elf = Hero(2, 2, 6)
-wizard = Hero(1, 2, 4)
 
-goblin = Monster(2, 1, 1)
-skeleton = Monster(2, 2, 1)
-zombie = Monster(2, 3, 1)
-orc = Monster(3, 2, 1)
-fimir = Monster(3, 3, 1)
-mummy = Monster(3, 4, 1)        # Same as Chaos warrior
-gargoyle = Monster(4, 4, 1)
+def get_win_odds_table(heroes, monsters):
+    """ For each pairing of hero and monster, show the odds that the monster wins """
+
+    for hero, monster in product(heroes, monsters):
+        p_final_damage = get_probability_distribution_for_final_damage(hero, monster)
+        odds = round(1 / float(p_final_damage[-1]), 2)
+        print(hero.name, monster.name, odds)
+
+
+def get_expected_damage_table(heroes, monsters):
+    """ For each pairing of hero and monster, show amount of damage
+        the monster can expect to deal by the end of combat
+    """
+
+    for hero, monster in product(heroes, monsters):
+        p_final_damage = get_probability_distribution_for_final_damage(hero, monster)
+        e_damage = round(float(get_expected_value(p_final_damage)), 2)
+        print(hero.name, monster.name, e_damage)
+
+
+barbarian = Hero('barbarian', 3, 2, 8)
+dwarf = Hero('dwarf', 2, 2, 7)
+elf = Hero('elf', 2, 2, 6)
+wizard = Hero('wizard', 1, 2, 4)
+
+goblin = Monster('goblin', 2, 1, 1)
+skeleton = Monster('skeleton', 2, 2, 1)
+zombie = Monster('zombie', 2, 3, 1)
+orc = Monster('orc', 3, 2, 1)
+fimir = Monster('fimir', 3, 3, 1)
+mummy = Monster('mummy', 3, 4, 1)    # Same as Chaos warrior
+gargoyle = Monster('gargoyle', 4, 4, 1)
+
+heroes = (barbarian, dwarf, elf, wizard)
+monsters = (goblin, skeleton, zombie, orc, fimir, mummy, gargoyle)
 
 # print(barbarian.get_attack_probabilities())
 # print(barbarian.get_defence_probabilities())
@@ -202,9 +239,12 @@ gargoyle = Monster(4, 4, 1)
 # get_probability_distribution_for_final_damage(wizard, goblin)
 # get_probability_distribution_for_final_damage(wizard, gargoyle)
 
-get_probability_distribution_for_final_damage(barbarian, goblin)
+# get_probability_distribution_for_final_damage(barbarian, goblin)
 # print(barbarian.simulate_combat_probabilities(goblin, 1000000))
 
-# get_probability_distribution_for_final_damage(wizard, gargoyle)
+# get_attack_stats(wizard, gargoyle)
 
 # print(wizard.simulate_combat_probabilities(gargoyle, 100000))
+
+get_expected_damage_table(heroes, monsters)
+# get_win_odds_table(heroes, monsters)
