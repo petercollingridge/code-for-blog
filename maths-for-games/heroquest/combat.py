@@ -155,16 +155,18 @@ def get_probability_distribution_for_final_damage(character1, character2):
             new_body = max(0, body - damage)
             p_combat[new_body] += p_this_state * p_damage[damage]
 
+    # To get final damage probability, multiply by probability of defender dealing 0 damage
     p_final_damage = [p_combat[bp] * p_damage[0] for bp in range(character1.body + 1)]
+    # Except for when attacker has 0 bp and is dead
+    p_final_damage[0] = p_combat[0]
     p_final_damage.reverse()
 
+    print(f"p(Monster wins) = {float(p_combat[0])}")
     print(f"p(Monster wins) = 1 in {float(1 / p_combat[0])}")
     print(f"E(damage to hero) = {float(get_expected_value(p_final_damage))}")
 
-    print(float(p_combat[0]))
     for i, damage in enumerate(p_final_damage):
         print(character1.body - i, float(damage))
-    print(float(sum(p_final_damage)))
 
 
 def get_expected_value(probabilities):
@@ -202,3 +204,7 @@ gargoyle = Monster(4, 4, 1)
 
 get_probability_distribution_for_final_damage(barbarian, goblin)
 # print(barbarian.simulate_combat_probabilities(goblin, 1000000))
+
+# get_probability_distribution_for_final_damage(wizard, gargoyle)
+
+# print(wizard.simulate_combat_probabilities(gargoyle, 100000))
