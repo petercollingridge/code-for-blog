@@ -82,7 +82,6 @@ class Character():
         return max(0, attack - defend)
 
 
-
 class Hero(Character):
     def __init__(self, name, attack, defend, body):
         Character.__init__(self, name, attack, defend, body)
@@ -224,9 +223,9 @@ def get_p_final_body_points(character1, character2):
     # There is a 100% chance of starting with both characters at their starting bp
     p_combat_state[(character1.body, character2.body)] = 1
 
-    # Fill in states with character1's bp decreasing
-    for body2 in range(character2.body, 0, -1):
-        for body1 in range(character1.body, 0, -1):
+    # Fill in combat states starting with the one we know and expanding down, then
+    for body1 in range(character1.body, 0, -1):
+        for body2 in range(character2.body, 0, -1):
             # Probability of being in this state
             p_this_state = p_combat_state[(body1, body2)]
 
@@ -236,7 +235,7 @@ def get_p_final_body_points(character1, character2):
                 new_body2 = max(0, body2 - damage1)
                 p_combat_state[(new_body1, new_body2)] += p_this_state * p
     
-    # Filter to just the combat states where one character is dead
+    # Filter to get just the combat states where one character is dead
     final_combat_states = {}
     for (bp1, bp2), p in p_combat_state.items():
         if bp1 == 0 or bp2 == 0:
@@ -289,11 +288,13 @@ def get_expected_damage_table(heroes, monsters):
         print(hero.name, monster.name, e_damage)
 
 
+# Heroes
 barbarian = Hero('barbarian', 3, 2, 8)
 dwarf = Hero('dwarf', 2, 2, 7)
 elf = Hero('elf', 2, 2, 6)
 wizard = Hero('wizard', 1, 2, 4)
 
+# Basic monsters (1 body point each)
 goblin = Monster('goblin', 2, 1, 1)
 skeleton = Monster('skeleton', 2, 2, 1)
 zombie = Monster('zombie', 2, 3, 1)
@@ -302,10 +303,18 @@ fimir = Monster('fimir', 3, 3, 1)
 mummy = Monster('mummy', 3, 4, 1)    # Same as Chaos warrior
 gargoyle = Monster('gargoyle', 4, 4, 1)
 
+# Ogres
 ogre_warrior = Monster('ogre warrior', 5, 5, 3)
 ogre_champion = Monster('ogre champion', 5, 5, 4)
 ogre_chieftain = Monster('ogre chieftain', 6, 6, 4)
 ogre_lord = Monster('ogre lord', 6, 6, 5)
+
+# Monsters from the Frozen Horror
+ice_gremlin = Monster('ice gremlin', 2, 3, 3)
+yeti = Monster('yeti', 3, 3, 5)
+warbear = Monster('warbear', 4, 4, 6)
+frozen_horror = Monster('frozen horror', 5, 4, 6)
+krag = Monster('krag', 5, 5, 4)
 
 heroes = (barbarian, dwarf, elf, wizard)
 monsters = (goblin, skeleton, zombie, orc, fimir, mummy, gargoyle)
@@ -330,10 +339,11 @@ monsters = (goblin, skeleton, zombie, orc, fimir, mummy, gargoyle)
 # get_attack_stats(wizard, gargoyle)
 
 # print(wizard.simulate_combat_probabilities(gargoyle, 100000))
+# print(barbarian.simulate_combat_probabilities(frozen_horror, 100000))
 
 # get_expected_damage_table(heroes, monsters)
 # get_win_odds_table(heroes, monsters)
 
 # print(get_p_damage_on_leaving_combat_state(barbarian, goblin))
-for state, p in get_p_final_body_points(barbarian, ogre_lord).items():
+for state, p in get_p_final_body_points(barbarian, frozen_horror).items():
     print(state, float(p))
