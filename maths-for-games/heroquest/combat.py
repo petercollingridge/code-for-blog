@@ -141,7 +141,45 @@ def get_prob_dist_for_damage_on_leaving_combat_state(character1, character2):
     return probs
 
 
+def get_p_damage_on_leaving_combat_state(character1, character2):
+    """
+    For a combat state between character1 and character2, return the probabilities of
+    damage given that at least one character dealt damage.
+    The dictionary maps a 2-tuple of damage to the probability of that damage
+    e.g. (1, 0): 0.5, means there is a 0.5 chance of character1 dealing 1 damage
+         (0, 2): 0.2, means there is a 0.2 chance of character2 dealing 2 damage
+    """
+
+    attack1 = attack(character1, character2)
+    attack2 = attack(character2, character1)
+    p1 = attack1.get(0)
+    p2 = attack2.get(0)
+
+    # Probability that it's character1 that deals damage
+    p_character_1_damage = Fraction(1 - p1, 1 - p1 * p2)
+    p_character_2_damage = 1 - p_character_1_damage
+
+    probs = {}
+    # Factor to multiply probabilities given probs[0]
+    # E.g. goblin has 3/9 chance of doing 1 damage and 1/9 chance of doing 2 damage each turn
+    # If there is a 39/43 chance of doing 0 damage at the end, then there is a 4/43 chance of doing some damage
+    # Which maps to 3/43 chance of doing 1 damage and 1/43 chance of doing 2 damage at the end
+    r = Fraction(p_character_2_damage,  1 - p2)
+    for n in range(1, character2.attack + 1):
+        probs[(0, n)] = attack2.get(n, 0) * r
+
+    r = Fraction(p_character_1_damage,  1 - p1)
+    for n in range(1, character1.attack + 1):
+        probs[(n, 0)] = attack1.get(n, 0) * r
+
+    return probs
+
+
 def get_probability_distribution_for_final_damage(character1, character2):
+    """ 
+    Return an array, where each item is the probability of character1
+    having bps equal to the array index, when at the end of combat with character2
+    """
     p_damage = get_prob_dist_for_damage_on_leaving_combat_state(character1, character2)
 
     # Map number of bps to probability of entering combat with that num of body points
@@ -163,6 +201,48 @@ def get_probability_distribution_for_final_damage(character1, character2):
     p_final_damage[0] = p_combat[0]
     p_final_damage.reverse()
     return p_final_damage
+
+
+def get_p_final_body_points(character1, character2):
+    """
+    Given a fight between character1 and character2, return a dict mapping
+    a 2-tuple of the final body points to the probability of that result.
+
+    e.g. (4, 0): 0.3 corresponds to a 0.3 chance that character1 ends with
+    4 body points and character2 is dead.
+
+    Note that one of the numbers in the tuple must always be 0 since one
+    character must be dead for combat to have ended.
+    """
+
+    p_damage = get_p_damage_on_leaving_combat_state(character1, character2)
+
+    # Map a 2-tuple representing a combat state to probability of entering that combat state
+    # The 2-tuple represents (<bp of character1>, <bp of character2>)
+    p_combat_state = defaultdict(int)
+
+    # There is a 100% chance of starting with both characters at their starting bp
+    p_combat_state[(character1.body, character2.body)] = 1
+
+    # Fill in states with character1's bp decreasing
+    for body2 in range(character2.body, 0, -1):
+        for body1 in range(character1.body, 0, -1):
+            # Probability of being in this state
+            p_this_state = p_combat_state[(body1, body2)]
+
+            # Update probabilities of next states
+            for (damage1, damage2), p in p_damage.items():
+                new_body1 = max(0, body1 - damage2)
+                new_body2 = max(0, body2 - damage1)
+                p_combat_state[(new_body1, new_body2)] += p_this_state * p
+    
+    # Filter to just the combat states where one character is dead
+    final_combat_states = {}
+    for (bp1, bp2), p in p_combat_state.items():
+        if bp1 == 0 or bp2 == 0:
+            final_combat_states[(bp1, bp2)] = p
+
+    return final_combat_states
 
 
 def get_attack_stats(character1, character2):
@@ -222,6 +302,11 @@ fimir = Monster('fimir', 3, 3, 1)
 mummy = Monster('mummy', 3, 4, 1)    # Same as Chaos warrior
 gargoyle = Monster('gargoyle', 4, 4, 1)
 
+ogre_warrior = Monster('ogre warrior', 5, 5, 3)
+ogre_champion = Monster('ogre champion', 5, 5, 4)
+ogre_chieftain = Monster('ogre chieftain', 6, 6, 4)
+ogre_lord = Monster('ogre lord', 6, 6, 5)
+
 heroes = (barbarian, dwarf, elf, wizard)
 monsters = (goblin, skeleton, zombie, orc, fimir, mummy, gargoyle)
 
@@ -246,5 +331,9 @@ monsters = (goblin, skeleton, zombie, orc, fimir, mummy, gargoyle)
 
 # print(wizard.simulate_combat_probabilities(gargoyle, 100000))
 
-get_expected_damage_table(heroes, monsters)
+# get_expected_damage_table(heroes, monsters)
 # get_win_odds_table(heroes, monsters)
+
+# print(get_p_damage_on_leaving_combat_state(barbarian, goblin))
+for state, p in get_p_final_body_points(barbarian, ogre_lord).items():
+    print(state, float(p))
