@@ -21,17 +21,35 @@ class Character():
 
     def get_attack_probabilities(self):
         p_attack = Fraction(1, 2)
-        return self._get_probability_densities(self.attack, p_attack)
+        return self._get_success_probabilities(self.attack, p_attack)
 
     def get_defence_probabilities(self):
         p_defend = self._get_defense_prob()
-        return self._get_probability_densities(self.defend, p_defend)
+        return self._get_success_probabilities(self.defend, p_defend)
 
-    def _get_probability_densities(self, dice, probability):
-        probabilities = []
-        for n in range(0, dice + 1):
-            p = n_choose_r(dice, n) * (probability ** n) * ((1 - probability) ** (dice - n))
-            probabilities.append((n, p))
+    def _get_success_probabilities(self, num_dice, p_success):
+        """
+        When rolling num_dice dice, where each has <p_success> chance of success
+        return a dict mapping number of successes to its probability.
+        """
+    
+        probabilities = {}
+        for n in range(0, num_dice + 1):
+            p = n_choose_r(num_dice, n) * (p_success ** n) * ((1 - p_success) ** (num_dice - n))
+            probabilities[n] = p
+        return probabilities
+
+    def get_damage_probabilities(self, other):
+        """ Return probabilities for the damage dealt by character1 attacks character2 """
+
+        attack = self.get_attack_probabilities()
+        defence = other.get_defence_probabilities()
+
+        probabilities = defaultdict(int)
+        for attack_n, attack_p in attack.items():
+            for defend_n, defend_p in defence.items():
+                damage = max(0, attack_n - defend_n)
+                probabilities[damage] += attack_p * defend_p
         return probabilities
 
     def simulate_combat_probabilities(self, other, n):
@@ -66,7 +84,7 @@ class Character():
             damage = max(0, attack - defend)
             other_body -= damage
             if other_body <= 0:
-                return self_body
+                return (self_body, 0)
 
             # Other attacks self
             attack = sum(random.random() < 0.5 for _ in range(other.attack))
@@ -74,7 +92,7 @@ class Character():
             damage = max(0, attack - defend)
             self_body -= damage
             if self_body <= 0:
-                return 0
+                return (0, other_body)
 
     def simulate_attack(self, other):
         attack = sum(random.random() < 0.5 for _ in range(self.attack))
@@ -100,22 +118,46 @@ class Monster(Character):
         return Fraction(1, 6)
 
 
-def attack(character1, character2):
-    """ Return probabilities for the damage dealt by character1 attacks character2 """
+class Warbear(Monster):
+    def __init__(self, name, attack, defend, body):
+        Monster.__init__(self, name, attack, defend, body)
 
-    attack = character1.get_attack_probabilities()
-    defence = character2.get_defence_probabilities()
+    def get_damage_probabilities(self, other):
+        p = super().get_damage_probabilities(other)
 
-    probabilities = defaultdict(int)
-    for attack_n, attack_p in attack:
-        for defend_n, defend_p in defence:
-            damage = max(0, attack_n - defend_n)
-            probabilities[damage] += attack_p * defend_p
-    return probabilities
+        # Combine two lots of p to get final probabilities
+        final_p = defaultdict(int)
+        for damage1, p1 in p.items():
+            for damage2, p2 in p.items():
+                final_p[damage1 + damage2] += p1 * p2
+        return final_p
+
+
+def write_probabilities(probabilities, as_float=False):
+    """
+    Given a dict mapping values to their probabilities,
+    print each value in order with its probability.
+    If as_float is true, write as a float, otherwise 
+    it will be written as stored (probably a Fraction).
+    """
+    for value in sorted(probabilities):
+        p = probabilities[value]
+        if as_float:
+            p = float(p)
+        print(value, p)
+
+
+def get_expected_value(probabilities):
+    """
+    Given a dict mapping value to its probability, return the expected value.
+    """
+
+    return sum(value * p for value, p in probabilities.items())
 
 
 def get_prob_dist_for_damage_on_leaving_combat_state(character1, character2):
     """
+    DEFUNCT
     If character1 attacks character2 and character2 has 1 body point.
     Return the probability distribution for the amount of damage will take 
     on leaving this combat state.
@@ -149,10 +191,10 @@ def get_p_damage_on_leaving_combat_state(character1, character2):
          (0, 2): 0.2, means there is a 0.2 chance of character2 dealing 2 damage
     """
 
-    attack1 = attack(character1, character2)
-    attack2 = attack(character2, character1)
-    p1 = attack1.get(0)
-    p2 = attack2.get(0)
+    p_damage_1 = character1.get_damage_probabilities(character2)
+    p_damage_2 = character2.get_damage_probabilities(character1)
+    p1 = p_damage_1[0]
+    p2 = p_damage_2[0]
 
     # Probability that it's character1 that deals damage
     p_character_1_damage = Fraction(1 - p1, 1 - p1 * p2)
@@ -165,41 +207,13 @@ def get_p_damage_on_leaving_combat_state(character1, character2):
     # Which maps to 3/43 chance of doing 1 damage and 1/43 chance of doing 2 damage at the end
     r = Fraction(p_character_2_damage,  1 - p2)
     for n in range(1, character2.attack + 1):
-        probs[(0, n)] = attack2.get(n, 0) * r
+        probs[(0, n)] = p_damage_2.get(n, 0) * r
 
     r = Fraction(p_character_1_damage,  1 - p1)
     for n in range(1, character1.attack + 1):
-        probs[(n, 0)] = attack1.get(n, 0) * r
+        probs[(n, 0)] = p_damage_1.get(n, 0) * r
 
     return probs
-
-
-def get_probability_distribution_for_final_damage(character1, character2):
-    """ 
-    Return an array, where each item is the probability of character1
-    having bps equal to the array index, when at the end of combat with character2
-    """
-    p_damage = get_prob_dist_for_damage_on_leaving_combat_state(character1, character2)
-
-    # Map number of bps to probability of entering combat with that num of body points
-    p_combat = defaultdict(int)
-
-    # There is a 100% probability of entering with the starting body points
-    p_combat[character1.body] = 1
-
-    for body in range(character1.body, 0, -1):
-        p_this_state = p_combat[body]
-
-        for damage in range(1, character2.attack + 1):
-            new_body = max(0, body - damage)
-            p_combat[new_body] += p_this_state * p_damage[damage]
-
-    # To get final damage probability, multiply by probability of defender dealing 0 damage
-    p_final_damage = [p_combat[bp] * p_damage[0] for bp in range(character1.body + 1)]
-    # Except for when attacker has 0 bp and is dead
-    p_final_damage[0] = p_combat[0]
-    p_final_damage.reverse()
-    return p_final_damage
 
 
 def get_p_final_body_points(character1, character2):
@@ -244,37 +258,14 @@ def get_p_final_body_points(character1, character2):
     return final_combat_states
 
 
-def get_attack_stats(character1, character2):
-    p_final_damage = get_probability_distribution_for_final_damage(character1, character2)
-    p_monster_win = float(p_final_damage[-1])
-
-    print(f"p(Monster wins) = {p_monster_win}")
-    print(f"p(Monster wins) = 1 in {1 / p_monster_win}")
-    print(f"E(damage to hero) = {float(get_expected_value(p_final_damage))}")
-
-    for i, damage in enumerate(p_final_damage):
-        print(character1.body - i, float(damage))
-
-
-def get_expected_value(probabilities):
-    """
-    Given an array of probabilities, return the expected value,
-    where the value of associated with each probability is its index.
-    """
-
-    expected_value = 0
-    for i, p in enumerate(probabilities):
-        expected_value += i * p
-    return expected_value
-
-
 def get_win_odds_table(heroes, monsters):
     """ For each pairing of hero and monster, show the odds that the monster wins """
 
     for hero, monster in product(heroes, monsters):
-        p_final_damage = get_probability_distribution_for_final_damage(hero, monster)
-        odds = round(1 / float(p_final_damage[-1]), 2)
-        print(hero.name, monster.name, odds)
+        p_final_bp = get_p_final_body_points(hero, monster)
+        p_win = sum(p for (hero_bp, _), p in p_final_bp.items() if hero_bp > 0)
+        odds_win = round(1 / float(1 - p_win), 2)
+        print(hero.name, monster.name, odds_win)
 
 
 def get_expected_damage_table(heroes, monsters):
@@ -283,9 +274,11 @@ def get_expected_damage_table(heroes, monsters):
     """
 
     for hero, monster in product(heroes, monsters):
-        p_final_damage = get_probability_distribution_for_final_damage(hero, monster)
-        e_damage = round(float(get_expected_value(p_final_damage)), 2)
-        print(hero.name, monster.name, e_damage)
+        p_final_bp = get_p_final_body_points(hero, monster)
+        e_damage = 0
+        for (hero_bp, _), p in p_final_bp.items():
+            e_damage += (hero.body - hero_bp) * p
+        print(hero.name, monster.name, round(float(e_damage), 2))
 
 
 # Heroes
@@ -312,38 +305,31 @@ ogre_lord = Monster('ogre lord', 6, 6, 5)
 # Monsters from the Frozen Horror
 ice_gremlin = Monster('ice gremlin', 2, 3, 3)
 yeti = Monster('yeti', 3, 3, 5)
-warbear = Monster('warbear', 4, 4, 6)
 frozen_horror = Monster('frozen horror', 5, 4, 6)
 krag = Monster('krag', 5, 5, 4)
+warbear = Warbear('warbear', 4, 4, 6)
 
 heroes = (barbarian, dwarf, elf, wizard)
 monsters = (goblin, skeleton, zombie, orc, fimir, mummy, gargoyle)
 
-# print(barbarian.get_attack_probabilities())
-# print(barbarian.get_defence_probabilities())
-# print(goblin.get_attack_probabilities())
-# print(goblin.get_defence_probabilities())
+# write_probabilities(barbarian.get_attack_probabilities())
+# write_probabilities(barbarian.get_defence_probabilities())
+# write_probabilities(goblin.get_attack_probabilities())
+# write_probabilities(goblin.get_defence_probabilities())
 
-# print(attack(barbarian, goblin))
-# print(attack(goblin, barbarian))
-# print(attack(barbarian, gargoyle))
-# print(get_prob_of_0_damage(barbarian, goblin))
+# write_probabilities(barbarian.get_damage_probabilities(goblin))
+# write_probabilities(barbarian.simulate_combat_probabilities(goblin, 100000))
 
-# get_probability_distribution_for_final_damage(barbarian, gargoyle)
-# get_probability_distribution_for_final_damage(wizard, goblin)
-# get_probability_distribution_for_final_damage(wizard, gargoyle)
+# write_probabilities(get_p_final_body_points(barbarian, goblin), True)
+# write_probabilities(get_p_final_body_points(barbarian, gargoyle), True)
 
-# get_probability_distribution_for_final_damage(barbarian, goblin)
-# print(barbarian.simulate_combat_probabilities(goblin, 1000000))
-
-# get_attack_stats(wizard, gargoyle)
-
-# print(wizard.simulate_combat_probabilities(gargoyle, 100000))
-# print(barbarian.simulate_combat_probabilities(frozen_horror, 100000))
+# write_probabilities(warbear.get_damage_probabilities(barbarian))
+# print(get_expected_value(warbear.get_damage_probabilities(barbarian)))
+# write_probabilities(get_p_final_body_points(barbarian, warbear), True)
 
 # get_expected_damage_table(heroes, monsters)
-# get_win_odds_table(heroes, monsters)
+get_win_odds_table(heroes, monsters)
 
 # print(get_p_damage_on_leaving_combat_state(barbarian, goblin))
-for state, p in get_p_final_body_points(barbarian, frozen_horror).items():
-    print(state, float(p))
+# for state, p in get_p_final_body_points(barbarian, frozen_horror).items():
+#     print(state, float(p))
