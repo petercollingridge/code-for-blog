@@ -102,7 +102,7 @@ class Character():
 
 class Hero(Character):
     def __init__(self, name, attack, defend, body):
-        Character.__init__(self, name, attack, defend, body)
+        super().__init__(name, attack, defend, body)
         self.type = 'hero'
 
     def _get_defense_prob(self):
@@ -111,7 +111,7 @@ class Hero(Character):
 
 class Monster(Character):
     def __init__(self, name, attack, defend, body):
-        Character.__init__(self, name, attack, defend, body)
+        super().__init__(name, attack, defend, body)
         self.type = 'monster'
 
     def _get_defense_prob(self):
@@ -120,7 +120,7 @@ class Monster(Character):
 
 class Warbear(Monster):
     def __init__(self, name, attack, defend, body):
-        Monster.__init__(self, name, attack, defend, body)
+        super().__init__(name, attack, defend, body)
 
     def get_damage_probabilities(self, other):
         p = super().get_damage_probabilities(other)
@@ -200,18 +200,25 @@ def get_p_damage_on_leaving_combat_state(character1, character2):
     p_character_1_damage = Fraction(1 - p1, 1 - p1 * p2)
     p_character_2_damage = 1 - p_character_1_damage
 
+    print()
+    print(float(p_character_1_damage))
+    print(float(p_character_2_damage))
+    print()
+
     probs = {}
     # Factor to multiply probabilities given probs[0]
     # E.g. goblin has 3/9 chance of doing 1 damage and 1/9 chance of doing 2 damage each turn
     # If there is a 39/43 chance of doing 0 damage at the end, then there is a 4/43 chance of doing some damage
     # Which maps to 3/43 chance of doing 1 damage and 1/43 chance of doing 2 damage at the end
     r = Fraction(p_character_2_damage,  1 - p2)
-    for n in range(1, character2.attack + 1):
-        probs[(0, n)] = p_damage_2.get(n, 0) * r
+    for damage, p in p_damage_2.items():
+        if damage > 0:
+            probs[(0, damage)] = p * r
 
     r = Fraction(p_character_1_damage,  1 - p1)
-    for n in range(1, character1.attack + 1):
-        probs[(n, 0)] = p_damage_1.get(n, 0) * r
+    for damage, p in p_damage_1.items():
+        if damage > 0:
+            probs[(damage, 0)] = p * r
 
     return probs
 
@@ -229,6 +236,7 @@ def get_p_final_body_points(character1, character2):
     """
 
     p_damage = get_p_damage_on_leaving_combat_state(character1, character2)
+    write_probabilities(p_damage, True)
 
     # Map a 2-tuple representing a combat state to probability of entering that combat state
     # The 2-tuple represents (<bp of character1>, <bp of character2>)
@@ -312,7 +320,7 @@ warbear = Warbear('warbear', 4, 4, 6)
 heroes = (barbarian, dwarf, elf, wizard)
 monsters = (goblin, skeleton, zombie, orc, fimir, mummy, gargoyle)
 
-# write_probabilities(barbarian.get_attack_probabilities())
+write_probabilities(barbarian.get_attack_probabilities())
 # write_probabilities(barbarian.get_defence_probabilities())
 # write_probabilities(goblin.get_attack_probabilities())
 # write_probabilities(goblin.get_defence_probabilities())
@@ -323,13 +331,14 @@ monsters = (goblin, skeleton, zombie, orc, fimir, mummy, gargoyle)
 # write_probabilities(get_p_final_body_points(barbarian, goblin), True)
 # write_probabilities(get_p_final_body_points(barbarian, gargoyle), True)
 
-# write_probabilities(warbear.get_damage_probabilities(barbarian))
-# print(get_expected_value(warbear.get_damage_probabilities(barbarian)))
-# write_probabilities(get_p_final_body_points(barbarian, warbear), True)
-
 # get_expected_damage_table(heroes, monsters)
-get_win_odds_table(heroes, monsters)
+# get_win_odds_table(heroes, monsters)
 
 # print(get_p_damage_on_leaving_combat_state(barbarian, goblin))
 # for state, p in get_p_final_body_points(barbarian, frozen_horror).items():
 #     print(state, float(p))
+
+# write_probabilities(barbarian.get_damage_probabilities(warbear))
+# write_probabilities(warbear.get_damage_probabilities(barbarian), 1)
+# print(get_expected_value(barbarian.get_damage_probabilities(warbear)))
+# write_probabilities(get_p_final_body_points(barbarian, warbear), True)
