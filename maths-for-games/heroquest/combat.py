@@ -196,16 +196,22 @@ def get_p_damage_on_leaving_combat_state(character1, character2):
     p1 = p_damage_1[0]
     p2 = p_damage_2[0]
 
+    # Probability that both characters miss so we loop back round
+    p_loop = p1 * p2
+
     # Probability that it's character1 that deals damage
-    p_character_1_damage = Fraction(1 - p1, 1 - p1 * p2)
+    p_character_1_damage = Fraction(1 - p1, 1 - p_loop)
     p_character_2_damage = 1 - p_character_1_damage
 
-    print()
-    print(float(p_character_1_damage))
-    print(float(p_character_2_damage))
-    print()
-
     probs = {}
+
+    # Update probabilities that the active character deals damage
+    # e.g. when the barbarians attacks the goblin, r_active = 48/43
+    r_active = Fraction(1, 1 - p_loop)
+    for damage, p in p_damage_1.items():
+        if damage > 0:
+            probs[(damage, 0)] = p * r_active
+
     # Factor to multiply probabilities given probs[0]
     # E.g. goblin has 3/9 chance of doing 1 damage and 1/9 chance of doing 2 damage each turn
     # If there is a 39/43 chance of doing 0 damage at the end, then there is a 4/43 chance of doing some damage
@@ -214,11 +220,6 @@ def get_p_damage_on_leaving_combat_state(character1, character2):
     for damage, p in p_damage_2.items():
         if damage > 0:
             probs[(0, damage)] = p * r
-
-    r = Fraction(p_character_1_damage,  1 - p1)
-    for damage, p in p_damage_1.items():
-        if damage > 0:
-            probs[(damage, 0)] = p * r
 
     return probs
 
@@ -320,13 +321,16 @@ warbear = Warbear('warbear', 4, 4, 6)
 heroes = (barbarian, dwarf, elf, wizard)
 monsters = (goblin, skeleton, zombie, orc, fimir, mummy, gargoyle)
 
-write_probabilities(barbarian.get_attack_probabilities())
+# write_probabilities(barbarian.get_attack_probabilities())
 # write_probabilities(barbarian.get_defence_probabilities())
 # write_probabilities(goblin.get_attack_probabilities())
 # write_probabilities(goblin.get_defence_probabilities())
 
 # write_probabilities(barbarian.get_damage_probabilities(goblin))
 # write_probabilities(barbarian.simulate_combat_probabilities(goblin, 100000))
+
+write_probabilities(get_p_damage_on_leaving_combat_state(barbarian, goblin))
+# write_probabilities(get_p_damage_on_leaving_combat_state(goblin, barbarian))
 
 # write_probabilities(get_p_final_body_points(barbarian, goblin), True)
 # write_probabilities(get_p_final_body_points(barbarian, gargoyle), True)
