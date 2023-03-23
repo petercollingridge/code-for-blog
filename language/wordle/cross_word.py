@@ -56,8 +56,8 @@ def get_word_mappings(all_words, letter_mappings, uncommon_words, double_letters
         disallowed_words = { word }
 
         # An uncommon words can't intersect with another uncommon word
-        if word in uncommon_words:
-            disallowed_words |= uncommon_words
+        # if word in uncommon_words:
+        #     disallowed_words |= uncommon_words
 
         # A word with a double letter can't intersect with another
         if word in double_letters:
@@ -90,6 +90,15 @@ def count_intersecting_words(word_mapping):
         counts[word] = sum(len(intersection_words[x][y]) for x in range(3) for y in range(3))
 
     return counts
+
+
+def count_unique_words(filename):
+    grids = read_grids(filename)
+    words = set()
+    for grid in grids:
+        for word in grid:
+            words.add(word)
+    print(len(words))
 
 
 def get_intersecting_words(mapping, word, position):
@@ -223,7 +232,11 @@ def is_good_grid(grid, uncommon_words, double_letters):
     # Get number of distinct letters
     counts = Counter(''.join(grid))
     num_letters = len(counts.values())
-    if max(counts.values()) > 5 and num_letters < 10 or num_letters > 16:
+
+    if max(counts.values()) > 5:
+        return False
+
+    if num_letters < 10 or num_letters > 16:
         # print(grid, num_letters, len(set(grid)))
         return False
 
@@ -237,7 +250,7 @@ def is_good_grid(grid, uncommon_words, double_letters):
         return False
 
     # No more than two uncommon words
-    if sum(1 for word in grid if word in uncommon_words) > 1:
+    if sum(1 for word in grid if word in uncommon_words) > 2:
         return False
 
     # No more than two words with a double letter
@@ -280,7 +293,7 @@ def test_grid_letter_occurrences(filename):
 
 
 def get_grids(mapping, all_words, num_grids):
-    MAX_WORD_COUNT = num_grids * 0.02
+    MAX_WORD_COUNT = num_grids * 0.025
 
     word_counts = Counter()
     grids = set()
@@ -288,19 +301,21 @@ def get_grids(mapping, all_words, num_grids):
 
     start = time()
 
-    while len(grids) < num_grids:
-        grid = make_grid2(mapping, all_words, over_used_words)
-        if grid not in grids and is_good_grid(grid, uncommon_words, double_letters):
-            print(len(grids))
-            grids.add(grid)
-            # Write to file as we go in case we want to stop in the middle of runnign
-            append_grid('letter_grids_fast.txt', grid)
+    with open('letter_grids_fast3.txt', 'a') as f:
+        while len(grids) < num_grids:
+            grid = make_grid2(mapping, all_words, over_used_words)
+            if grid not in grids and is_good_grid(grid, uncommon_words, double_letters):
+                print(len(grids))
+                grids.add(grid)
+                # Write to file as we go in case we want to stop in the middle of runnign
+                # append_grid('letter_grids_fast2.txt', grid)
+                f.write(', '.join(grid) + '\n')
 
-            for word in grid:
-                word_counts[word] += 1
-                if word_counts[word] >= MAX_WORD_COUNT:
-                    pass
-                    over_used_words.add(word)
+                for word in grid:
+                    word_counts[word] += 1
+                    if word_counts[word] >= MAX_WORD_COUNT:
+                        pass
+                        over_used_words.add(word)
 
     print(time() - start)
 
@@ -331,12 +346,11 @@ def prepare_grids():
     write_grids('unique_grids.txt', grids)
 
 
-def order_grids():
-    MAX_FREQ = 100
-    GRID_LENGTH = 100000
+def order_grids(filename, filename2):
+    MAX_FREQ = 110
+    GRID_LENGTH = 50000
 
-    grids = read_grids('unique_grids.txt')
-    
+    grids = read_grids(filename)
     # How many times since a word last appeared in the final list
     last_appeared = defaultdict(int)
 
@@ -375,23 +389,29 @@ def order_grids():
         if index >= len(grids):
             index = 0
 
-    write_grids('ordered_grids.txt', ordered_grids)
+    write_grids(filename2, ordered_grids)
 
 
 if __name__ == '__main__':
     # all_words = get_words('wordbank v3b.txt')
-    # all_words, uncommon_words, double_letters = get_words_with_properties('wordbank v4.txt')
+    all_words, uncommon_words, double_letters = get_words_with_properties('wordbank v4.txt')
 
-    # letter_mapping = get_letter_mapping(all_words)
-    # word_mapping = get_word_mappings(all_words, letter_mapping, uncommon_words, double_letters)
+    letter_mapping = get_letter_mapping(all_words)
+    word_mapping = get_word_mappings(all_words, letter_mapping, uncommon_words, double_letters)
 
-    order_grids()
+    # is_good_grid(('attic', 'fable', 'largo', 'awful', 'tuber', 'credo'), uncommon_words, double_letters)
+
+    order_grids('letter_grids_fast3.txt', 'ordered_50.txt')
+    # count_unique_words('letter_grids_fast2.txt')
 
     # counts = count_intersecting_words(word_mapping)
     # print(counts.most_common()[-10:])
 
-    # grids = get_grids(word_mapping, all_words, 200000)
+    # grids = get_grids(word_mapping, all_words, 100000)
 
     # write_grids('letter_grids_1.txt', grids)
 
     # test_grid_letter_occurrences('letter_grids.txt')
+
+
+ 

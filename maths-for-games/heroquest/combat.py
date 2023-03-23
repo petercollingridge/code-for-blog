@@ -133,6 +133,17 @@ class Warbear(Monster):
         return final_p
 
 
+class TestCharacter(Character):
+    """ Character for use in testing function """
+    def __init__(self, name, attack, defend, body, probabilities):
+        super().__init__(name, attack, defend, body)
+        self.type = 'test'
+        self.probabilities = probabilities
+
+    def get_damage_probabilities(self, _):
+        return self.probabilities
+
+
 def write_probabilities(probabilities, as_float=False):
     """
     Given a dict mapping values to their probabilities,
@@ -236,31 +247,46 @@ def get_p_final_body_points(character1, character2):
     character must be dead for combat to have ended.
     """
 
-    p_damage = get_p_damage_on_leaving_combat_state(character1, character2)
-    write_probabilities(p_damage, True)
+    p_damage_1 = get_p_damage_on_leaving_combat_state(character1, character2)
+    p_damage_2 = get_p_damage_on_leaving_combat_state(character2, character1)
 
-    # Map a 2-tuple representing a combat state to probability of entering that combat state
-    # The 2-tuple represents (<bp of character1>, <bp of character2>)
+    # Map a 3-tuple representing a combat state to probability of entering that combat state
+    # The 3-tuple represents (<Which player's turn it is>, <bp of character1>, <bp of character2>)
     p_combat_state = defaultdict(int)
 
     # There is a 100% chance of starting with both characters at their starting bp
-    p_combat_state[(character1.body, character2.body)] = 1
+    p_combat_state[(1, character1.body, character2.body)] = 1
 
     # Fill in combat states starting with the one we know and expanding down, then
-    for body1 in range(character1.body, 0, -1):
-        for body2 in range(character2.body, 0, -1):
-            # Probability of being in this state
-            p_this_state = p_combat_state[(body1, body2)]
+    for body2 in range(character2.body, 0, -1):
+        for body1 in range(character1.body, 0, -1):
+            for turn in (1, 2):
+                # Probability of being in this state
+                p_this_state = p_combat_state[(turn, body1, body2)]
 
-            # Update probabilities of next states
-            for (damage1, damage2), p in p_damage.items():
-                new_body1 = max(0, body1 - damage2)
-                new_body2 = max(0, body2 - damage1)
-                p_combat_state[(new_body1, new_body2)] += p_this_state * p
-    
+                if p_this_state:
+                    p_damage = p_damage_1 if turn == 1 else p_damage_2
+                    # Update probabilities of next states
+                    for damage, p in p_damage.items():
+                        if turn == 1:
+                            (damage1, damage2) = damage
+                        else:
+                            (damage2, damage1) = damage
+                            
+                        # If it's a player's turn and they dealt damage, then swap turns
+                        if (turn == 1 and damage1 > 0) or (turn == 2 and damage2 > 0):
+                            next_turn = 3 - turn
+                        else:
+                            next_turn = turn
+                        
+                        new_body1 = max(0, body1 - damage2)
+                        new_body2 = max(0, body2 - damage1)
+                        p_combat_state[(next_turn, new_body1, new_body2)] += p_this_state * p
+
     # Filter to get just the combat states where one character is dead
     final_combat_states = {}
-    for (bp1, bp2), p in p_combat_state.items():
+    for (_, bp1, bp2), p in p_combat_state.items():
+        # print((_, bp1, bp2), p)
         if bp1 == 0 or bp2 == 0:
             final_combat_states[(bp1, bp2)] = p
 
@@ -321,17 +347,26 @@ warbear = Warbear('warbear', 4, 4, 6)
 heroes = (barbarian, dwarf, elf, wizard)
 monsters = (goblin, skeleton, zombie, orc, fimir, mummy, gargoyle)
 
+# Goblin with 2 body points for testing purposes
+goblin2 = Monster('goblin', 2, 1, 2)
+test_char_1 = TestCharacter('Test 1', 0, 0, 2, {0: Fraction(1, 4), 1: Fraction(1, 2), 2: Fraction(1, 4)})
+test_char_2 = TestCharacter('Test 2', 0, 0, 2, {0: Fraction(1, 2), 1: Fraction(1, 3), 2: Fraction(1, 6)})
+
+# get_p_final_body_points(test_char_1, test_char_2)
+
 # write_probabilities(barbarian.get_attack_probabilities())
 # write_probabilities(barbarian.get_defence_probabilities())
 # write_probabilities(goblin.get_attack_probabilities())
 # write_probabilities(goblin.get_defence_probabilities())
 
 # write_probabilities(barbarian.get_damage_probabilities(goblin))
-# write_probabilities(barbarian.simulate_combat_probabilities(goblin, 100000))
+# write_probabilities(barbarian.simulate_combat_probabilities(goblin2, 100000))
+# print()
+# for state, p in get_p_final_body_points(barbarian, goblin2).items():
+#     print(state, float(p))
 
-write_probabilities(get_p_damage_on_leaving_combat_state(barbarian, goblin))
+# write_probabilities(get_p_damage_on_leaving_combat_state(barbarian, goblin))
 # write_probabilities(get_p_damage_on_leaving_combat_state(goblin, barbarian))
-
 # write_probabilities(get_p_final_body_points(barbarian, goblin), True)
 # write_probabilities(get_p_final_body_points(barbarian, gargoyle), True)
 
