@@ -6,7 +6,6 @@
         <title>Codeword</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://unpkg.com/vue/dist/vue.js"></script>
 
         <link href="https://fonts.googleapis.com/css?family=Ranchers" rel="stylesheet">
         <link rel="stylesheet" href="generateWords.css">
@@ -16,24 +15,11 @@
 
         <h1>Words</h1>
         <div id="generate-words">
-            <button class="get-word-button" v-on:click="addWord">Get word</button>
-
-            <div class="word-list">
-                <transition-group name="word-list" tag="div">
-                    <span
-                        class="generated-word"
-                        v-for="(word, index) in words" 
-                        v-bind:key="word + index"
-                        v-bind:style="{ color: colours[index] }"
-                    >
-                        {{ word }}
-                    </span>
-                </transition-group>
-            </div>
+            <button id="get-word-button">Get word</button>
+            <div id="word-container" class="word-list"></div>
         </div>
 
         <script src="getSillyWords.js"></script>
-        <script src="generateWords.js"></script>
 
     </body>
 </html>

@@ -1,4 +1,4 @@
-.get-word-button {
+#get-word-button {
     font-family: 'Ranchers', cursive;
     font-size: 2.5rem;
     background-color: black;
@@ -8,22 +8,19 @@
     border-radius: 0.5rem;
 }
 
+#get-word-button:hover {
+    background-color: hsl(0, 0%, 20%);
+}
+
 .word-list {
     margin-top: 1rem;
     margin-bottom: 1rem;
-}
-
-.generated-word {
     font-family: 'Ranchers', cursive;
     font-size: 2.5rem;
     line-height: 3rem;
+}
+
+.word-list span {
+    display: inline-block;
     margin-right: 1rem;
-}
-
-.word-list-enter-active, .word-list-leave-active {
-    transition: opacity 1s;
-}
-
-.word-list-enter, .word-list-leave-to {
-    opacity: 0;
 }

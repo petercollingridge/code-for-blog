@@ -1,4 +1,4 @@
-var getSillyWord = (function() {
+const getSillyWord = (function() {
     var start1 = ["Dr", "Dw", "L", "M", "Qu", "Thr", "Tr", "Tw", "Scr", "Sl", "Sm", "Sp", "Spl", "Squ", "Wh", "Y"];
     var start2 = ["B", "F", "G", "P"]
     var secondConsonant = ["l", "r", "w", ""]
@@ -117,3 +117,11 @@ var getSillyWord = (function() {
         return word;
     };
 })();
+
+document.getElementById('get-word-button').addEventListener('click', function() {
+    const word = getSillyWord();
+    const wordElement = document.createElement('span');
+    wordElement.textContent = word;
+    wordElement.style.color = 'hsl(' + Math.floor(Math.random() * 360) + ', 100%, 40%';
+    document.getElementById('word-container').appendChild(wordElement);
+});
