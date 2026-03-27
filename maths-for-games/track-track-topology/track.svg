@@ -1,13 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -30 20 32">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -0 300 80">
 
     <defs>
-        <g id="point" fill="none" stroke="#aaa" stroke-width="10">
-            <path class="track" d="M0 0A50 50 0 0 0 -6.7 -25" />
-            <path class="track" d="M0 0A50 50 0 0 1 6.7 -25" />
+        <g id="track-point" fill="none" stroke="#aaa" stroke-width="10">
+            <path d="M0 12.5a40 40 0 0 0 -8 -25" />
+            <path d="M0 12.5a40 40 0 0 1 8 -25" />
         </g>
     </defs>
 
 
-    <use href="#point" x="0" y="0" />
+    <rect x="1" y="1" width="298" height="78" fill="#fff" stroke="#000" />
+
+    <g fill="none" stroke="#22f" stroke-width="8" >
+        <path d="M110 40c -60 -41, -100 -35, -100 0c 0 35, 40 41, 100 0" />
+        <path d="M110 40L190 40"  />
+        <path d="M190 40c 60 -41, 100 -35, 100 0c 0 35, -40 41, -100 0" />
+    </g>
+
+
+    <use href="#track-point" transform="translate(110, 40) rotate(-90)" />
+    <use href="#track-point" transform="translate(190, 40) rotate(90)" />
 
 </svg>
