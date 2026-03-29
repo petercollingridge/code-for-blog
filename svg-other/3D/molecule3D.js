@@ -1,3 +1,9 @@
+// TODO:
+// - Add more molecules
+// - Option to pick molecule
+// - Option to download SVG
+// - Add rotation animation on load
+
 const ATOM_SIZE = 4;
 const BOND_THICKNESS = 3;
 const ROTATION_SPEED = 0.02;
@@ -16,10 +22,31 @@ const MOLECULAR_DATA = {
         atoms: [["P", 1.200, -0.226, -6.850], ["O", 1.740, 1.140, -6.672], ["O", 2.123, -1.036, -7.891], ["O", -0.302, -0.139, -7.421], ["P", 0.255, -0.130, -4.446], ["O", 0.810, 1.234, -4.304], ["O", -1.231, -0.044, -5.057], ["O", 1.192, -0.990, -5.433], ["P", -0.745, 0.068, -2.071], ["O", -2.097, 0.143, -2.669], ["O", -0.125, 1.549, -1.957], ["O", 0.203, -0.840, -3.002], ["O", -0.844, -0.587, -0.604], ["C", -1.694, 0.260, 0.170], ["C", -1.831, -0.309, 1.584], ["O", -0.542, -0.355, 2.234], ["C", -2.683, 0.630, 2.465], ["O", -4.033, 0.165, 2.534], ["C", -2.011, 0.555, 3.856], ["O", -2.926, 0.043, 4.827], ["C", -0.830, -0.418, 3.647], ["N", 0.332, 0.015, 4.425], ["C", 1.302, 0.879, 4.012], ["N", 2.184, 1.042, 4.955], ["C", 1.833, 0.300, 6.033], ["C", 2.391, 0.077, 7.303], ["N", 3.564, 0.706, 7.681], ["N", 1.763, -0.747, 8.135], ["C", 0.644, -1.352, 7.783], ["N", 0.088, -1.178, 6.602], ["C", 0.644, -0.371, 5.704], ["H", 2.100, -0.546, -8.725], ["H", -0.616, -1.048, -7.522], ["H", -1.554, -0.952, -5.132], ["H", 0.752, 1.455, -1.563], ["H", -2.678, 0.312, -0.296], ["H", -1.263, 1.259, 0.221], ["H", -2.275, -1.304, 1.550], ["H", -2.651, 1.649, 2.078], ["H", -4.515, 0.788, 3.094], ["H", -1.646, 1.537, 4.157], ["H", -3.667, 0.662, 4.867], ["H", -1.119, -1.430, 3.931], ["H", 1.334, 1.357, 3.044], ["H", 3.938, 0.548, 8.562], ["H", 4.015, 1.303, 7.064], ["H", 0.166, -2.014, 8.490]],
         bonds: [[0,1],[0,2],[0,3],[0,7],[2,31],[3,32],[4,5],[4,6],[4,7],[4,11],[6,33],[8,9],[8,10],[8,11],[8,12],[10,34],[12,13],[13,14],[13,35],[13,36],[14,15],[14,16],[14,37],[15,20],[16,17],[16,18],[16,38],[17,39],[18,19],[18,20],[18,40],[19,41],[20,21],[20,42],[21,22],[21,30],[22,23],[22,43],[23,24],[24,25],[24,30],[25,26],[25,27],[26,44],[26,45],[27,28],[28,29],[28,46],[29,30]]
     },
+    Tyrosine: {
+        atoms: [["N", 1.32, 0.952, 1.428], ["C", -0.018, 0.429, 1.734], ["C", -0.103, 0.094, 3.201], ["O", 0.886, -0.254, 3.799], ["C", -0.274, -0.831, 0.907], ["C", -0.189, -0.496, -0.559], ["C", 1.022, -0.589, -1.219], ["C", -1.324, -0.102, -1.244], ["C", 1.103, -0.282, -2.563], ["C", -1.247, 0.21, -2.587], ["C", -0.032, 0.118, -3.252], ["O", 0.044, 0.42, -4.574], ["O", -1.279, 0.184, 3.842], ["H", 1.977, 0.225, 1.669], ["H", 1.365, 1.063, 0.426], ["H", -0.767, 1.183, 1.489], ["H", 0.473, -1.585, 1.152], ["H", -1.268, -1.219, 1.134], ["H", 1.905, -0.902, -0.683], ["H", -2.269, -0.031, -0.727], ["H", 2.049, -0.354, -3.078], ["H", -2.132, 0.523, -3.121], ["H", -0.123, -0.399, -5.059], ["H", -1.333, -0.03, 4.784]],
+        bonds: [[0,1],[0,13],[0,14],[1,2],[1,4],[1,15],[2,3],[2,12],[4,5],[4,16],[4,17],[5,6],[5,7],[6,8],[6,18],[7,9],[7,19],[8,10],[8,20],[9,10],[9,21],[10,11],[11,22],[12,23],]
+    },
 };
 
 (function () {
     const svg = document.getElementById('molecule-viewer');
+    const viewerSize = Math.min(svg.clientWidth, svg.clientHeight);
+    const button = document.getElementById('download-molecule');
+    console.log(button);
+
+    if (button) {
+        button.addEventListener('click', () => {
+            const serializer = new XMLSerializer();
+            const source = serializer.serializeToString(svg);
+            const blob = new Blob([source], { type: "image/svg+xml" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "molecule.svg";
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    }
 
     const molecule = MOLECULAR_DATA.ATP;
 
@@ -42,7 +69,7 @@ const MOLECULAR_DATA = {
         meanY /= atoms.length;
         meanZ /= atoms.length;
 
-        // Find bounds of the molecule
+        // Center the molecule around the origin and find the maximum distance from the center.
         let maxD = 0;
         const centeredAtoms = atoms.map(([type, x, y, z]) => {
             const dx = x - meanX;
@@ -122,6 +149,7 @@ const MOLECULAR_DATA = {
             const element = document.createElementNS("http://www.w3.org/2000/svg", "line");
             element.setAttribute("stroke", "rgb(166, 159, 166)");
             element.setAttribute("stroke-width", BOND_THICKNESS);
+            element.setAttribute("stroke-linecap", "round");
             svg.appendChild(element);
 
             const update = () => {
@@ -135,17 +163,19 @@ const MOLECULAR_DATA = {
         });
     }
 
-    function updateAtomElements() {
+    function updateShapes() {
         for (let i = 0; i < shapes.length; i++) {
             shapes[i].update();
         }
         shapes = shapes.sort((a, b) => b.getZ() - a.getZ());
         for (let i = 0; i < shapes.length; i++) {
+            // const z = shapes[i].getZ();
+            // const opacity = Math.min(Math.max(0.8 - 1.6 * (z / viewerSize), ), 1);
+            // shapes[i].element.setAttribute("opacity", opacity);
             svg.appendChild(shapes[i].element);
         }
     };
 
-    const viewerSize = Math.min(svg.clientWidth, svg.clientHeight);
     const scaledAtoms = fitAtomsToViewer(molecule.atoms, viewerSize - 20);
 
     addAtoms(scaledAtoms);
@@ -164,7 +194,7 @@ const MOLECULAR_DATA = {
             points[i].z = st * y + ct * z;
         }
 
-        updateAtomElements();
+        updateShapes();
     };
 
     // Rotation around Y axis
@@ -180,7 +210,7 @@ const MOLECULAR_DATA = {
             points[i].z = -st * x + ct * z;
         }
 
-        updateAtomElements();
+        updateShapes();
     };
 
     // Initial rotations
@@ -189,23 +219,36 @@ const MOLECULAR_DATA = {
     rotateX3D(90 * Math.PI / 180);
     rotateY3D(90 * Math.PI / 180);
     rotateX3D(180 * Math.PI / 180);
-    updateAtomElements();
+    updateShapes();
 
+    let dragging = false;
     function addEventHandlers() {
-        let dragging = false;
         document.addEventListener("mouseup", (event) => {
             dragging = false;
         });
         svg.addEventListener("mousedown", (event) => {
             dragging = true;
         });
-        svg.addEventListener("mousemove", (event) => {
+        document.addEventListener("mousemove", (event) => {
             if (dragging) {
                 rotateX3D(event.movementY * ROTATION_SPEED);
-                rotateY3D(event.movementX * ROTATION_SPEED);
+                rotateY3D(-event.movementX * ROTATION_SPEED);
             }
         });
     }
 
     addEventHandlers();
+
+    // Animate a slow rotation around the Y axis.
+    let lastTime = 0;
+    function animate(time) {
+        const delta = time - lastTime;
+        lastTime = time;
+        if (!dragging) {
+            rotateY3D(ROTATION_SPEED * delta * 0.01);
+        }
+        requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
 })();
